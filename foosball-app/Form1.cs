@@ -90,7 +90,7 @@ namespace Vid
             if(capture == null)
             {
                 OpenFileDialog opf = new OpenFileDialog();
-                opf.Filter = "Video files | *.avi; *.mp4; *.mov";
+                //opf.Filter = "Video files | *.avi; *.mp4; *.mov";
                 if (opf.ShowDialog() == DialogResult.OK)
                 {
                     capture = new VideoCapture(opf.FileName);
@@ -166,6 +166,11 @@ namespace Vid
         }
 
         private void videoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click_1(object sender, EventArgs e)
         {
 
         }
