@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "foosball-app", "foosball-app\foosball-app.csproj", "{479E130F-50E3-4274-8219-F704B62B8C24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vid", "Vid\Vid.csproj", "{A8A6F9F3-CF22-4EF6-A546-F0C97E14D7FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{479E130F-50E3-4274-8219-F704B62B8C24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{479E130F-50E3-4274-8219-F704B62B8C24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{479E130F-50E3-4274-8219-F704B62B8C24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{479E130F-50E3-4274-8219-F704B62B8C24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8A6F9F3-CF22-4EF6-A546-F0C97E14D7FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8A6F9F3-CF22-4EF6-A546-F0C97E14D7FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8A6F9F3-CF22-4EF6-A546-F0C97E14D7FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8A6F9F3-CF22-4EF6-A546-F0C97E14D7FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {0419103C-3FE3-4291-A5C9-8B24EE424401}
+		SolutionGuid = {3B3A0D74-3ECF-4582-AA61-966A9D333646}
 	EndGlobalSection
 EndGlobal

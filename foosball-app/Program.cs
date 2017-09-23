@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace foosball_app
+namespace Vid
 {
     static class Program
     {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace foosball_app.Properties
+namespace Vid.Properties
 {
 
 
