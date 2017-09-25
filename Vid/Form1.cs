@@ -12,13 +12,14 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Threading;
 using Emgu.CV.Cvb;
+using Emgu.CV.Util;
 
 namespace Vid
 {
     public partial class Form1 : Form
     {
         VideoCapture capture;
-        Mat tmp;
+        //Mat tmp;
 
 
         public Form1()
@@ -31,7 +32,7 @@ namespace Vid
 
         }
 
-        private Mat sfcnt(Mat dif, Mat camera)
+        private Mat Sfcnt(Mat dif, Mat camera)
         {
             //Boolean found = false;
             Mat t = new Mat();
@@ -80,17 +81,19 @@ namespace Vid
         }
 
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void PictureBox1_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void startToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void StartToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if(capture == null)
             {
-                OpenFileDialog opf = new OpenFileDialog();
-                opf.Filter = "Video files | *.avi; *.mp4; *.mov";
+                OpenFileDialog opf = new OpenFileDialog
+                {
+                    Filter = "Video files | *.avi; *.mp4; *.mov"
+                };
                 if (opf.ShowDialog() == DialogResult.OK)
                 {
                     capture = new VideoCapture(opf.FileName);
@@ -104,7 +107,7 @@ namespace Vid
         {
             try
             {
-                Mat m = new Mat();
+                /*Mat m = new Mat();
                 capture.Retrieve(m);
                 Mat g1 = new Mat();
                 Mat g2 = new Mat();
@@ -136,6 +139,32 @@ namespace Vid
                 pictureBox1.Image = m.ToImage<Bgr, byte>().Bitmap;
                 pictureBox2.Image = dif.ToImage<Bgr, byte>().Bitmap;
                 Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
+                */
+
+                
+                Mat m = new Mat();
+                capture.Retrieve(m);
+                UMat g = new UMat();
+                CvInvoke.CvtColor(m, g, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
+                CvInvoke.PyrUp(g, g);
+                CvInvoke.PyrDown(g, g);
+
+                double cannyThreshold = 20.0;
+                double circleAccumulatorThreshold = 100;
+                CircleF[] circles = CvInvoke.HoughCircles(g, Emgu.CV.CvEnum.HoughType.Gradient, 2, g.Rows, 60, 30, 5, 10);
+
+                
+                Image<Bgr, Byte> circleImage = m.ToImage<Bgr,byte>();
+                foreach (CircleF circle in circles)
+                {
+                    circleImage.Draw(circle, new Bgr(Color.Brown), 2);
+                }
+
+                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBox1.Image = g.ToImage<Bgr, byte>().Bitmap;
+                pictureBox2.Image = circleImage.Bitmap;
+                Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
             }
             catch (Exception)
             {
@@ -143,7 +172,7 @@ namespace Vid
             }
         }
 
-        private void stopToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void StopToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (capture != null)
             {
@@ -152,7 +181,7 @@ namespace Vid
             }
         }
 
-        private void pauseToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void PauseToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (capture != null)
             {
@@ -160,12 +189,17 @@ namespace Vid
             }
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void videoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void VideoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PictureBox1_Click_1(object sender, EventArgs e)
         {
 
         }
