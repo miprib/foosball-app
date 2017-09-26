@@ -50,21 +50,21 @@ namespace foosball_app
         {
             Finalvideo = new VideoCaptureDevice(VideoCapTureDevices[comboBox1.SelectedIndex].MonikerString);
             Finalvideo.NewFrame += new NewFrameEventHandler(Finalvideo_NewFrame);
-            Finalvideo.DesiredFrameRate = 20;//saniyede kaç görüntü alsın istiyorsanız. FPS
+            Finalvideo.DesiredFrameRate = 24;//saniyede kaç görüntü alsın istiyorsanız. FPS
             Finalvideo.DesiredFrameSize = new Size(320, 240);//görüntü boyutları
             Finalvideo.Start();
+
         }
 
         void Finalvideo_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
 
-            Bitmap image = (Bitmap)eventArgs.Frame.Clone();
-            Bitmap image1 = (Bitmap)eventArgs.Frame.Clone();
+            Bitmap tempImage = (Bitmap)eventArgs.Frame.Clone();
+            Bitmap image = new Bitmap(tempImage, new Size(pictureBox1.Width, pictureBox1.Height));
+            Bitmap image1 = new Bitmap(tempImage, new Size(pictureBox1.Width, pictureBox1.Height));
             pictureBox1.Image = image;
 
-
-
-            if (rdiobtnKirmizi.Checked)
+            if (rdiobtnRed.Checked)
             {
 
                 // create filter
@@ -76,11 +76,11 @@ namespace foosball_app
                 filter.ApplyInPlace(image1);
 
 
-                nesnebul(image1);
+                findObject(image1);
 
             }
 
-            if (rdiobtnMavi.Checked)
+            if (rdiobtnBlue.Checked)
             {
 
                 // create filter
@@ -91,10 +91,10 @@ namespace foosball_app
                 // apply the filter
                 filter.ApplyInPlace(image1);
 
-                nesnebul(image1);
+                findObject(image1);
 
             }
-            if (rdiobtnYesil.Checked)
+            if (rdiobtnGreen.Checked)
             {
 
                 // create filter
@@ -105,14 +105,14 @@ namespace foosball_app
                 // apply the filter
                 filter.ApplyInPlace(image1);
 
-                nesnebul(image1);
+                findObject(image1);
 
 
 
             }
 
 
-            if (rdbtnElleBelirleme.Checked)
+            if (rdbtnManual.Checked)
             {
 
                 // create filter
@@ -123,14 +123,14 @@ namespace foosball_app
                 // apply the filter
                 filter.ApplyInPlace(image1);
 
-                nesnebul(image1);
+                findObject(image1);
 
             }
 
 
 
         }
-        public void nesnebul(Bitmap image)
+        public void findObject(Bitmap image)
         {
             BlobCounter blobCounter = new BlobCounter();
             blobCounter.MinWidth = 5;
@@ -156,7 +156,7 @@ namespace foosball_app
 
 
 
-            if (rdiobtnTekCisimTakibi.Checked)
+            if (rdiobtnSingleObj.Checked)
             {
                 //Tekli cisim Takibi Single Tracking--------
 
@@ -165,6 +165,7 @@ namespace foosball_app
                     if (rects.Length > 0)
                     {
                         Rectangle objectRect = rects[0];
+
                         //Graphics g = Graphics.FromImage(image);
                         Graphics g = pictureBox1.CreateGraphics();
                         using (Pen pen = new Pen(Color.FromArgb(252, 3, 26), 2))
@@ -177,7 +178,7 @@ namespace foosball_app
                         //  g.DrawString(objectX.ToString() + "X" + objectY.ToString(), new Font("Arial", 12), Brushes.Red, new System.Drawing.Point(250, 1));
                         g.Dispose();
 
-                        if (chkKoordinatiGoster.Checked)
+                        if (chkShowCoords.Checked)
                         {
                             this.Invoke((MethodInvoker)delegate
                             {
@@ -190,7 +191,7 @@ namespace foosball_app
 
 
 
-            if (rdiobtnCokCisimTakibi.Checked)
+            if (rdiobtnMultiObj.Checked)
             {
                 //Multi tracking Çoklu cisim Takibi-------
 
@@ -210,7 +211,7 @@ namespace foosball_app
                     //  g.DrawString(objectX.ToString() + "X" + objectY.ToString(), new Font("Arial", 12), Brushes.Red, new System.Drawing.Point(250, 1));
 
 
-                    if (chkboxMesafeOlcer.Checked)
+                    if (chkboxDistanceMeter.Checked)
                     {
 
                         if (rects.Length > 1)
@@ -261,7 +262,7 @@ namespace foosball_app
                             });
 
 
-                            if (chkboxMesafeKordinati.Checked)
+                            if (chkboxDistanceCoords.Checked)
                             {
 
                                 this.Invoke((MethodInvoker)delegate
@@ -287,7 +288,7 @@ namespace foosball_app
 
 
 
-            if (rdiobtnGeoSekil.Checked)
+            if (rdiobtnShapes.Checked)
             {
 
                 SimpleShapeChecker shapeChecker = new SimpleShapeChecker();

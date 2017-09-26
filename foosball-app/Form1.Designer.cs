@@ -35,21 +35,21 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button3 = new System.Windows.Forms.Button();
-            this.rdiobtnKirmizi = new System.Windows.Forms.RadioButton();
-            this.rdiobtnMavi = new System.Windows.Forms.RadioButton();
-            this.rdiobtnTekCisimTakibi = new System.Windows.Forms.RadioButton();
-            this.rdiobtnCokCisimTakibi = new System.Windows.Forms.RadioButton();
+            this.rdiobtnRed = new System.Windows.Forms.RadioButton();
+            this.rdiobtnBlue = new System.Windows.Forms.RadioButton();
+            this.rdiobtnSingleObj = new System.Windows.Forms.RadioButton();
+            this.rdiobtnMultiObj = new System.Windows.Forms.RadioButton();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.rdiobtnGeoSekil = new System.Windows.Forms.RadioButton();
+            this.rdiobtnShapes = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.rdbtnElleBelirleme = new System.Windows.Forms.RadioButton();
-            this.rdiobtnYesil = new System.Windows.Forms.RadioButton();
+            this.rdbtnManual = new System.Windows.Forms.RadioButton();
+            this.rdiobtnGreen = new System.Windows.Forms.RadioButton();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
-            this.chkboxMesafeOlcer = new System.Windows.Forms.CheckBox();
+            this.chkboxDistanceMeter = new System.Windows.Forms.CheckBox();
             this.richTextBox3 = new System.Windows.Forms.RichTextBox();
-            this.chkboxMesafeKordinati = new System.Windows.Forms.CheckBox();
+            this.chkboxDistanceCoords = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
@@ -58,7 +58,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.chkKoordinatiGoster = new System.Windows.Forms.CheckBox();
+            this.chkShowCoords = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -156,53 +156,53 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // rdiobtnKirmizi
+            // rdiobtnRed
             // 
-            this.rdiobtnKirmizi.AutoSize = true;
-            this.rdiobtnKirmizi.Location = new System.Drawing.Point(11, 23);
-            this.rdiobtnKirmizi.Margin = new System.Windows.Forms.Padding(4);
-            this.rdiobtnKirmizi.Name = "rdiobtnKirmizi";
-            this.rdiobtnKirmizi.Size = new System.Drawing.Size(55, 21);
-            this.rdiobtnKirmizi.TabIndex = 6;
-            this.rdiobtnKirmizi.TabStop = true;
-            this.rdiobtnKirmizi.Text = "Red";
-            this.rdiobtnKirmizi.UseVisualStyleBackColor = true;
+            this.rdiobtnRed.AutoSize = true;
+            this.rdiobtnRed.Location = new System.Drawing.Point(11, 23);
+            this.rdiobtnRed.Margin = new System.Windows.Forms.Padding(4);
+            this.rdiobtnRed.Name = "rdiobtnRed";
+            this.rdiobtnRed.Size = new System.Drawing.Size(55, 21);
+            this.rdiobtnRed.TabIndex = 6;
+            this.rdiobtnRed.TabStop = true;
+            this.rdiobtnRed.Text = "Red";
+            this.rdiobtnRed.UseVisualStyleBackColor = true;
             // 
-            // rdiobtnMavi
+            // rdiobtnBlue
             // 
-            this.rdiobtnMavi.AutoSize = true;
-            this.rdiobtnMavi.Location = new System.Drawing.Point(11, 80);
-            this.rdiobtnMavi.Margin = new System.Windows.Forms.Padding(4);
-            this.rdiobtnMavi.Name = "rdiobtnMavi";
-            this.rdiobtnMavi.Size = new System.Drawing.Size(57, 21);
-            this.rdiobtnMavi.TabIndex = 7;
-            this.rdiobtnMavi.TabStop = true;
-            this.rdiobtnMavi.Text = "Blue";
-            this.rdiobtnMavi.UseVisualStyleBackColor = true;
+            this.rdiobtnBlue.AutoSize = true;
+            this.rdiobtnBlue.Location = new System.Drawing.Point(11, 80);
+            this.rdiobtnBlue.Margin = new System.Windows.Forms.Padding(4);
+            this.rdiobtnBlue.Name = "rdiobtnBlue";
+            this.rdiobtnBlue.Size = new System.Drawing.Size(57, 21);
+            this.rdiobtnBlue.TabIndex = 7;
+            this.rdiobtnBlue.TabStop = true;
+            this.rdiobtnBlue.Text = "Blue";
+            this.rdiobtnBlue.UseVisualStyleBackColor = true;
             // 
-            // rdiobtnTekCisimTakibi
+            // rdiobtnSingleObj
             // 
-            this.rdiobtnTekCisimTakibi.AutoSize = true;
-            this.rdiobtnTekCisimTakibi.Location = new System.Drawing.Point(19, 30);
-            this.rdiobtnTekCisimTakibi.Margin = new System.Windows.Forms.Padding(4);
-            this.rdiobtnTekCisimTakibi.Name = "rdiobtnTekCisimTakibi";
-            this.rdiobtnTekCisimTakibi.Size = new System.Drawing.Size(113, 21);
-            this.rdiobtnTekCisimTakibi.TabIndex = 8;
-            this.rdiobtnTekCisimTakibi.TabStop = true;
-            this.rdiobtnTekCisimTakibi.Text = "Single Object";
-            this.rdiobtnTekCisimTakibi.UseVisualStyleBackColor = true;
+            this.rdiobtnSingleObj.AutoSize = true;
+            this.rdiobtnSingleObj.Location = new System.Drawing.Point(19, 30);
+            this.rdiobtnSingleObj.Margin = new System.Windows.Forms.Padding(4);
+            this.rdiobtnSingleObj.Name = "rdiobtnSingleObj";
+            this.rdiobtnSingleObj.Size = new System.Drawing.Size(113, 21);
+            this.rdiobtnSingleObj.TabIndex = 8;
+            this.rdiobtnSingleObj.TabStop = true;
+            this.rdiobtnSingleObj.Text = "Single Object";
+            this.rdiobtnSingleObj.UseVisualStyleBackColor = true;
             // 
-            // rdiobtnCokCisimTakibi
+            // rdiobtnMultiObj
             // 
-            this.rdiobtnCokCisimTakibi.AutoSize = true;
-            this.rdiobtnCokCisimTakibi.Location = new System.Drawing.Point(19, 58);
-            this.rdiobtnCokCisimTakibi.Margin = new System.Windows.Forms.Padding(4);
-            this.rdiobtnCokCisimTakibi.Name = "rdiobtnCokCisimTakibi";
-            this.rdiobtnCokCisimTakibi.Size = new System.Drawing.Size(103, 21);
-            this.rdiobtnCokCisimTakibi.TabIndex = 9;
-            this.rdiobtnCokCisimTakibi.TabStop = true;
-            this.rdiobtnCokCisimTakibi.Text = "Multi Object";
-            this.rdiobtnCokCisimTakibi.UseVisualStyleBackColor = true;
+            this.rdiobtnMultiObj.AutoSize = true;
+            this.rdiobtnMultiObj.Location = new System.Drawing.Point(19, 58);
+            this.rdiobtnMultiObj.Margin = new System.Windows.Forms.Padding(4);
+            this.rdiobtnMultiObj.Name = "rdiobtnMultiObj";
+            this.rdiobtnMultiObj.Size = new System.Drawing.Size(103, 21);
+            this.rdiobtnMultiObj.TabIndex = 9;
+            this.rdiobtnMultiObj.TabStop = true;
+            this.rdiobtnMultiObj.Text = "Multi Object";
+            this.rdiobtnMultiObj.UseVisualStyleBackColor = true;
             // 
             // richTextBox1
             // 
@@ -225,9 +225,9 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.rdiobtnGeoSekil);
-            this.groupBox2.Controls.Add(this.rdiobtnTekCisimTakibi);
-            this.groupBox2.Controls.Add(this.rdiobtnCokCisimTakibi);
+            this.groupBox2.Controls.Add(this.rdiobtnShapes);
+            this.groupBox2.Controls.Add(this.rdiobtnSingleObj);
+            this.groupBox2.Controls.Add(this.rdiobtnMultiObj);
             this.groupBox2.Location = new System.Drawing.Point(317, 422);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
@@ -237,24 +237,24 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Tracking Mode";
             // 
-            // rdiobtnGeoSekil
+            // rdiobtnShapes
             // 
-            this.rdiobtnGeoSekil.AutoSize = true;
-            this.rdiobtnGeoSekil.Location = new System.Drawing.Point(19, 86);
-            this.rdiobtnGeoSekil.Margin = new System.Windows.Forms.Padding(4);
-            this.rdiobtnGeoSekil.Name = "rdiobtnGeoSekil";
-            this.rdiobtnGeoSekil.Size = new System.Drawing.Size(77, 21);
-            this.rdiobtnGeoSekil.TabIndex = 13;
-            this.rdiobtnGeoSekil.TabStop = true;
-            this.rdiobtnGeoSekil.Text = "Shapes";
-            this.rdiobtnGeoSekil.UseVisualStyleBackColor = true;
+            this.rdiobtnShapes.AutoSize = true;
+            this.rdiobtnShapes.Location = new System.Drawing.Point(19, 86);
+            this.rdiobtnShapes.Margin = new System.Windows.Forms.Padding(4);
+            this.rdiobtnShapes.Name = "rdiobtnShapes";
+            this.rdiobtnShapes.Size = new System.Drawing.Size(77, 21);
+            this.rdiobtnShapes.TabIndex = 13;
+            this.rdiobtnShapes.TabStop = true;
+            this.rdiobtnShapes.Text = "Shapes";
+            this.rdiobtnShapes.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.rdbtnElleBelirleme);
-            this.groupBox3.Controls.Add(this.rdiobtnYesil);
-            this.groupBox3.Controls.Add(this.rdiobtnKirmizi);
-            this.groupBox3.Controls.Add(this.rdiobtnMavi);
+            this.groupBox3.Controls.Add(this.rdbtnManual);
+            this.groupBox3.Controls.Add(this.rdiobtnGreen);
+            this.groupBox3.Controls.Add(this.rdiobtnRed);
+            this.groupBox3.Controls.Add(this.rdiobtnBlue);
             this.groupBox3.Location = new System.Drawing.Point(525, 422);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox3.Name = "groupBox3";
@@ -264,29 +264,29 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Colors";
             // 
-            // rdbtnElleBelirleme
+            // rdbtnManual
             // 
-            this.rdbtnElleBelirleme.AutoSize = true;
-            this.rdbtnElleBelirleme.Location = new System.Drawing.Point(11, 108);
-            this.rdbtnElleBelirleme.Margin = new System.Windows.Forms.Padding(4);
-            this.rdbtnElleBelirleme.Name = "rdbtnElleBelirleme";
-            this.rdbtnElleBelirleme.Size = new System.Drawing.Size(75, 21);
-            this.rdbtnElleBelirleme.TabIndex = 24;
-            this.rdbtnElleBelirleme.TabStop = true;
-            this.rdbtnElleBelirleme.Text = "Manual";
-            this.rdbtnElleBelirleme.UseVisualStyleBackColor = true;
+            this.rdbtnManual.AutoSize = true;
+            this.rdbtnManual.Location = new System.Drawing.Point(11, 108);
+            this.rdbtnManual.Margin = new System.Windows.Forms.Padding(4);
+            this.rdbtnManual.Name = "rdbtnManual";
+            this.rdbtnManual.Size = new System.Drawing.Size(75, 21);
+            this.rdbtnManual.TabIndex = 24;
+            this.rdbtnManual.TabStop = true;
+            this.rdbtnManual.Text = "Manual";
+            this.rdbtnManual.UseVisualStyleBackColor = true;
             // 
-            // rdiobtnYesil
+            // rdiobtnGreen
             // 
-            this.rdiobtnYesil.AutoSize = true;
-            this.rdiobtnYesil.Location = new System.Drawing.Point(11, 52);
-            this.rdiobtnYesil.Margin = new System.Windows.Forms.Padding(4);
-            this.rdiobtnYesil.Name = "rdiobtnYesil";
-            this.rdiobtnYesil.Size = new System.Drawing.Size(69, 21);
-            this.rdiobtnYesil.TabIndex = 8;
-            this.rdiobtnYesil.TabStop = true;
-            this.rdiobtnYesil.Text = "Green";
-            this.rdiobtnYesil.UseVisualStyleBackColor = true;
+            this.rdiobtnGreen.AutoSize = true;
+            this.rdiobtnGreen.Location = new System.Drawing.Point(11, 52);
+            this.rdiobtnGreen.Margin = new System.Windows.Forms.Padding(4);
+            this.rdiobtnGreen.Name = "rdiobtnGreen";
+            this.rdiobtnGreen.Size = new System.Drawing.Size(69, 21);
+            this.rdiobtnGreen.TabIndex = 8;
+            this.rdiobtnGreen.TabStop = true;
+            this.rdiobtnGreen.Text = "Green";
+            this.rdiobtnGreen.UseVisualStyleBackColor = true;
             // 
             // richTextBox2
             // 
@@ -297,16 +297,16 @@
             this.richTextBox2.TabIndex = 14;
             this.richTextBox2.Text = "";
             // 
-            // chkboxMesafeOlcer
+            // chkboxDistanceMeter
             // 
-            this.chkboxMesafeOlcer.AutoSize = true;
-            this.chkboxMesafeOlcer.Location = new System.Drawing.Point(23, 25);
-            this.chkboxMesafeOlcer.Margin = new System.Windows.Forms.Padding(4);
-            this.chkboxMesafeOlcer.Name = "chkboxMesafeOlcer";
-            this.chkboxMesafeOlcer.Size = new System.Drawing.Size(125, 21);
-            this.chkboxMesafeOlcer.TabIndex = 16;
-            this.chkboxMesafeOlcer.Text = "Distance Meter";
-            this.chkboxMesafeOlcer.UseVisualStyleBackColor = true;
+            this.chkboxDistanceMeter.AutoSize = true;
+            this.chkboxDistanceMeter.Location = new System.Drawing.Point(23, 25);
+            this.chkboxDistanceMeter.Margin = new System.Windows.Forms.Padding(4);
+            this.chkboxDistanceMeter.Name = "chkboxDistanceMeter";
+            this.chkboxDistanceMeter.Size = new System.Drawing.Size(125, 21);
+            this.chkboxDistanceMeter.TabIndex = 16;
+            this.chkboxDistanceMeter.Text = "Distance Meter";
+            this.chkboxDistanceMeter.UseVisualStyleBackColor = true;
             // 
             // richTextBox3
             // 
@@ -317,22 +317,22 @@
             this.richTextBox3.TabIndex = 17;
             this.richTextBox3.Text = "";
             // 
-            // chkboxMesafeKordinati
+            // chkboxDistanceCoords
             // 
-            this.chkboxMesafeKordinati.AutoSize = true;
-            this.chkboxMesafeKordinati.Location = new System.Drawing.Point(181, 25);
-            this.chkboxMesafeKordinati.Margin = new System.Windows.Forms.Padding(4);
-            this.chkboxMesafeKordinati.Name = "chkboxMesafeKordinati";
-            this.chkboxMesafeKordinati.Size = new System.Drawing.Size(134, 21);
-            this.chkboxMesafeKordinati.TabIndex = 18;
-            this.chkboxMesafeKordinati.Text = "Distance Coords";
-            this.chkboxMesafeKordinati.UseVisualStyleBackColor = true;
+            this.chkboxDistanceCoords.AutoSize = true;
+            this.chkboxDistanceCoords.Location = new System.Drawing.Point(181, 25);
+            this.chkboxDistanceCoords.Margin = new System.Windows.Forms.Padding(4);
+            this.chkboxDistanceCoords.Name = "chkboxDistanceCoords";
+            this.chkboxDistanceCoords.Size = new System.Drawing.Size(134, 21);
+            this.chkboxDistanceCoords.TabIndex = 18;
+            this.chkboxDistanceCoords.Text = "Distance Coords";
+            this.chkboxDistanceCoords.UseVisualStyleBackColor = true;
             // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.richTextBox3);
-            this.groupBox4.Controls.Add(this.chkboxMesafeOlcer);
-            this.groupBox4.Controls.Add(this.chkboxMesafeKordinati);
+            this.groupBox4.Controls.Add(this.chkboxDistanceMeter);
+            this.groupBox4.Controls.Add(this.chkboxDistanceCoords);
             this.groupBox4.Controls.Add(this.richTextBox2);
             this.groupBox4.Location = new System.Drawing.Point(793, 358);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
@@ -420,17 +420,17 @@
             this.label5.TabIndex = 26;
             this.label5.Text = "B";
             // 
-            // chkKoordinatiGoster
+            // chkShowCoords
             // 
-            this.chkKoordinatiGoster.AutoSize = true;
-            this.chkKoordinatiGoster.Location = new System.Drawing.Point(508, 336);
-            this.chkKoordinatiGoster.Margin = new System.Windows.Forms.Padding(4);
-            this.chkKoordinatiGoster.Name = "chkKoordinatiGoster";
-            this.chkKoordinatiGoster.Size = new System.Drawing.Size(144, 21);
-            this.chkKoordinatiGoster.TabIndex = 27;
-            this.chkKoordinatiGoster.Text = "Show Coordinates";
-            this.chkKoordinatiGoster.UseVisualStyleBackColor = true;
-            this.chkKoordinatiGoster.CheckedChanged += new System.EventHandler(this.chkKoordinatiGoster_CheckedChanged);
+            this.chkShowCoords.AutoSize = true;
+            this.chkShowCoords.Location = new System.Drawing.Point(508, 336);
+            this.chkShowCoords.Margin = new System.Windows.Forms.Padding(4);
+            this.chkShowCoords.Name = "chkShowCoords";
+            this.chkShowCoords.Size = new System.Drawing.Size(144, 21);
+            this.chkShowCoords.TabIndex = 27;
+            this.chkShowCoords.Text = "Show Coordinates";
+            this.chkShowCoords.UseVisualStyleBackColor = true;
+            this.chkShowCoords.CheckedChanged += new System.EventHandler(this.chkKoordinatiGoster_CheckedChanged);
             // 
             // label6
             // 
@@ -504,7 +504,7 @@
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.chkKoordinatiGoster);
+            this.Controls.Add(this.chkShowCoords);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -550,30 +550,30 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton rdiobtnKirmizi;
-        private System.Windows.Forms.RadioButton rdiobtnMavi;
-        private System.Windows.Forms.RadioButton rdiobtnTekCisimTakibi;
-        private System.Windows.Forms.RadioButton rdiobtnCokCisimTakibi;
+        private System.Windows.Forms.RadioButton rdiobtnRed;
+        private System.Windows.Forms.RadioButton rdiobtnBlue;
+        private System.Windows.Forms.RadioButton rdiobtnSingleObj;
+        private System.Windows.Forms.RadioButton rdiobtnMultiObj;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.RadioButton rdiobtnGeoSekil;
+        private System.Windows.Forms.RadioButton rdiobtnShapes;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.RadioButton rdiobtnYesil;
+        private System.Windows.Forms.RadioButton rdiobtnGreen;
         private System.Windows.Forms.RichTextBox richTextBox2;
-        private System.Windows.Forms.CheckBox chkboxMesafeOlcer;
+        private System.Windows.Forms.CheckBox chkboxDistanceMeter;
         private System.Windows.Forms.RichTextBox richTextBox3;
-        private System.Windows.Forms.CheckBox chkboxMesafeKordinati;
+        private System.Windows.Forms.CheckBox chkboxDistanceCoords;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.TrackBar trackBar2;
         private System.Windows.Forms.TrackBar trackBar3;
-        private System.Windows.Forms.RadioButton rdbtnElleBelirleme;
+        private System.Windows.Forms.RadioButton rdbtnManual;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.CheckBox chkKoordinatiGoster;
+        private System.Windows.Forms.CheckBox chkShowCoords;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
