@@ -99,8 +99,12 @@ namespace Vid
                     capture = new VideoCapture(opf.FileName);
                 }
             }
-            capture.ImageGrabbed += Capture_ImageGrabbed1;
-            capture.Start();
+            //check if video was selected
+            if (capture != null)
+            {
+                capture.ImageGrabbed += Capture_ImageGrabbed1;
+                capture.Start();
+            }
         }
 
         private void Capture_ImageGrabbed1(object sender, EventArgs e)
