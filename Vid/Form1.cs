@@ -106,63 +106,36 @@ namespace Vid
         private void Capture_ImageGrabbed1(object sender, EventArgs e)
         {
             try
-            {
-                /*Mat m = new Mat();
-                capture.Retrieve(m);
-                Mat g1 = new Mat();
-                Mat g2 = new Mat();
-                Mat dif = new Mat();
-                if (tmp == null)
-                {
-                    tmp = m.Clone();
-                }
-                else
-                {
-                    CvInvoke.CvtColor(m, g1, Emgu.CV.CvEnum.ColorConversion.Rgb2Gray);
-                    CvInvoke.CvtColor(tmp, g2, Emgu.CV.CvEnum.ColorConversion.Rgb2Gray);
-                    CvInvoke.AbsDiff(g1, g2, dif);
-                    CvInvoke.Threshold(dif, dif, 20, 255, 0);
-                    CvInvoke.Blur(dif, dif, new Size(10, 10), new Point(-1, -1), Emgu.CV.CvEnum.BorderType.Default);
-                    CvInvoke.Threshold(dif, dif, 20, 255, 0);
-                    CvInvoke.Blur(dif, dif, new Size(10, 10), new Point(-1, -1), Emgu.CV.CvEnum.BorderType.Default);
-                    CvInvoke.Threshold(dif, dif, 20, 255, 0);
-                    CvInvoke.Blur(dif, dif, new Size(10, 10), new Point(-1, -1), Emgu.CV.CvEnum.BorderType.Default);
-                    CvInvoke.Threshold(dif, dif, 20, 255, 0);
-                    CvInvoke.Blur(dif, dif, new Size(10, 10), new Point(-1, -1), Emgu.CV.CvEnum.BorderType.Default);
-                    CvInvoke.Threshold(dif, dif, 20, 255, 0);
-
-                    tmp = m.Clone();
-                    m = sfcnt(dif, m);
-                }
-                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-                pictureBox1.Image = m.ToImage<Bgr, byte>().Bitmap;
-                pictureBox2.Image = dif.ToImage<Bgr, byte>().Bitmap;
-                Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
-                */
-
-                
+            {  
                 Mat m = new Mat();
                 capture.Retrieve(m);
                 UMat g = new UMat();
-                CvInvoke.CvtColor(m, g, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
-                CvInvoke.PyrUp(g, g);
-                CvInvoke.PyrDown(g, g);
+                Mat n = new Mat();
+                Mat k = new Mat();
+                CvInvoke.CvtColor(m, g, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv, nes "geresnė spalvų paletė jo"... Nu arba dar nemoku su spalvu jidaus žaist normaliai
 
-                double cannyThreshold = 20.0;
-                double circleAccumulatorThreshold = 100;
-                CircleF[] circles = CvInvoke.HoughCircles(g, Emgu.CV.CvEnum.HoughType.Gradient, 2, g.Rows, 60, 30, 5, 10);
+                CvInvoke.InRange(g, new ScalarArray(new MCvScalar(0,100,100)), new ScalarArray(new MCvScalar(10,255,255)), n);  // išskiriam raudona spalva per tas tris eilutes
+                CvInvoke.InRange(g, new ScalarArray(new MCvScalar(160, 100, 100)), new ScalarArray(new MCvScalar(179, 255, 255)), k);
+                CvInvoke.Add(n, k, g);
+
+                CvInvoke.Blur(g, g, new Size(3, 3), new Point(-1, -1)); // išryškinam paveikslėlį
+                CvInvoke.Dilate(g, g, CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1)), new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
+                CvInvoke.Erode(g, g, CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1)), new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
+
+
+                CircleF[] circles = CvInvoke.HoughCircles(g, Emgu.CV.CvEnum.HoughType.Gradient, 2, g.Rows/4, 60, 30, 5,100); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
 
                 
                 Image<Bgr, Byte> circleImage = m.ToImage<Bgr,byte>();
                 foreach (CircleF circle in circles)
                 {
-                    circleImage.Draw(circle, new Bgr(Color.Brown), 2);
+                    circleImage.Draw(circle, new Bgr(Color.Red), 4); // apibrėžiam apvalius
                 }
 
-                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // šitie du del dydžio lango dydžio, kad viskas matytuos
                 pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-                pictureBox1.Image = g.ToImage<Bgr, byte>().Bitmap;
+
+                pictureBox1.Image = g.ToImage<Bgr, byte>().Bitmap; 
                 pictureBox2.Image = circleImage.Bitmap;
                 Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
             }
