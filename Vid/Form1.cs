@@ -49,6 +49,7 @@ namespace Vid
                     capture = new VideoCapture(opf.FileName);
                 }
             }
+            //check if video was selecte
             if (capture != null)
             {
                 capture.ImageGrabbed += Capture_ImageGrabbed1;
