@@ -29,13 +29,6 @@ namespace Vid
         public Form1()
         {
             InitializeComponent();
-            ShowData();
-        }
-
-        private void ShowData()
-        {
-            listBox1.DataSource = sarasiukas;
-            listBox1.DisplayMember = "koordinates";
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -45,7 +38,7 @@ namespace Vid
 
         private void StartToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if(capture == null)
+            if (capture == null)
             {
                 OpenFileDialog opf = new OpenFileDialog
                 {
@@ -56,8 +49,11 @@ namespace Vid
                     capture = new VideoCapture(opf.FileName);
                 }
             }
-            capture.ImageGrabbed += Capture_ImageGrabbed1;
-            capture.Start();
+            if (capture != null)
+            {
+                capture.ImageGrabbed += Capture_ImageGrabbed1;
+                capture.Start();
+            }
         }
 
         private void Capture_ImageGrabbed1(object sender, EventArgs e)
@@ -86,10 +82,12 @@ namespace Vid
                 Image<Bgr, Byte> circleImage = m.ToImage<Bgr,byte>();
                 foreach (CircleF circle in circles)
                 {
-                    sarasiukas.Add("x: " + ((int)circle.Center.X).ToString() + " y: " + ((int)circle.Center.Y).ToString());
+                    sarasiukas.Add("x: " + ((int)circle.Center.X).ToString() + " y: " + ((int)circle.Center.Y).ToString());// sudeda koordinates i bindinglista 
                     circleImage.Draw(circle, new Bgr(Color.Red), 4); // apibrėžiam apvalius
                 }
-                listBox1.RefreshItems();
+
+                listBox1.DataSource = null;        // sitos dvi turetu atnaujint sarasa
+                listBox1.DataSource = sarasiukas;
 
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // šitie du del dydžio lango dydžio, kad viskas matytuos
                 pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
