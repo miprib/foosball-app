@@ -19,69 +19,26 @@ namespace Vid
     public partial class Form1 : Form
     {
         VideoCapture capture;
-        //Mat tmp;
+        MCvScalar sk = new MCvScalar();
+        Point po = new Point(-1, -1);
+        Size sz = new Size(3, 3);
+        Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1,-1));
+        BindingList<string> sarasiukas = new BindingList<string>();
 
 
         public Form1()
         {
             InitializeComponent();
+            ShowData();
+        }
+
+        private void ShowData()
+        {
+            listBox1.DataSource = sarasiukas;
+            listBox1.DisplayMember = "koordinates";
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private Mat Sfcnt(Mat dif, Mat camera)
-        {
-            //Boolean found = false;
-            Mat t = new Mat();
-            dif.CopyTo(t);
-
-            CvBlobs blobs = new CvBlobs();
-            CvBlobDetector b = new CvBlobDetector();
-            b.Detect(t.ToImage<Gray, byte>(), blobs);
-            blobs.FilterByArea(100, int.MaxValue);
-            CvTracks tr = new CvTracks();
-
-            float scale = (camera.Height + camera.Width) / 2.0f;
-            tr.Update(blobs, 0.01 * scale, 5, 5);
-
-            foreach(var pair in tr)
-            {
-                CvTrack ak = pair.Value;
-                Rectangle kv = new Rectangle();
-                kv = ak.BoundingBox;
-                kv.Width = (int)(ak.MaxX - ak.MinX);
-                kv.Height = (int)(ak.MaxY - ak.MinY);
-                CvInvoke.Rectangle(camera, ak.BoundingBox, new MCvScalar(255.0, 0.0, 0.0), 2);
-            }
-
-            return camera;
-
-
-            /*Mat contours = new Mat();
-            Mat hierarcy = new Mat();
-
-            CvInvoke.FindContours(t, contours, hierarcy, Emgu.CV.CvEnum.RetrType.External,Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
-            
-            if(contours.Size.IsEmpty)
-            {
-                found = false;
-            }
-            else
-            {
-                found = true;
-            }
-            if (found)
-            {
-               Mat largestContour = new Mat();
-                optical
-            }*/
-        }
-
-
-        private void PictureBox1_Click(object sender, EventArgs e)
         {
 
         }
@@ -118,19 +75,21 @@ namespace Vid
                 CvInvoke.InRange(g, new ScalarArray(new MCvScalar(160, 100, 100)), new ScalarArray(new MCvScalar(179, 255, 255)), k);
                 CvInvoke.Add(n, k, g);
 
-                CvInvoke.Blur(g, g, new Size(3, 3), new Point(-1, -1)); // išryškinam paveikslėlį
-                CvInvoke.Dilate(g, g, CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1)), new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
-                CvInvoke.Erode(g, g, CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1)), new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
+                CvInvoke.Blur(g, g, sz, po); // išryškinam paveikslėlį
+                CvInvoke.Dilate(g, g, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+                CvInvoke.Erode(g, g, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
 
 
-                CircleF[] circles = CvInvoke.HoughCircles(g, Emgu.CV.CvEnum.HoughType.Gradient, 2, g.Rows/4, 60, 30, 5,100); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
+                CircleF[] circles = CvInvoke.HoughCircles(g, Emgu.CV.CvEnum.HoughType.Gradient, 2, g.Rows/4, 60, 30, 15,40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
 
                 
                 Image<Bgr, Byte> circleImage = m.ToImage<Bgr,byte>();
                 foreach (CircleF circle in circles)
                 {
+                    sarasiukas.Add("x: " + ((int)circle.Center.X).ToString() + " y: " + ((int)circle.Center.Y).ToString());
                     circleImage.Draw(circle, new Bgr(Color.Red), 4); // apibrėžiam apvalius
                 }
+                listBox1.RefreshItems();
 
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // šitie du del dydžio lango dydžio, kad viskas matytuos
                 pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -173,6 +132,11 @@ namespace Vid
         }
 
         private void PictureBox1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
