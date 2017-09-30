@@ -49,6 +49,7 @@ namespace Vid
                 {
                     capture = new VideoCapture(opf.FileName);
                 }
+<<<<<<< HEAD
                 if (capture != null)
                 {
                     if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
@@ -56,6 +57,14 @@ namespace Vid
                     capture.ImageGrabbed += Capture_ImageGrabbed1;
                     capture.Start();
                 }
+=======
+            }
+            //check if video was selecte
+            if (capture != null)
+            {
+                capture.ImageGrabbed += Capture_ImageGrabbed1;
+                capture.Start();
+>>>>>>> 2420f1ad0ecab09da2b8edceaca1e150e8ef1439
             }
         }
 
