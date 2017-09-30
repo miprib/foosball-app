@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -48,11 +49,13 @@ namespace Vid
                 {
                     capture = new VideoCapture(opf.FileName);
                 }
-            }
-            if (capture != null)
-            {
-                capture.ImageGrabbed += Capture_ImageGrabbed1;
-                capture.Start();
+                if (capture != null)
+                {
+                    if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
+                    textBox1.AppendText(opf.FileName);
+                    capture.ImageGrabbed += Capture_ImageGrabbed1;
+                    capture.Start();
+                }
             }
         }
 
@@ -62,14 +65,15 @@ namespace Vid
             {  
                 Mat m = new Mat();
                 capture.Retrieve(m);
-                UMat g = new UMat();
+                Mat g = new Mat();
                 Mat n = new Mat();
                 Mat k = new Mat();
+                Mat hsv = new Mat();
                 CvInvoke.CvtColor(m, g, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv, nes "geresnė spalvų paletė jo"... Nu arba dar nemoku su spalvu jidaus žaist normaliai
 
-                CvInvoke.InRange(g, new ScalarArray(new MCvScalar(0,100,100)), new ScalarArray(new MCvScalar(10,255,255)), n);  // išskiriam raudona spalva per tas tris eilutes
-                CvInvoke.InRange(g, new ScalarArray(new MCvScalar(160, 100, 100)), new ScalarArray(new MCvScalar(179, 255, 255)), k);
-                CvInvoke.Add(n, k, g);
+                CvInvoke.InRange(g, new ScalarArray(new MCvScalar(0,100,100)), new ScalarArray(new MCvScalar(10,255,255)), g);  // išskiriam raudona spalva per tas tris eilutes
+                //CvInvoke.InRange(g, new ScalarArray(new MCvScalar(160, 100, 100)), new ScalarArray(new MCvScalar(179, 255, 255)), k);
+                //CvInvoke.Add(n, k, g);
 
                 CvInvoke.Blur(g, g, sz, po); // išryškinam paveikslėlį
                 CvInvoke.Dilate(g, g, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
@@ -82,12 +86,13 @@ namespace Vid
                 Image<Bgr, Byte> circleImage = m.ToImage<Bgr,byte>();
                 foreach (CircleF circle in circles)
                 {
-                    sarasiukas.Add("x: " + ((int)circle.Center.X).ToString() + " y: " + ((int)circle.Center.Y).ToString());// sudeda koordinates i bindinglista 
+                    if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
+                    textBox1.AppendText("ball position = x " + circle.Center.X.ToString().PadLeft(4) + ", y " + circle.Center.Y.ToString().PadLeft(4));
                     circleImage.Draw(circle, new Bgr(Color.Red), 4); // apibrėžiam apvalius
                 }
 
-                listBox1.DataSource = null;        // sitos dvi turetu atnaujint sarasa
-                listBox1.DataSource = sarasiukas;
+               // listBox1.DataSource = null;        // sitos dvi turetu atnaujint sarasa
+               // listBox1.DataSource = sarasiukas;
 
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // šitie du del dydžio lango dydžio, kad viskas matytuos
                 pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -135,6 +140,11 @@ namespace Vid
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
         }
