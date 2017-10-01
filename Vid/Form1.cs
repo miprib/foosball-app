@@ -24,7 +24,6 @@ namespace Vid
         Point po = new Point(-1, -1);
         Size sz = new Size(3, 3);
         Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1,-1));
-        BindingList<string> sarasiukas = new BindingList<string>();
 
 
         public Form1()
@@ -49,7 +48,6 @@ namespace Vid
                 {
                     capture = new VideoCapture(opf.FileName);
                 }
-<<<<<<< HEAD
                 if (capture != null)
                 {
                     if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
@@ -57,14 +55,6 @@ namespace Vid
                     capture.ImageGrabbed += Capture_ImageGrabbed1;
                     capture.Start();
                 }
-=======
-            }
-            //check if video was selecte
-            if (capture != null)
-            {
-                capture.ImageGrabbed += Capture_ImageGrabbed1;
-                capture.Start();
->>>>>>> 2420f1ad0ecab09da2b8edceaca1e150e8ef1439
             }
         }
 
@@ -81,8 +71,6 @@ namespace Vid
                 CvInvoke.CvtColor(m, g, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv, nes "geresnė spalvų paletė jo"... Nu arba dar nemoku su spalvu jidaus žaist normaliai
 
                 CvInvoke.InRange(g, new ScalarArray(new MCvScalar(0,100,100)), new ScalarArray(new MCvScalar(10,255,255)), g);  // išskiriam raudona spalva per tas tris eilutes
-                //CvInvoke.InRange(g, new ScalarArray(new MCvScalar(160, 100, 100)), new ScalarArray(new MCvScalar(179, 255, 255)), k);
-                //CvInvoke.Add(n, k, g);
 
                 CvInvoke.Blur(g, g, sz, po); // išryškinam paveikslėlį
                 CvInvoke.Dilate(g, g, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
@@ -95,13 +83,10 @@ namespace Vid
                 Image<Bgr, Byte> circleImage = m.ToImage<Bgr,byte>();
                 foreach (CircleF circle in circles)
                 {
-                    if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
-                    textBox1.AppendText("ball position = x " + circle.Center.X.ToString().PadLeft(4) + ", y " + circle.Center.Y.ToString().PadLeft(4));
+                    string text = "ball position = x " + circle.Center.X.ToString() + ", y " + circle.Center.Y.ToString() + Environment.NewLine; //dvi eilut4s tekstui
+                    textBox1.Invoke(new Action(() => textBox1.AppendText(text))); // reikia kreiptis taip, nes is kito threado negalima toliau test visko
                     circleImage.Draw(circle, new Bgr(Color.Red), 4); // apibrėžiam apvalius
                 }
-
-               // listBox1.DataSource = null;        // sitos dvi turetu atnaujint sarasa
-               // listBox1.DataSource = sarasiukas;
 
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // šitie du del dydžio lango dydžio, kad viskas matytuos
                 pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -148,10 +133,7 @@ namespace Vid
 
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
 
-        }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
