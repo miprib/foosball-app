@@ -70,7 +70,13 @@ namespace Vid
                 Mat hsv = new Mat();
                 CvInvoke.CvtColor(m, g, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv, nes "geresnė spalvų paletė jo"... Nu arba dar nemoku su spalvu jidaus žaist normaliai
 
-                CvInvoke.InRange(g, new ScalarArray(new MCvScalar(0,100,100)), new ScalarArray(new MCvScalar(10,255,255)), g);  // išskiriam raudona spalva per tas tris eilutes
+                /*CvInvoke.InRange(g, new ScalarArray(new MCvScalar(0,200,0)), new ScalarArray(new MCvScalar(50,255,100)), g);  // išskiriam raudona spalva per tas tris eilutes
+
+                CvInvoke.Blur(g, g, sz, po); // išryškinam paveikslėlį
+                CvInvoke.Dilate(g, g, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+                CvInvoke.Erode(g, g, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+                */
+                CvInvoke.InRange(g, new ScalarArray(new MCvScalar(0,200,200)), new ScalarArray(new MCvScalar(10,250,250)), g);  // išskiriam raudona spalva per tas tris eilutes
 
                 CvInvoke.Blur(g, g, sz, po); // išryškinam paveikslėlį
                 CvInvoke.Dilate(g, g, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
@@ -92,7 +98,7 @@ namespace Vid
                 pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
 
                 pictureBox1.Image = g.ToImage<Bgr, byte>().Bitmap; 
-                pictureBox2.Image = circleImage.Bitmap;
+                pictureBox2.Image = m.Bitmap;
                 Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
             }
             catch (Exception)
