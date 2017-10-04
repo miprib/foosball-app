@@ -24,6 +24,9 @@ namespace Vid
         Point po = new Point(-1, -1);
         Size sz = new Size(3, 3);
         Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1,-1));
+        int ff = 0;
+        int xlatest;
+        int bluet = 0, redt = 0;
 
 
         public Form1()
@@ -66,14 +69,8 @@ namespace Vid
                 capture.Retrieve(m);
                 Mat ball = new Mat();
                 Mat hsv = new Mat();
-                Mat gate = new Mat();
+
                 CvInvoke.CvtColor(m, hsv, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv, nes "geresnė spalvų paletė jo"... Nu arba dar nemoku su spalvu jidaus žaist normaliai
-
-                CvInvoke.InRange(hsv, new ScalarArray(new MCvScalar(0,230,0)), new ScalarArray(new MCvScalar(50,255,100)), gate);  // išskiriam juodą
-
-                CvInvoke.MedianBlur(gate, gate, 7);
-                CvInvoke.Dilate(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-                CvInvoke.Erode(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
                 
                 CvInvoke.InRange(hsv, new ScalarArray(new MCvScalar(0,200,200)), new ScalarArray(new MCvScalar(10,250,250)), ball);  // išskiriam geltona, nes hsv filtras uzdetas
 
@@ -84,45 +81,35 @@ namespace Vid
 
                 CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows/4, 60, 30, 15,40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
 
-                
-                Image<Bgr, Byte> circleImage = m.ToImage<Bgr,byte>();
+                ff++;
                 foreach (CircleF circle in circles)
                 {
-                    string text = "ball position = x " + circle.Center.X.ToString() + ", y " + circle.Center.Y.ToString() + Environment.NewLine; //dvi eilut4s tekstui
+                    ff = 0;
+                    string text = "ball position: x " + circle.Center.X.ToString() + ", y " + circle.Center.Y.ToString() + Environment.NewLine; //dvi eilut4s tekstui
                     textBox1.Invoke(new Action(() => textBox1.AppendText(text))); // reikia kreiptis taip, nes is kito threado negalima toliau test visko
-                    circleImage.Draw(circle, new Bgr(Color.Red), 4); // apibrėžiam apvalius
+                    xlatest = (int)circle.Center.X;
+
                 }
 
-                CvInvoke.Canny(gate, gate, 180, 120);
-
-                CvInvoke.Threshold(gate, gate, 10, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
-                CvInvoke.Blur(gate, gate, new Size(30, 30), new Point(-1, -1));
-                CvInvoke.Threshold(gate, gate, 10, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
-
-                CvInvoke.Canny(gate, gate, 180, 120);
-
-                CvInvoke.Threshold(gate, gate, 10, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
-                CvInvoke.Blur(gate, gate, new Size(20, 20), new Point(-1, -1));
-                CvInvoke.Threshold(gate, gate, 10, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
-
-                CvInvoke.Canny(gate, gate, 180, 120);
-
-                LineSegment2D[] lines = CvInvoke.HoughLinesP(gate, 1, Math.PI / 45, 20, 30, 10);
-
-                Image<Bgr, byte> gateimg = gate.ToImage<Bgr, byte>();
-
-                foreach(var line in lines)
+                if (ff == 40)
                 {
-                    gateimg.Draw(line, new Bgr(Color.Red), 4);
+                    if(m.Size.Width /2 < xlatest)
+                    {
+                        bluet++;
+                    }
+                    else
+                    {
+                        redt++;
+                    }
                 }
-                
+
 
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // šitie du del dydžio lango dydžio, kad viskas matytuos
                 pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
 
-                pictureBox1.Image = gateimg.Bitmap; 
+                pictureBox1.Image = ball.Bitmap; 
                 pictureBox2.Image = hsv.Bitmap;
-                Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
+                //Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
             }
             catch (Exception)
             {
