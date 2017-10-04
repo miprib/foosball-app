@@ -64,26 +64,25 @@ namespace Vid
             {  
                 Mat m = new Mat();
                 capture.Retrieve(m);
-                Mat g = new Mat();
-                Mat n = new Mat();
-                Mat k = new Mat();
+                Mat ball = new Mat();
                 Mat hsv = new Mat();
-                CvInvoke.CvtColor(m, g, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv, nes "geresnė spalvų paletė jo"... Nu arba dar nemoku su spalvu jidaus žaist normaliai
+                Mat gate = new Mat();
+                CvInvoke.CvtColor(m, hsv, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv, nes "geresnė spalvų paletė jo"... Nu arba dar nemoku su spalvu jidaus žaist normaliai
 
-                /*CvInvoke.InRange(g, new ScalarArray(new MCvScalar(0,200,0)), new ScalarArray(new MCvScalar(50,255,100)), g);  // išskiriam raudona spalva per tas tris eilutes
+                CvInvoke.InRange(hsv, new ScalarArray(new MCvScalar(0,230,0)), new ScalarArray(new MCvScalar(50,255,100)), gate);  // išskiriam juodą
 
-                CvInvoke.Blur(g, g, sz, po); // išryškinam paveikslėlį
-                CvInvoke.Dilate(g, g, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-                CvInvoke.Erode(g, g, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-                */
-                CvInvoke.InRange(g, new ScalarArray(new MCvScalar(0,200,200)), new ScalarArray(new MCvScalar(10,250,250)), g);  // išskiriam raudona spalva per tas tris eilutes
+                CvInvoke.MedianBlur(gate, gate, 7);
+                CvInvoke.Dilate(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+                CvInvoke.Erode(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+                
+                CvInvoke.InRange(hsv, new ScalarArray(new MCvScalar(0,200,200)), new ScalarArray(new MCvScalar(10,250,250)), ball);  // išskiriam geltona, nes hsv filtras uzdetas
 
-                CvInvoke.Blur(g, g, sz, po); // išryškinam paveikslėlį
-                CvInvoke.Dilate(g, g, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-                CvInvoke.Erode(g, g, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+                CvInvoke.MedianBlur(ball, ball, 5); // išryškinam paveikslėlį
+                CvInvoke.Dilate(ball, ball, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+                CvInvoke.Erode(ball, ball, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
 
 
-                CircleF[] circles = CvInvoke.HoughCircles(g, Emgu.CV.CvEnum.HoughType.Gradient, 2, g.Rows/4, 60, 30, 15,40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
+                CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows/4, 60, 30, 15,40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
 
                 
                 Image<Bgr, Byte> circleImage = m.ToImage<Bgr,byte>();
@@ -94,11 +93,35 @@ namespace Vid
                     circleImage.Draw(circle, new Bgr(Color.Red), 4); // apibrėžiam apvalius
                 }
 
+                CvInvoke.Canny(gate, gate, 180, 120);
+
+                CvInvoke.Threshold(gate, gate, 10, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+                CvInvoke.Blur(gate, gate, new Size(30, 30), new Point(-1, -1));
+                CvInvoke.Threshold(gate, gate, 10, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+
+                CvInvoke.Canny(gate, gate, 180, 120);
+
+                CvInvoke.Threshold(gate, gate, 10, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+                CvInvoke.Blur(gate, gate, new Size(20, 20), new Point(-1, -1));
+                CvInvoke.Threshold(gate, gate, 10, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+
+                CvInvoke.Canny(gate, gate, 180, 120);
+
+                LineSegment2D[] lines = CvInvoke.HoughLinesP(gate, 1, Math.PI / 45, 20, 30, 10);
+
+                Image<Bgr, byte> gateimg = gate.ToImage<Bgr, byte>();
+
+                foreach(var line in lines)
+                {
+                    gateimg.Draw(line, new Bgr(Color.Red), 4);
+                }
+                
+
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // šitie du del dydžio lango dydžio, kad viskas matytuos
                 pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
 
-                pictureBox1.Image = g.ToImage<Bgr, byte>().Bitmap; 
-                pictureBox2.Image = m.Bitmap;
+                pictureBox1.Image = gateimg.Bitmap; 
+                pictureBox2.Image = hsv.Bitmap;
                 Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
             }
             catch (Exception)
