@@ -21,6 +21,7 @@ namespace Foosball
             startButton.Click += (object sender, EventArgs e) =>
             {
                 // TO-DO: add code for "Start"
+                Toast.MakeText(this, "Beep Boop", ToastLength.Short).Show();
             };
 
         }
