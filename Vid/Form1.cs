@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -19,7 +20,13 @@ namespace Vid
     public partial class Form1 : Form
     {
         VideoCapture capture;
-        //Mat tmp;
+        MCvScalar sk = new MCvScalar();
+        Point po = new Point(-1, -1);
+        Size sz = new Size(3, 3);
+        Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1,-1));
+        int ff = 0;
+        int xlatest;
+        int bluet = 0, redt = 0;
 
 
         public Form1()
@@ -32,63 +39,9 @@ namespace Vid
 
         }
 
-        private Mat Sfcnt(Mat dif, Mat camera)
-        {
-            //Boolean found = false;
-            Mat t = new Mat();
-            dif.CopyTo(t);
-
-            CvBlobs blobs = new CvBlobs();
-            CvBlobDetector b = new CvBlobDetector();
-            b.Detect(t.ToImage<Gray, byte>(), blobs);
-            blobs.FilterByArea(100, int.MaxValue);
-            CvTracks tr = new CvTracks();
-
-            float scale = (camera.Height + camera.Width) / 2.0f;
-            tr.Update(blobs, 0.01 * scale, 5, 5);
-
-            foreach(var pair in tr)
-            {
-                CvTrack ak = pair.Value;
-                Rectangle kv = new Rectangle();
-                kv = ak.BoundingBox;
-                kv.Width = (int)(ak.MaxX - ak.MinX);
-                kv.Height = (int)(ak.MaxY - ak.MinY);
-                CvInvoke.Rectangle(camera, ak.BoundingBox, new MCvScalar(255.0, 0.0, 0.0), 2);
-            }
-
-            return camera;
-
-
-            /*Mat contours = new Mat();
-            Mat hierarcy = new Mat();
-
-            CvInvoke.FindContours(t, contours, hierarcy, Emgu.CV.CvEnum.RetrType.External,Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
-            
-            if(contours.Size.IsEmpty)
-            {
-                found = false;
-            }
-            else
-            {
-                found = true;
-            }
-            if (found)
-            {
-               Mat largestContour = new Mat();
-                optical
-            }*/
-        }
-
-
-        private void PictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void StartToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if(capture == null)
+            if (capture == null)
             {
                 OpenFileDialog opf = new OpenFileDialog
                 {
@@ -98,12 +51,15 @@ namespace Vid
                 {
                     capture = new VideoCapture(opf.FileName);
                 }
-            }
-            //check if video was selected
-            if (capture != null)
-            {
-                capture.ImageGrabbed += Capture_ImageGrabbed1;
-                capture.Start();
+                if (capture != null)
+                {
+                    richTextBox1.Text = redt.ToString();
+                    richTextBox2.Text = bluet.ToString();
+                    if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
+                    textBox1.AppendText(opf.FileName);
+                    capture.ImageGrabbed += Capture_ImageGrabbed1;
+                    capture.Start();
+                }
             }
         }
 
@@ -113,37 +69,59 @@ namespace Vid
             {  
                 Mat m = new Mat();
                 capture.Retrieve(m);
-                UMat g = new UMat();
-                Mat n = new Mat();
-                Mat k = new Mat();
-                CvInvoke.CvtColor(m, g, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv, nes "geresnė spalvų paletė jo"... Nu arba dar nemoku su spalvu jidaus žaist normaliai
+                Mat ball = new Mat();
+                //Mat gate = new Mat();
+                Mat hsv = new Mat();
 
-                CvInvoke.InRange(g, new ScalarArray(new MCvScalar(0,100,100)), new ScalarArray(new MCvScalar(10,255,255)), n);  // išskiriam raudona spalva per tas tris eilutes
-                CvInvoke.InRange(g, new ScalarArray(new MCvScalar(160, 100, 100)), new ScalarArray(new MCvScalar(179, 255, 255)), k);
-                CvInvoke.Add(n, k, g);
-
-                CvInvoke.Blur(g, g, new Size(3, 3), new Point(-1, -1)); // išryškinam paveikslėlį
-                CvInvoke.Dilate(g, g, CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1)), new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
-                CvInvoke.Dilate(g, g, CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1)), new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
-                CvInvoke.Erode(g, g, CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1)), new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
-                CvInvoke.Erode(g, g, CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1)), new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default, new MCvScalar());
-
-
-                CircleF[] circles = CvInvoke.HoughCircles(g, Emgu.CV.CvEnum.HoughType.Gradient, 2, g.Rows/4, 60, 30, 5,100); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
-
+                CvInvoke.CvtColor(m, hsv, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv, nes "geresnė spalvų paletė jo"... Nu arba dar nemoku su spalvu jidaus žaist normaliai
                 
-                Image<Bgr, Byte> circleImage = m.ToImage<Bgr,byte>();
+                CvInvoke.InRange(hsv, new ScalarArray(new MCvScalar(0,200,200)), new ScalarArray(new MCvScalar(10,250,250)), ball);  // išskiriam geltona, nes hsv filtras uzdetas
+/*
+                CvInvoke.InRange(hsv, new ScalarArray(new MCvScalar(0, 230, 0)), new ScalarArray(new MCvScalar(20, 255, 20)), gate);
+
+                CvInvoke.MedianBlur(gate, gate, 7);
+                CvInvoke.Dilate(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+                CvInvoke.Erode(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+*/
+                CvInvoke.MedianBlur(ball, ball, 5); // išryškinam paveikslėlį
+                CvInvoke.Dilate(ball, ball, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+                CvInvoke.Erode(ball, ball, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+
+
+                CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows/4, 60, 30, 15,40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
+
+                ff++;
                 foreach (CircleF circle in circles)
                 {
-                    circleImage.Draw(circle, new Bgr(Color.Red), 4); // apibrėžiam apvalius
+                    ff = 0;
+                    string text = "ball position: x " + circle.Center.X.ToString() + ", y " + circle.Center.Y.ToString() + Environment.NewLine; //dvi eilut4s tekstui
+                    textBox1.Invoke(new Action(() => textBox1.AppendText(text))); // reikia kreiptis taip, nes is kito threado negalima toliau test visko
+                    xlatest = (int)circle.Center.X;
+
                 }
+
+                if (ff == 40)
+                {
+                    if(m.Size.Width /2 < xlatest)
+                    {
+                        bluet++;
+                        richTextBox1.Invoke(new Action(() => richTextBox1.Text = bluet.ToString()));
+                    }
+                    else
+                    {
+                        redt++;
+                        richTextBox2.Invoke(new Action(() => richTextBox2.Text = bluet.ToString()));
+                    }
+                }
+
 
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // šitie du del dydžio lango dydžio, kad viskas matytuos
                 pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
 
-                pictureBox1.Image = g.ToImage<Bgr, byte>().Bitmap; 
-                pictureBox2.Image = circleImage.Bitmap;
-                Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
+                pictureBox1.Image = ball.Bitmap; 
+                pictureBox2.Image = hsv.Bitmap;
+                GC.Collect();
+                //Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
             }
             catch (Exception)
             {
@@ -179,6 +157,26 @@ namespace Vid
         }
 
         private void PictureBox1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
         }
