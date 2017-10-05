@@ -63,6 +63,28 @@ namespace Vid
             }
         }
 
+
+        private Mat colorcang(Mat a) {
+            Mat gate = new Mat();
+            CvInvoke.InRange(a, new ScalarArray(new MCvScalar(0, 200, 200)), new ScalarArray(new MCvScalar(10, 250, 250)), gate);
+
+            CvInvoke.MedianBlur(gate, gate, 7);
+
+            CvInvoke.Dilate(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+            CvInvoke.Erode(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+
+            CvInvoke.Blur(gate, gate, new Size(10, 10), new Point(-1, -1), Emgu.CV.CvEnum.BorderType.Default);
+            CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+            CvInvoke.Blur(gate, gate, new Size(10, 10), new Point(-1, -1), Emgu.CV.CvEnum.BorderType.Default);
+            CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+            CvInvoke.Blur(gate, gate, new Size(10, 10), new Point(-1, -1), Emgu.CV.CvEnum.BorderType.Default);
+            CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+            CvInvoke.Blur(gate, gate, new Size(10, 10), new Point(-1, -1), Emgu.CV.CvEnum.BorderType.Default);
+            CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+
+            return gate;
+        }
+
         private void Capture_ImageGrabbed1(object sender, EventArgs e)
         {
             try
@@ -74,18 +96,20 @@ namespace Vid
                 Mat hsv = new Mat();
 
                 CvInvoke.CvtColor(m, hsv, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv, nes "geresnė spalvų paletė jo"... Nu arba dar nemoku su spalvu jidaus žaist normaliai
-                
-                CvInvoke.InRange(hsv, new ScalarArray(new MCvScalar(0,200,200)), new ScalarArray(new MCvScalar(10,250,250)), ball);  // išskiriam geltona, nes hsv filtras uzdetas
+
+
+                ball = colorcang(hsv);
+                /*CvInvoke.InRange(hsv, new ScalarArray(new MCvScalar(0,200,200)), new ScalarArray(new MCvScalar(10,250,250)), ball);  // išskiriam geltona, nes hsv filtras uzdetas
 /*
                 CvInvoke.InRange(hsv, new ScalarArray(new MCvScalar(0, 230, 0)), new ScalarArray(new MCvScalar(20, 255, 20)), gate);
 
                 CvInvoke.MedianBlur(gate, gate, 7);
                 CvInvoke.Dilate(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
                 CvInvoke.Erode(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-*/
+
                 CvInvoke.MedianBlur(ball, ball, 5); // išryškinam paveikslėlį
                 CvInvoke.Dilate(ball, ball, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-                CvInvoke.Erode(ball, ball, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+                CvInvoke.Erode(ball, ball, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);*/
 
 
                 CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows/4, 60, 30, 15,40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
@@ -102,15 +126,16 @@ namespace Vid
 
                 if (ff == 40)
                 {
-                    if(m.Size.Width /2 < xlatest)
+                    if(m.Size.Width - m.Size.Width / 10 * 2 < xlatest)
                     {
                         bluet++;
                         richTextBox1.Invoke(new Action(() => richTextBox1.Text = bluet.ToString()));
                     }
-                    else
+
+                    if (m.Size.Width - m.Size.Width /10 *8 > xlatest)
                     {
                         redt++;
-                        richTextBox2.Invoke(new Action(() => richTextBox2.Text = bluet.ToString()));
+                        richTextBox2.Invoke(new Action(() => richTextBox2.Text = redt.ToString()));
                     }
                 }
 
