@@ -53,6 +53,8 @@ namespace Vid
                 }
                 if (capture != null)
                 {
+                    richTextBox1.Text = redt.ToString();
+                    richTextBox2.Text = bluet.ToString();
                     if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
                     textBox1.AppendText(opf.FileName);
                     capture.ImageGrabbed += Capture_ImageGrabbed1;
@@ -68,12 +70,19 @@ namespace Vid
                 Mat m = new Mat();
                 capture.Retrieve(m);
                 Mat ball = new Mat();
+                //Mat gate = new Mat();
                 Mat hsv = new Mat();
 
                 CvInvoke.CvtColor(m, hsv, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv, nes "geresnė spalvų paletė jo"... Nu arba dar nemoku su spalvu jidaus žaist normaliai
                 
                 CvInvoke.InRange(hsv, new ScalarArray(new MCvScalar(0,200,200)), new ScalarArray(new MCvScalar(10,250,250)), ball);  // išskiriam geltona, nes hsv filtras uzdetas
+/*
+                CvInvoke.InRange(hsv, new ScalarArray(new MCvScalar(0, 230, 0)), new ScalarArray(new MCvScalar(20, 255, 20)), gate);
 
+                CvInvoke.MedianBlur(gate, gate, 7);
+                CvInvoke.Dilate(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+                CvInvoke.Erode(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+*/
                 CvInvoke.MedianBlur(ball, ball, 5); // išryškinam paveikslėlį
                 CvInvoke.Dilate(ball, ball, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
                 CvInvoke.Erode(ball, ball, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
@@ -96,10 +105,12 @@ namespace Vid
                     if(m.Size.Width /2 < xlatest)
                     {
                         bluet++;
+                        richTextBox1.Invoke(new Action(() => richTextBox1.Text = bluet.ToString()));
                     }
                     else
                     {
                         redt++;
+                        richTextBox2.Invoke(new Action(() => richTextBox2.Text = bluet.ToString()));
                     }
                 }
 
@@ -109,6 +120,7 @@ namespace Vid
 
                 pictureBox1.Image = ball.Bitmap; 
                 pictureBox2.Image = hsv.Bitmap;
+                GC.Collect();
                 //Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
             }
             catch (Exception)
@@ -149,7 +161,20 @@ namespace Vid
 
         }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
