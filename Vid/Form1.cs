@@ -24,6 +24,7 @@ namespace Vid
         Point po = new Point(-1, -1);
         Size sz = new Size(3, 3);
         Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1,-1));
+
         int ff = 0;
         int xlatest;
         int bluet = 0, redt = 0;
@@ -53,10 +54,21 @@ namespace Vid
                 }
                 if (capture != null)
                 {
-                    richTextBox1.Text = redt.ToString();
-                    richTextBox2.Text = bluet.ToString();
                     if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
                     textBox1.AppendText(opf.FileName);
+
+                    Vid.Form2 a = new Form2();
+
+                    a.ShowDialog();
+
+                    String[] names = Global.text.Split(',');
+
+                 
+
+
+                    label1.Text = names[0];
+                    label2.Text = names[1];
+
                     capture.ImageGrabbed += Capture_ImageGrabbed1;
                     capture.Start();
                 }
@@ -88,31 +100,22 @@ namespace Vid
         private void Capture_ImageGrabbed1(object sender, EventArgs e)
         {
             try
-            {  
+            {
+                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // šitie du del dydžio lango dydžio, kad viskas matytuos
+                pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
+
                 Mat m = new Mat();
-                capture.Retrieve(m);
                 Mat ball = new Mat();
-                //Mat gate = new Mat();
                 Mat hsv = new Mat();
 
-                CvInvoke.CvtColor(m, hsv, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv, nes "geresnė spalvų paletė jo"... Nu arba dar nemoku su spalvu jidaus žaist normaliai
+                capture.Retrieve(m);
+                pictureBox2.Image = m.Bitmap;
 
+                CvInvoke.CvtColor(m, hsv, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv del spalvu paletes
 
                 ball = colorcang(hsv);
-                /*CvInvoke.InRange(hsv, new ScalarArray(new MCvScalar(0,200,200)), new ScalarArray(new MCvScalar(10,250,250)), ball);  // išskiriam geltona, nes hsv filtras uzdetas
-/*
-                CvInvoke.InRange(hsv, new ScalarArray(new MCvScalar(0, 230, 0)), new ScalarArray(new MCvScalar(20, 255, 20)), gate);
 
-                CvInvoke.MedianBlur(gate, gate, 7);
-                CvInvoke.Dilate(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-                CvInvoke.Erode(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-
-                CvInvoke.MedianBlur(ball, ball, 5); // išryškinam paveikslėlį
-                CvInvoke.Dilate(ball, ball, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-                CvInvoke.Erode(ball, ball, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);*/
-
-
-                CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows/4, 60, 30, 15,40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
+                CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows / 4, 60, 30, 15, 40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
 
                 ff++;
                 foreach (CircleF circle in circles)
@@ -124,27 +127,22 @@ namespace Vid
 
                 }
 
-                if (ff == 40)
+                if (ff == 15)
                 {
-                    if(m.Size.Width - m.Size.Width / 10 * 2 < xlatest)
+                    if (m.Size.Width - m.Size.Width / 10 * 2 < xlatest)
                     {
                         bluet++;
                         richTextBox1.Invoke(new Action(() => richTextBox1.Text = bluet.ToString()));
                     }
 
-                    if (m.Size.Width - m.Size.Width /10 *8 > xlatest)
+                    if (m.Size.Width - m.Size.Width / 10 * 8 > xlatest)
                     {
                         redt++;
                         richTextBox2.Invoke(new Action(() => richTextBox2.Text = redt.ToString()));
                     }
                 }
 
-
-                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // šitie du del dydžio lango dydžio, kad viskas matytuos
-                pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-
-                pictureBox1.Image = ball.Bitmap; 
-                pictureBox2.Image = hsv.Bitmap;
+                pictureBox1.Image = ball.Bitmap;
                 GC.Collect();
                 //Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
             }
