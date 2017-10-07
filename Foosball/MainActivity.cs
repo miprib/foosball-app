@@ -2,6 +2,7 @@
 using Android.Widget;
 using Android.OS;
 using System;
+using Android.Content;
 
 namespace Foosball
 {
@@ -20,8 +21,8 @@ namespace Foosball
 
             startButton.Click += (object sender, EventArgs e) =>
             {
-                // TO-DO: add code for "Start"
-                Toast.MakeText(this, "Beep Boop", ToastLength.Short).Show();
+                var intent = new Intent(this, typeof(StartButtonActivity));
+                StartActivity(intent);
             };
 
         }
