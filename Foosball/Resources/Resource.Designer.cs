@@ -69,8 +69,17 @@ namespace Foosball
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f050002
+			public const int HighscoreButton = 2131034114;
+			
 			// aapt resource value: 0x7f050000
 			public const int StartButton = 2131034112;
+			
+			// aapt resource value: 0x7f050003
+			public const int highscoreText = 2131034115;
+			
+			// aapt resource value: 0x7f050001
+			public const int startText = 2131034113;
 			
 			static Id()
 			{
@@ -103,6 +112,9 @@ namespace Foosball
 			
 			// aapt resource value: 0x7f040000
 			public const int app_name = 2130968576;
+			
+			// aapt resource value: 0x7f040002
+			public const int highscoreButton = 2130968578;
 			
 			// aapt resource value: 0x7f040001
 			public const int startButton = 2130968577;

@@ -2,4 +2,5 @@
 <resources>
   <string name="app_name">Foosball</string>
   <string name="startButton">Start</string>
+  <string name="highscoreButton">Highscores</string>
 </resources>

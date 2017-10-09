@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -11,14 +12,14 @@ using Android.Widget;
 
 namespace Foosball
 {
-    [Activity(Label = "Foosball")]
-    public class StartButtonActivity : Activity
+    [Activity(Label = "Highscores")]
+    public class HighscoreActivity : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            // Object tracking code here
+            // TO-DO: add code for highscores
         }
     }
 }
