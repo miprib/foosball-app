@@ -31,6 +31,12 @@ namespace Vid
             }
         }
 
+        enum Colors
+        {
+            B1=0, G1=200, R1=200,
+            B2=10, G2=250, R2=250
+        }
+
         VideoCapture capture;
         MCvScalar sk = new MCvScalar();
         Point po = new Point(-1, -1);
@@ -40,7 +46,6 @@ namespace Vid
         int ff = 0;
         int xlatest;
         int left = 0, right = 0;
-
 
         public Form1()
         {
@@ -60,6 +65,9 @@ namespace Vid
                 a.ShowDialog();
                 String[] names = Global.text.Split(',');
 
+                label1.Text = names[0];
+                label2.Text = names[1];
+
                 OpenFileDialog opf = new OpenFileDialog
                 {
                     Filter = "Video files | *.avi; *.mp4; *.mov"
@@ -73,14 +81,6 @@ namespace Vid
                     if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
                     textBox1.AppendText(opf.FileName);
 
-
-
-                 
-
-
-                    label1.Text = names[0];
-                    label2.Text = names[1];
-
                     capture.ImageGrabbed += Capture_ImageGrabbed1;
                     capture.Start();
                 }
@@ -90,20 +90,26 @@ namespace Vid
 
         private Mat ball_only(Mat a) {
             Mat gate = new Mat();
-            CvInvoke.InRange(a, new ScalarArray(new MCvScalar(0, 200, 200)), new ScalarArray(new MCvScalar(10, 250, 250)), gate);
+            CvInvoke.InRange(a, new ScalarArray(new MCvScalar((double)Colors.B1, (double)Colors.G1, (double)Colors.R1)), new ScalarArray(new MCvScalar((double)Colors.B2, (double)Colors.G2, (double)Colors.R2)), gate);
 
             CvInvoke.MedianBlur(gate, gate, 7);
 
             CvInvoke.Dilate(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
             CvInvoke.Erode(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
 
-            CvInvoke.Blur(gate, gate, new Size(10, 10), new Point(-1, -1), Emgu.CV.CvEnum.BorderType.Default);
+            CvInvoke.Blur(gate, gate, new Size(10, 10), po, Emgu.CV.CvEnum.BorderType.Default);
             CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
-            CvInvoke.Blur(gate, gate, new Size(10, 10), new Point(-1, -1), Emgu.CV.CvEnum.BorderType.Default);
+            CvInvoke.Blur(gate, gate, new Size(10, 10), po, Emgu.CV.CvEnum.BorderType.Default);
             CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
-            CvInvoke.Blur(gate, gate, new Size(10, 10), new Point(-1, -1), Emgu.CV.CvEnum.BorderType.Default);
+            CvInvoke.Blur(gate, gate, new Size(10, 10), po, Emgu.CV.CvEnum.BorderType.Default);
             CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
-            CvInvoke.Blur(gate, gate, new Size(10, 10), new Point(-1, -1), Emgu.CV.CvEnum.BorderType.Default);
+            CvInvoke.Blur(gate, gate, new Size(10, 10), po, Emgu.CV.CvEnum.BorderType.Default);
+            CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+            CvInvoke.Blur(gate, gate, new Size(10, 10), po, Emgu.CV.CvEnum.BorderType.Default);
+            CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+            CvInvoke.Blur(gate, gate, new Size(10, 10), po, Emgu.CV.CvEnum.BorderType.Default);
+            CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+            CvInvoke.Blur(gate, gate, new Size(10, 10), po, Emgu.CV.CvEnum.BorderType.Default);
             CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
 
             return gate;
@@ -111,7 +117,6 @@ namespace Vid
 
         private void print_coordinates(coordinates n)
         {
-
             string text = "ball position: x " + n.x + ", y " + n.y + Environment.NewLine; //dvi eilut4s tekstui
             textBox1.Invoke(new Action(() => textBox1.AppendText(text))); // reikia kreiptis taip, nes is kito threado negalima toliau test visko
         }
@@ -123,17 +128,16 @@ namespace Vid
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // šitie du del dydžio lango dydžio, kad viskas matytuos
 
                 Mat m = new Mat();
-                Mat ball = new Mat();
-                Mat hsv = new Mat();
-
-                coordinates s = new coordinates();
-
                 capture.Retrieve(m);
                 pictureBox1.Image = m.Bitmap;
 
-                CvInvoke.CvtColor(m, hsv, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv del spalvu paletes
+                Mat ball = new Mat(m.Size, Emgu.CV.CvEnum.DepthType.Cv8U, 3);
 
-                ball = ball_only(hsv);
+                coordinates s = new coordinates();
+
+                CvInvoke.CvtColor(m, ball, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv del spalvu paletes
+
+                ball = ball_only(ball);
 
                 CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows / 4, 60, 30, 15, 40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
 
@@ -148,19 +152,19 @@ namespace Vid
 
                 if (ff == 15)
                 {
-                    if (m.Size.Width - m.Size.Width / 10 * 2 < xlatest)
+                    if (m.Size.Width - m.Size.Width / 4 < xlatest)
                     {
                         right++;
                         label3.Invoke(new Action(() => label3.Text = right.ToString()));
                     }
 
-                    if (m.Size.Width - m.Size.Width / 10 * 8 > xlatest)
+                    if (m.Size.Width - m.Size.Width / 4 * 3 > xlatest)
                     {
                         left++;
                         label4.Invoke(new Action(() => label4.Text = left.ToString()));
                     }
                 }
-                //Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
+                Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
             }
             catch (Exception)
             {
