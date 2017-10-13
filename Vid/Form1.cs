@@ -19,6 +19,18 @@ namespace Vid
 {
     public partial class Form1 : Form
     {
+        private struct coordinates
+        {
+            public int x;
+            public int y;
+
+            public coordinates(int tx, int ty)
+            {
+                x = tx;
+                y = ty;
+            }
+        }
+
         VideoCapture capture;
         MCvScalar sk = new MCvScalar();
         Point po = new Point(-1, -1);
@@ -27,7 +39,7 @@ namespace Vid
 
         int ff = 0;
         int xlatest;
-        int bluet = 0, redt = 0;
+        int left = 0, right = 0;
 
 
         public Form1()
@@ -44,6 +56,10 @@ namespace Vid
         {
             if (capture == null)
             {
+                Vid.Form2 a = new Form2();
+                a.ShowDialog();
+                String[] names = Global.text.Split(',');
+
                 OpenFileDialog opf = new OpenFileDialog
                 {
                     Filter = "Video files | *.avi; *.mp4; *.mov"
@@ -57,11 +73,7 @@ namespace Vid
                     if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
                     textBox1.AppendText(opf.FileName);
 
-                    Vid.Form2 a = new Form2();
 
-                    a.ShowDialog();
-
-                    String[] names = Global.text.Split(',');
 
                  
 
@@ -76,7 +88,7 @@ namespace Vid
         }
 
 
-        private Mat colorcang(Mat a) {
+        private Mat ball_only(Mat a) {
             Mat gate = new Mat();
             CvInvoke.InRange(a, new ScalarArray(new MCvScalar(0, 200, 200)), new ScalarArray(new MCvScalar(10, 250, 250)), gate);
 
@@ -97,23 +109,31 @@ namespace Vid
             return gate;
         }
 
+        private void print_coordinates(coordinates n)
+        {
+
+            string text = "ball position: x " + n.x + ", y " + n.y + Environment.NewLine; //dvi eilut4s tekstui
+            textBox1.Invoke(new Action(() => textBox1.AppendText(text))); // reikia kreiptis taip, nes is kito threado negalima toliau test visko
+        }
+
         private void Capture_ImageGrabbed1(object sender, EventArgs e)
         {
             try
             {
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // šitie du del dydžio lango dydžio, kad viskas matytuos
-                pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
 
                 Mat m = new Mat();
                 Mat ball = new Mat();
                 Mat hsv = new Mat();
 
+                coordinates s = new coordinates();
+
                 capture.Retrieve(m);
-                pictureBox2.Image = m.Bitmap;
+                pictureBox1.Image = m.Bitmap;
 
                 CvInvoke.CvtColor(m, hsv, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv del spalvu paletes
 
-                ball = colorcang(hsv);
+                ball = ball_only(hsv);
 
                 CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows / 4, 60, 30, 15, 40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
 
@@ -121,29 +141,25 @@ namespace Vid
                 foreach (CircleF circle in circles)
                 {
                     ff = 0;
-                    string text = "ball position: x " + circle.Center.X.ToString() + ", y " + circle.Center.Y.ToString() + Environment.NewLine; //dvi eilut4s tekstui
-                    textBox1.Invoke(new Action(() => textBox1.AppendText(text))); // reikia kreiptis taip, nes is kito threado negalima toliau test visko
+                    s = new coordinates((int)circle.Center.X, (int)circle.Center.Y);
                     xlatest = (int)circle.Center.X;
-
+                    print_coordinates(s);
                 }
 
                 if (ff == 15)
                 {
                     if (m.Size.Width - m.Size.Width / 10 * 2 < xlatest)
                     {
-                        bluet++;
-                        richTextBox1.Invoke(new Action(() => richTextBox1.Text = bluet.ToString()));
+                        right++;
+                        label3.Invoke(new Action(() => label3.Text = right.ToString()));
                     }
 
                     if (m.Size.Width - m.Size.Width / 10 * 8 > xlatest)
                     {
-                        redt++;
-                        richTextBox2.Invoke(new Action(() => richTextBox2.Text = redt.ToString()));
+                        left++;
+                        label4.Invoke(new Action(() => label4.Text = left.ToString()));
                     }
                 }
-
-                pictureBox1.Image = ball.Bitmap;
-                GC.Collect();
                 //Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
             }
             catch (Exception)
@@ -195,6 +211,21 @@ namespace Vid
         }
 
         private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click_2(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
         {
 
         }
