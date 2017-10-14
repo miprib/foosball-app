@@ -68,23 +68,29 @@ namespace Vid
                 label1.Text = names[0];
                 label2.Text = names[1];
 
-                OpenFileDialog opf = new OpenFileDialog
+                Vid.Form3 b = new Form3();
+                b.ShowDialog();
+
+                if (Global.n)
                 {
-                    Filter = "Video files | *.avi; *.mp4; *.mov"
-                };
-                if (opf.ShowDialog() == DialogResult.OK)
-                {
-                    capture = new VideoCapture(opf.FileName);
+                    capture = new VideoCapture(Global.name.FileName);
+                    if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
+                    textBox1.AppendText(Global.name.FileName + Environment.NewLine);
                 }
+                else
+                {
+                    capture = new VideoCapture(0);  
+                    if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
+                    textBox1.AppendText("Video filmuojamas kamera" + Environment.NewLine);
+                }
+
                 if (capture != null)
                 {
-                    if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
-                    textBox1.AppendText(opf.FileName);
-
                     capture.ImageGrabbed += Capture_ImageGrabbed1;
-                    capture.Start();
+                    
                 }
             }
+            capture.Start();
         }
 
 
