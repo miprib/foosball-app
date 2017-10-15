@@ -20,12 +20,30 @@ namespace Vid
         private void button2_Click(object sender, EventArgs e)
         {
             Global.text = textBox1.Text + "," + textBox2.Text;
+
+            OpenFileDialog opf = new OpenFileDialog
+            {
+                Filter = "Video files | *.avi; *.mp4; *.mov"
+            };
+            if (opf.ShowDialog() == DialogResult.OK)
+            {
+                Global.name = opf;
+            }
+            Global.n = true;
             this.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Global.text = textBox1.Text + "," + textBox2.Text;
+
+            Global.n = false;
+            this.Close();
         }
     }
 }

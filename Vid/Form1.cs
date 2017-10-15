@@ -74,9 +74,6 @@ namespace Vid
                 label1.Text = names[0];
                 label2.Text = names[1];
 
-                Vid.Form3 b = new Form3();
-                b.ShowDialog();
-
                 if (Global.n)
                 {
                     capture = new VideoCapture(Global.name.FileName);
