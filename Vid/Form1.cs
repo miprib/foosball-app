@@ -43,6 +43,7 @@ namespace Vid
         Point po = new Point(-1, -1);
         Size sz = new Size(3, 3);
         Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1,-1));
+        Boolean n = true;
 
         GameList gameList;
         Game game;
@@ -149,7 +150,11 @@ namespace Vid
                 Mat m = new Mat();
                 capture.Retrieve(m);
                 pictureBox1.Image = m.Bitmap;
-                xlatest = m.Size.Width / 2;
+                if (n)
+                {
+                    xlatest = m.Size.Width / 2;
+                    n = !n;
+                }
 
                 Mat ball = new Mat(m.Size, Emgu.CV.CvEnum.DepthType.Cv8U, 3);
 
