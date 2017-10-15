@@ -149,6 +149,7 @@ namespace Vid
                 Mat m = new Mat();
                 capture.Retrieve(m);
                 pictureBox1.Image = m.Bitmap;
+                xlatest = m.Size.Width / 2;
 
                 Mat ball = new Mat(m.Size, Emgu.CV.CvEnum.DepthType.Cv8U, 3);
 
