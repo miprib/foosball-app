@@ -14,6 +14,7 @@ using Emgu.CV.Structure;
 using System.Threading;
 using Emgu.CV.Cvb;
 using Emgu.CV.Util;
+using Newtonsoft.Json;
 
 namespace Vid
 {
@@ -43,6 +44,9 @@ namespace Vid
         Size sz = new Size(3, 3);
         Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1,-1));
 
+        GameList gameList;
+        Game game;
+
         int ff = 0;
         int xlatest;
         int left = 0, right = 0;
@@ -54,6 +58,7 @@ namespace Vid
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            gameList = GameList.NewInstance();
 
         }
 
@@ -86,8 +91,16 @@ namespace Vid
 
                 if (capture != null)
                 {
+                    //save new game info
+                    game = new Game();
+                    game.id = gameList.NextId();
+                    game.Team1 = names[0];
+                    game.Team2 = names[1];
+                    game.date = DateTime.Now;
+                    gameList.Add(game);
+                    gameList.SaveList();
+
                     capture.ImageGrabbed += Capture_ImageGrabbed1;
-                    
                 }
             }
             capture.Start();
@@ -162,12 +175,18 @@ namespace Vid
                     {
                         right++;
                         label3.Invoke(new Action(() => label3.Text = right.ToString()));
+                        //save score for the last game started
+                        gameList.ElementAt(game.id).Team1Score = right;
+                        gameList.SaveList();
                     }
 
                     if (m.Size.Width - m.Size.Width / 4 * 3 > xlatest)
                     {
                         left++;
                         label4.Invoke(new Action(() => label4.Text = left.ToString()));
+                        //save score for the last game started
+                        gameList.ElementAt(game.id).Team2Score = left;
+                        gameList.SaveList();
                     }
                 }
                 Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
