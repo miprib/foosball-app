@@ -73,8 +73,8 @@ namespace Vid
     }
     public class Global
     {
-        public static String text = "";
-        public static Boolean n = true;
+        public static String text = ",";
+        public static Boolean videoFromFile = false;
         public static OpenFileDialog name;
         public static col colors = new col();
     }

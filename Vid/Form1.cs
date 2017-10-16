@@ -32,6 +32,7 @@ namespace Vid
             }
         }
 
+
         VideoCapture capture;
         Boolean n = true;
 
@@ -66,13 +67,16 @@ namespace Vid
 
                 if (Global.n)
                 {
-                    capture = new VideoCapture(Global.name.FileName);
-                    if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
-                    textBox1.AppendText(Global.name.FileName + Environment.NewLine);
+                    if (Global.name != null)
+                    {
+                        capture = new VideoCapture(Global.name.FileName);
+                        if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
+                        textBox1.AppendText(Global.name.FileName + Environment.NewLine);
+                    }
                 }
                 else
                 {
-                    capture = new VideoCapture(0);  
+                    capture = new VideoCapture(0);
                     if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
                     textBox1.AppendText("Video filmuojamas kamera" + Environment.NewLine);
                 }
@@ -91,10 +95,9 @@ namespace Vid
                     capture.ImageGrabbed += Capture_ImageGrabbed1;
                 }
             }
-            capture.Start();
+            if (capture != null)
+                capture.Start();
         }
-
-
 
         private void print_coordinates(coordinates n)
         {

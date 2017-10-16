@@ -17,9 +17,9 @@ namespace Vid
         public Form2()
         {
             InitializeComponent();
-            textBox4.Text = "0";
-            textBox5.Text = "0";
-            textBox3.Text = "0";
+            textBox4.Text = "70";
+            textBox5.Text = "230";
+            textBox3.Text = "50";
             pictureBox1.BackColor = Color.Black;
         }
 
@@ -44,7 +44,7 @@ namespace Vid
             {
                 Global.name = opf;
             }
-            Global.n = true;
+            Global.videoFromFile = true;
             this.Close();
         }
 
@@ -103,7 +103,7 @@ namespace Vid
 
             Global.colors = new col((int)color.Blue, (int)color.Green, (int)color.Red);
 
-            Global.n = false;
+            Global.videoFromFile = false;
             this.Close();
         }
     }
