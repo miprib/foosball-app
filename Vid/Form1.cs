@@ -32,82 +32,9 @@ namespace Vid
             }
         }
 
-        private struct col
-        {
-            public double B1, B2, G1, G2, R1, R2;
-
-            public col(int a, int b, int c)
-            {
-                if (a - 25 < 0)
-                {
-                    B1 = 0;
-                    B2 = 50;
-                }
-                else
-                {
-                    if (a + 25 > 255)
-                    {
-                        B1 = 205;
-                        B2 = 255;
-                    }
-                    else
-                    {
-                        B1 = a - 25;
-                        B2 = a + 25;
-                    }
-                }
-                if (b - 25 < 0)
-                {
-                    G1 = 0;
-                    G2 = 50;
-                }
-                else
-                {
-                    if (b + 25 > 255)
-                    {
-                        G1 = 205;
-                        G2 = 255;
-                    }
-                    else
-                    {
-                        G1 = b - 25;
-                        G2 = b + 25;
-                    }
-                }
-                if (c - 25 < 0)
-                {
-                    R1 = 0;
-                    R2 = 50;
-                }
-                else
-                {
-                    if (c + 25 > 255)
-                    {
-                        R1 = 205;
-                        R2 = 255;
-                    }
-                    else
-                    {
-                        R1 = c - 25;
-                        R2 = c + 25;
-                    }
-                }
-            }
-        }
-
-        enum Colors
-        {
-            B1 = 0, G1 = 200, R1 = 200,
-            B2 = 10, G2 = 250, R2 = 250
-        }
 
         VideoCapture capture;
-        MCvScalar sk = new MCvScalar();
-        Point po = new Point(-1, -1);
-        Size sz = new Size(3, 3);
-        Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
         Boolean n = true;
-        col colors = new col();
 
         GameList gameList;
         Game game;
@@ -137,20 +64,6 @@ namespace Vid
 
                 label1.Text = names[0];
                 label2.Text = names[1];
-
-
-                Image<Bgr, byte> lll = new Image<Bgr, byte>(50, 50, new Bgr(Global.blu, Global.grn, Global.red));
-
-                Mat ll = lll.Mat;
-                CvInvoke.CvtColor(ll, ll, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv);
-
-                Bgr color = (ll.ToImage<Bgr, byte>())[20, 20];
-
-                Global.blu = (int)color.Blue;
-                Global.grn = (int)color.Green;
-                Global.red = (int)color.Red;
-
-                colors = new col(Global.blu, Global.grn, Global.red);
 
                 if (Global.videoFromFile)
                 {
@@ -186,35 +99,6 @@ namespace Vid
                 capture.Start();
         }
 
-
-        private Mat ball_only(Mat a)
-        {
-            Mat gate = new Mat();
-            CvInvoke.InRange(a, new ScalarArray(new MCvScalar((double)colors.B1, (double)colors.G1, (double)colors.R1)), new ScalarArray(new MCvScalar((double)colors.B2, (double)colors.G2, (double)colors.R2)), gate);
-
-            CvInvoke.MedianBlur(gate, gate, 7);
-
-            CvInvoke.Dilate(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-            CvInvoke.Erode(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-
-            CvInvoke.Blur(gate, gate, new Size(10, 10), po, Emgu.CV.CvEnum.BorderType.Default);
-            CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
-            CvInvoke.Blur(gate, gate, new Size(10, 10), po, Emgu.CV.CvEnum.BorderType.Default);
-            CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
-            CvInvoke.Blur(gate, gate, new Size(10, 10), po, Emgu.CV.CvEnum.BorderType.Default);
-            CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
-            CvInvoke.Blur(gate, gate, new Size(10, 10), po, Emgu.CV.CvEnum.BorderType.Default);
-            CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
-            CvInvoke.Blur(gate, gate, new Size(10, 10), po, Emgu.CV.CvEnum.BorderType.Default);
-            CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
-            CvInvoke.Blur(gate, gate, new Size(10, 10), po, Emgu.CV.CvEnum.BorderType.Default);
-            CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
-            CvInvoke.Blur(gate, gate, new Size(10, 10), po, Emgu.CV.CvEnum.BorderType.Default);
-            CvInvoke.Threshold(gate, gate, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
-
-            return gate;
-        }
-
         private void print_coordinates(coordinates n)
         {
             string text = "ball position: x " + n.x + ", y " + n.y + Environment.NewLine; //dvi eilut4s tekstui
@@ -242,7 +126,9 @@ namespace Vid
 
                 CvInvoke.CvtColor(m, ball, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv del spalvu paletes
 
-                ball = ball_only(ball);
+                Detaling a = new Detaling();
+
+                ball = a.ball_only(ball);
 
                 CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows / 4, 60, 30, 15, 40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
 
