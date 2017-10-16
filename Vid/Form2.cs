@@ -82,11 +82,6 @@ namespace Vid
             pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar2.Value, trackBar1.Value);
         }
 
-        private void Form2_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void button3_Click_1(object sender, EventArgs e)
         {
             Global.text = textBox1.Text + "," + textBox2.Text;

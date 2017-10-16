@@ -86,7 +86,6 @@
             this.videoToolStripMenuItem.Name = "videoToolStripMenuItem";
             this.videoToolStripMenuItem.Size = new System.Drawing.Size(123, 26);
             this.videoToolStripMenuItem.Text = "Video";
-            this.videoToolStripMenuItem.Click += new System.EventHandler(this.VideoToolStripMenuItem_Click);
             // 
             // startToolStripMenuItem1
             // 
@@ -134,7 +133,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(650, 492);
             this.panel1.TabIndex = 2;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // label5
             // 
@@ -145,7 +143,6 @@
             this.label5.Size = new System.Drawing.Size(28, 39);
             this.label5.TabIndex = 12;
             this.label5.Text = "-";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label2
             // 
@@ -168,7 +165,6 @@
             this.label1.TabIndex = 10;
             this.label1.Text = "Pirmas";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label1.Click += new System.EventHandler(this.label1_Click_2);
             // 
             // label3
             // 
@@ -189,7 +185,6 @@
             this.label4.Size = new System.Drawing.Size(36, 39);
             this.label4.TabIndex = 8;
             this.label4.Text = "0";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // textBox1
             // 
@@ -209,7 +204,6 @@
             this.pictureBox1.Size = new System.Drawing.Size(640, 360);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.PictureBox1_Click_1);
             // 
             // Form1
             // 
