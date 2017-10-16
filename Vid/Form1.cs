@@ -32,6 +32,69 @@ namespace Vid
             }
         }
 
+        private struct col 
+        {
+            public double B1, B2, G1, G2, R1, R2;
+
+            public col(int a, int b, int c)
+            {
+                if (a - 25 < 0)
+                {
+                    B1 = 0;
+                    B2 = 50;
+                }
+                else
+                {
+                    if (a + 25 > 255)
+                    {
+                        B1 = 205;
+                        B2 = 255;
+                    }
+                    else
+                    {
+                        B1 = a - 25;
+                        B2 = a + 25;
+                    }
+                }
+                if (b - 25 < 0)
+                {
+                    G1 = 0;
+                    G2 = 50;
+                }
+                else
+                {
+                    if (b + 25 > 255)
+                    {
+                        G1 = 205;
+                        G2 = 255;
+                    }
+                    else
+                    {
+                        G1 = b - 25;
+                        G2 = b + 25;
+                    }
+                }
+                if (c - 25 < 0)
+                {
+                    R1 = 0;
+                    R2 = 50;
+                }
+                else
+                {
+                    if (c + 25 > 255)
+                    {
+                        R1 = 205;
+                        R2 = 255;
+                    }
+                    else
+                    {
+                        R1 = c - 25;
+                        R2 = c + 25;
+                    }
+                }
+            }
+        }
+
         enum Colors
         {
             B1=0, G1=200, R1=200,
@@ -44,6 +107,7 @@ namespace Vid
         Size sz = new Size(3, 3);
         Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1,-1));
         Boolean n = true;
+        col colors = new col();
 
         GameList gameList;
         Game game;
@@ -86,6 +150,8 @@ namespace Vid
                 Global.grn = (int)color.Green;
                 Global.red = (int)color.Red;
 
+                colors = new col(Global.blu, Global.grn, Global.red);
+
                 if (Global.n)
                 {
                     capture = new VideoCapture(Global.name.FileName);
@@ -119,7 +185,7 @@ namespace Vid
 
         private Mat ball_only(Mat a) {
             Mat gate = new Mat();
-            CvInvoke.InRange(a, new ScalarArray(new MCvScalar((double)Colors.B1, (double)Colors.G1, (double)Colors.R1)), new ScalarArray(new MCvScalar((double)Colors.B2, (double)Colors.G2, (double)Colors.R2)), gate);
+            CvInvoke.InRange(a, new ScalarArray(new MCvScalar((double)colors.B1, (double)colors.G1, (double)colors.R1)), new ScalarArray(new MCvScalar((double)colors.B2, (double)colors.G2, (double)colors.R2)), gate);
 
             CvInvoke.MedianBlur(gate, gate, 7);
 
