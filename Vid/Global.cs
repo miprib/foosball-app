@@ -9,11 +9,23 @@ using System.Windows.Forms;
 
 namespace Vid
 {
-    public struct col
+    public struct Coordinates
+    {
+        public int x;
+        public int y;
+
+        public Coordinates(int tx, int ty)
+        {
+            x = tx;
+            y = ty;
+        }
+    }
+
+    public struct Col
     {
         public double B1, B2, G1, G2, R1, R2;
 
-        public col(int a, int b, int c)
+        public Col(int a, int b, int c)
         {
             if (a - 25 < 0)
             {
@@ -76,6 +88,6 @@ namespace Vid
         public static String text = ",";
         public static Boolean videoFromFile = false;
         public static OpenFileDialog name;
-        public static col colors = new col();
+        public static Col colors;
     }
 }

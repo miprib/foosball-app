@@ -20,20 +20,11 @@ namespace Vid
 {
     public partial class Form1 : Form
     {
-        private struct coordinates
-        {
-            public int x;
-            public int y;
-
-            public coordinates(int tx, int ty)
-            {
-                x = tx;
-                y = ty;
-            }
-        }
-
-
         VideoCapture capture;
+        MCvScalar sk = new MCvScalar();
+        Point po = new Point(-1, -1);
+        Size sz = new Size(3, 3);
+        Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
         Boolean n = true;
 
         GameList gameList;
@@ -99,12 +90,6 @@ namespace Vid
                 capture.Start();
         }
 
-        private void print_coordinates(coordinates n)
-        {
-            string text = "ball position: x " + n.x + ", y " + n.y + Environment.NewLine; //dvi eilut4s tekstui
-            textBox1.Invoke(new Action(() => textBox1.AppendText(text))); // reikia kreiptis taip, nes is kito threado negalima toliau test visko
-        }
-
         private void Capture_ImageGrabbed1(object sender, EventArgs e)
         {
             try
@@ -114,6 +99,7 @@ namespace Vid
                 Mat m = new Mat();
                 capture.Retrieve(m);
                 pictureBox1.Image = m.Bitmap;
+
                 if (n)
                 {
                     xlatest = m.Size.Width / 2;
@@ -121,24 +107,24 @@ namespace Vid
                 }
 
                 Mat ball = new Mat(m.Size, Emgu.CV.CvEnum.DepthType.Cv8U, 3);
-
-                coordinates s = new coordinates();
-
-                CvInvoke.CvtColor(m, ball, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv del spalvu paletes
-
-                Detaling a = new Detaling();
-
-                ball = a.ball_only(ball);
+                Detaling det = new Detaling();
+                ball = det.Ball_only(m);
+                
 
                 CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows / 4, 60, 30, 15, 40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
 
                 ff++;
+
+                Coordinates s;
+                CooString act = new CooString();
                 foreach (CircleF circle in circles)
                 {
                     ff = 0;
-                    s = new coordinates((int)circle.Center.X, (int)circle.Center.Y);
+
+                    s = new Coordinates((int)circle.Center.X, (int)circle.Center.Y);
+                    textBox1.Invoke(new Action(() => textBox1.AppendText(act.Coordinates_to_string(s))));
+
                     xlatest = (int)circle.Center.X;
-                    print_coordinates(s);
                 }
 
                 if (ff == 15)
@@ -184,6 +170,18 @@ namespace Vid
             {
                 capture.Stop();
             }
+        }
+                
+        private void historyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Create new form for game history
+            Vid.HistoryForm history = new HistoryForm();
+            history.ShowDialog();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)

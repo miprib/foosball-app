@@ -34,7 +34,7 @@ namespace Vid
 
             Bgr color = (ll.ToImage<Bgr, byte>())[20, 20];
 
-            Global.colors = new col((int)color.Blue, (int)color.Green, (int)color.Red);
+            Global.colors = new Col((int)color.Blue, (int)color.Green, (int)color.Red);
 
             OpenFileDialog opf = new OpenFileDialog
             {
@@ -101,7 +101,7 @@ namespace Vid
 
             Bgr color = (ll.ToImage<Bgr, byte>())[20, 20];
 
-            Global.colors = new col((int)color.Blue, (int)color.Green, (int)color.Red);
+            Global.colors = new Col((int)color.Blue, (int)color.Green, (int)color.Red);
 
             Global.videoFromFile = false;
             this.Close();

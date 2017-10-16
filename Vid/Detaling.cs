@@ -14,10 +14,12 @@ namespace Vid
         private static MCvScalar sk = new MCvScalar();
         Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
 
-        public Mat ball_only(Mat a)
+        public Mat Ball_only(Mat a)
         {
             Mat bwmat = new Mat();
-            CvInvoke.InRange(a, new ScalarArray(new MCvScalar((double)Global.colors.B1, (double)Global.colors.G1, (double)Global.colors.R1)), new ScalarArray(new MCvScalar((double)Global.colors.B2, (double)Global.colors.G2, (double)Global.colors.R2)), bwmat);
+            CvInvoke.CvtColor(a, bwmat, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv);
+
+            CvInvoke.InRange(bwmat, new ScalarArray(new MCvScalar((double)Global.colors.B1, (double)Global.colors.G1, (double)Global.colors.R1)), new ScalarArray(new MCvScalar((double)Global.colors.B2, (double)Global.colors.G2, (double)Global.colors.R2)), bwmat);
 
             CvInvoke.MedianBlur(bwmat, bwmat, 7);
 
