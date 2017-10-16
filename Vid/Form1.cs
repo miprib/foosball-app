@@ -133,7 +133,7 @@ namespace Vid
             {
                 Vid.Form2 a = new Form2();
                 a.ShowDialog();
-                String[] names = Global.text.Split(',');
+                String[] names = Class1.text.Split(',');
 
                 label1.Text = names[0];
                 label2.Text = names[1];
@@ -152,11 +152,11 @@ namespace Vid
 
                 colors = new col(Global.blu, Global.grn, Global.red);
 
-                if (Global.n)
+                if (Class1.videoFromFile)
                 {
-                    capture = new VideoCapture(Global.name.FileName);
+                    capture = new VideoCapture(Class1.name.FileName);
                     if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
-                    textBox1.AppendText(Global.name.FileName + Environment.NewLine);
+                    textBox1.AppendText(Class1.name.FileName + Environment.NewLine);
                 }
                 else
                 {

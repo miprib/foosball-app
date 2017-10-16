@@ -9,10 +9,10 @@ using System.Windows.Forms;
 
 namespace Vid
 {
-    public class Global
+    public class Class1
     {
-        public static String text = "";
-        public static Boolean n = true;
+        public static String text = ",";
+        public static Boolean videoFromFile = false;
         public static OpenFileDialog name;
         public static int blu = 0;
         public static int grn = 0;
