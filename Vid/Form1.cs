@@ -74,6 +74,18 @@ namespace Vid
                 label1.Text = names[0];
                 label2.Text = names[1];
 
+
+                Image<Bgr, byte> lll = new Image<Bgr, byte>(50, 50, new Bgr(Global.blu, Global.grn, Global.red));
+
+                Mat ll = lll.Mat;
+                CvInvoke.CvtColor(ll, ll, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv);
+
+                Bgr color = (ll.ToImage<Bgr,byte>())[20, 20];
+
+                Global.blu = (int)color.Blue;
+                Global.grn = (int)color.Green;
+                Global.red = (int)color.Red;
+
                 if (Global.n)
                 {
                     capture = new VideoCapture(Global.name.FileName);
@@ -192,7 +204,7 @@ namespace Vid
                         gameList.SaveList();
                     }
                 }
-                Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
+                //Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
             }
             catch (Exception)
             {
