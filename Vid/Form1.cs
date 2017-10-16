@@ -19,12 +19,8 @@ using Newtonsoft.Json;
 namespace Vid
 {
     public partial class Form1 : Form
-    {
+    { 
         VideoCapture capture;
-        MCvScalar sk = new MCvScalar();
-        Point po = new Point(-1, -1);
-        Size sz = new Size(3, 3);
-        Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
         Boolean n = true;
 
         GameList gameList;
@@ -99,7 +95,6 @@ namespace Vid
                 Mat m = new Mat();
                 capture.Retrieve(m);
                 pictureBox1.Image = m.Bitmap;
-
                 if (n)
                 {
                     xlatest = m.Size.Width / 2;
@@ -109,21 +104,17 @@ namespace Vid
                 Mat ball = new Mat(m.Size, Emgu.CV.CvEnum.DepthType.Cv8U, 3);
                 Detaling det = new Detaling();
                 ball = det.Ball_only(m);
-                
 
                 CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows / 4, 60, 30, 15, 40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
 
                 ff++;
-
-                Coordinates s;
-                CooString act = new CooString();
+                Coordinates coo;
+                CooString str = new CooString();
                 foreach (CircleF circle in circles)
                 {
                     ff = 0;
-
-                    s = new Coordinates((int)circle.Center.X, (int)circle.Center.Y);
-                    textBox1.Invoke(new Action(() => textBox1.AppendText(act.Coordinates_to_string(s))));
-
+                    coo = new Coordinates((int)circle.Center.X, (int)circle.Center.Y);
+                    textBox1.Invoke(new Action(() => textBox1.AppendText(str.Coordinates_to_string(coo)))); // reikia kreiptis taip, nes is kito threado negalima toliau test 
                     xlatest = (int)circle.Center.X;
                 }
 

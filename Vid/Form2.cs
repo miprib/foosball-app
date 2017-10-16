@@ -17,10 +17,10 @@ namespace Vid
         public Form2()
         {
             InitializeComponent();
+            textBox3.Text = "50";
             textBox4.Text = "70";
             textBox5.Text = "230";
-            textBox3.Text = "50";
-            pictureBox1.BackColor = Color.Black;
+            pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar2.Value, trackBar1.Value);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -34,7 +34,7 @@ namespace Vid
 
             Bgr color = (ll.ToImage<Bgr, byte>())[20, 20];
 
-            Global.colors = new Col((int)color.Blue, (int)color.Green, (int)color.Red);
+            Global.colors = new Col(color.Blue, color.Green, color.Red);
 
             OpenFileDialog opf = new OpenFileDialog
             {
@@ -101,7 +101,7 @@ namespace Vid
 
             Bgr color = (ll.ToImage<Bgr, byte>())[20, 20];
 
-            Global.colors = new Col((int)color.Blue, (int)color.Green, (int)color.Red);
+            Global.colors = new Col(color.Blue, color.Green, color.Red);
 
             Global.videoFromFile = false;
             this.Close();

@@ -25,7 +25,7 @@ namespace Vid
     {
         public double B1, B2, G1, G2, R1, R2;
 
-        public Col(int a, int b, int c)
+        public Col(double a, double b, double c)
         {
             if (a - 25 < 0)
             {
