@@ -1,6 +1,4 @@
-﻿using Emgu.CV;
-using Emgu.CV.Structure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,15 +24,9 @@ namespace Vid
         private void button2_Click(object sender, EventArgs e)
         {
             Global.text = textBox1.Text + "," + textBox2.Text;
-
-            Image<Bgr, byte> lll = new Image<Bgr, byte>(50, 50, new Bgr(trackBar1.Value, trackBar2.Value, trackBar3.Value));
-
-            Mat ll = lll.Mat;
-            CvInvoke.CvtColor(ll, ll, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv);
-
-            Bgr color = (ll.ToImage<Bgr, byte>())[20, 20];
-
-            Global.colors = new col((int)color.Blue, (int)color.Green, (int)color.Red);
+            Global.blu = trackBar1.Value;
+            Global.grn = trackBar2.Value;
+            Global.red = trackBar3.Value;
 
             OpenFileDialog opf = new OpenFileDialog
             {
@@ -94,14 +86,9 @@ namespace Vid
         {
             Global.text = textBox1.Text + "," + textBox2.Text;
 
-            Image<Bgr, byte> lll = new Image<Bgr, byte>(50, 50, new Bgr(trackBar1.Value, trackBar2.Value, trackBar3.Value));
-
-            Mat ll = lll.Mat;
-            CvInvoke.CvtColor(ll, ll, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv);
-
-            Bgr color = (ll.ToImage<Bgr, byte>())[20, 20];
-
-            Global.colors = new col((int)color.Blue, (int)color.Green, (int)color.Red);
+            Global.blu = trackBar1.Value;
+            Global.grn = trackBar2.Value;
+            Global.red = trackBar3.Value;
 
             Global.videoFromFile = false;
             this.Close();
