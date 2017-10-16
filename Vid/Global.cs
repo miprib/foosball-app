@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Vid
 {
-    public class Class1
+    public class Global
     {
         public static String text = ",";
         public static Boolean videoFromFile = false;

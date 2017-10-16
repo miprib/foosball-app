@@ -32,7 +32,7 @@ namespace Vid
             }
         }
 
-        private struct col 
+        private struct col
         {
             public double B1, B2, G1, G2, R1, R2;
 
@@ -97,15 +97,15 @@ namespace Vid
 
         enum Colors
         {
-            B1=0, G1=200, R1=200,
-            B2=10, G2=250, R2=250
+            B1 = 0, G1 = 200, R1 = 200,
+            B2 = 10, G2 = 250, R2 = 250
         }
 
         VideoCapture capture;
         MCvScalar sk = new MCvScalar();
         Point po = new Point(-1, -1);
         Size sz = new Size(3, 3);
-        Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1,-1));
+        Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
         Boolean n = true;
         col colors = new col();
 
@@ -133,7 +133,7 @@ namespace Vid
             {
                 Vid.Form2 a = new Form2();
                 a.ShowDialog();
-                String[] names = Class1.text.Split(',');
+                String[] names = Global.text.Split(',');
 
                 label1.Text = names[0];
                 label2.Text = names[1];
@@ -144,7 +144,7 @@ namespace Vid
                 Mat ll = lll.Mat;
                 CvInvoke.CvtColor(ll, ll, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv);
 
-                Bgr color = (ll.ToImage<Bgr,byte>())[20, 20];
+                Bgr color = (ll.ToImage<Bgr, byte>())[20, 20];
 
                 Global.blu = (int)color.Blue;
                 Global.grn = (int)color.Green;
@@ -152,15 +152,18 @@ namespace Vid
 
                 colors = new col(Global.blu, Global.grn, Global.red);
 
-                if (Class1.videoFromFile)
+                if (Global.videoFromFile)
                 {
-                    capture = new VideoCapture(Class1.name.FileName);
-                    if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
-                    textBox1.AppendText(Class1.name.FileName + Environment.NewLine);
+                    if (Global.name != null)
+                    {
+                        capture = new VideoCapture(Global.name.FileName);
+                        if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
+                        textBox1.AppendText(Global.name.FileName + Environment.NewLine);
+                    }
                 }
                 else
                 {
-                    capture = new VideoCapture(0);  
+                    capture = new VideoCapture(0);
                     if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
                     textBox1.AppendText("Video filmuojamas kamera" + Environment.NewLine);
                 }
@@ -179,11 +182,13 @@ namespace Vid
                     capture.ImageGrabbed += Capture_ImageGrabbed1;
                 }
             }
-            capture.Start();
+            if (capture != null)
+                capture.Start();
         }
 
 
-        private Mat ball_only(Mat a) {
+        private Mat ball_only(Mat a)
+        {
             Mat gate = new Mat();
             CvInvoke.InRange(a, new ScalarArray(new MCvScalar((double)colors.B1, (double)colors.G1, (double)colors.R1)), new ScalarArray(new MCvScalar((double)colors.B2, (double)colors.G2, (double)colors.R2)), gate);
 
