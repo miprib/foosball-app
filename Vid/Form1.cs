@@ -299,6 +299,18 @@ namespace Vid
                 capture.Stop();
             }
         }
+                
+        private void historyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Create new form for game history
+            Vid.HistoryForm history = new HistoryForm();
+            history.ShowDialog();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
