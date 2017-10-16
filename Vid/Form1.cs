@@ -65,7 +65,7 @@ namespace Vid
                 label1.Text = names[0];
                 label2.Text = names[1];
 
-                if (Global.n)
+                if (Global.videoFromFile)
                 {
                     if (Global.name != null)
                     {
