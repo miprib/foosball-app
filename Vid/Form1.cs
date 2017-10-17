@@ -141,7 +141,7 @@ namespace Vid
                         gameList.SaveList();
                     }
                 }
-                Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
+                //Thread.Sleep(100 / (int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
             }
             catch (Exception)
             {

@@ -25,6 +25,16 @@ namespace Vid
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (textBox1.Text.Length == 0)
+            {
+                MessageBox.Show("First player name is empty", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return;
+            }
+            if (textBox2.Text.Length == 0)
+            {
+                MessageBox.Show("Second player name is empty", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return;
+            }
             Global.text = textBox1.Text + "," + textBox2.Text;
 
             Image<Bgr, byte> lll = new Image<Bgr, byte>(50, 50, new Bgr(trackBar1.Value, trackBar2.Value, trackBar3.Value));
@@ -45,13 +55,14 @@ namespace Vid
                 Global.name = opf;
             }
             Global.videoFromFile = true;
+            Global.cancel = false;
             this.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             Global.cancel = true;
-            Application.Exit();
+            this.Close();
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
@@ -135,6 +146,7 @@ namespace Vid
             Global.colors = new Col(color.Blue, color.Green, color.Red);
 
             Global.videoFromFile = false;
+            Global.cancel = false;
             this.Close();
         }
     }
