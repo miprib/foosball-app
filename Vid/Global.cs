@@ -85,6 +85,7 @@ namespace Vid
     }
     public class Global
     {
+        public static Boolean cancel = false;
         public static String text = ",";
         public static Boolean videoFromFile = false;
         public static OpenFileDialog name;

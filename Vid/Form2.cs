@@ -50,12 +50,13 @@ namespace Vid
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Global.text = ",";
+            Global.cancel = true;
             Application.Exit();
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
+
             textBox3.Text = trackBar1.Value.ToString();
             pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar2.Value, trackBar1.Value);
         }
@@ -74,20 +75,50 @@ namespace Vid
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
-            trackBar1.Value = Int32.Parse(textBox3.Text);
-            pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar2.Value, trackBar1.Value);
+            try
+            {
+                trackBar1.Value = Int32.Parse(textBox3.Text);
+            }
+            catch
+            {
+                trackBar1.Value = 0;
+            }
+            finally
+            {
+                pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar2.Value, trackBar1.Value);
+            }
         }
 
         private void textBox4_TextChanged(object sender, EventArgs e)
         {
-            trackBar2.Value = Int32.Parse(textBox4.Text);
-            pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar2.Value, trackBar1.Value);
+            try
+            {
+                trackBar2.Value = Int32.Parse(textBox4.Text);
+            }
+            catch
+            {
+                trackBar2.Value = 0;
+            }
+            finally
+            {
+                pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar2.Value, trackBar1.Value);
+            }
         }
 
         private void textBox5_TextChanged(object sender, EventArgs e)
         {
-            trackBar3.Value = Int32.Parse(textBox5.Text);
-            pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar2.Value, trackBar1.Value);
+            try
+            {
+                trackBar3.Value = Int32.Parse(textBox5.Text);
+            }
+            catch
+            {
+                trackBar3.Value = 0;
+            }
+            finally
+            {
+                pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar2.Value, trackBar1.Value);
+            }
         }
 
         private void button3_Click_1(object sender, EventArgs e)
