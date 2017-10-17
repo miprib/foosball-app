@@ -43,50 +43,47 @@ namespace Vid
 
         private void StartToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (capture == null)
+            Vid.Form2 a = new Form2();
+            a.ShowDialog();
+            String[] names = Global.text.Split(',');
+
+            if (Global.cancel) return;
+
+            button1.Text = "Pause";
+
+            label1.Text = names[0];
+            label2.Text = names[1];
+
+
+            if (Global.videoFromFile)
             {
-                Vid.Form2 a = new Form2();
-                a.ShowDialog();
-                String[] names = Global.text.Split(',');
-
-                if (Global.cancel) return;
-
-                label1.Text = names[0];
-                label2.Text = names[1];
-
-
-                if (Global.videoFromFile)
+                if (Global.name != null)
                 {
-                    if (Global.name != null)
-                    {
-                        capture = new VideoCapture(Global.name.FileName);
-                        if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
-                        textBox1.AppendText(Global.name.FileName + Environment.NewLine);
-                    }
-                }
-                else
-                {
-                    capture = new VideoCapture(0);
+                    capture = new VideoCapture(Global.name.FileName);
                     if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
-                    textBox1.AppendText("Video filmuojamas kamera" + Environment.NewLine);
-                }
-
-                if (capture != null)
-                {
-                    //save new game info
-                    game = new Game();
-                    game.id = gameList.NextId();
-                    game.Team1 = names[0];
-                    game.Team2 = names[1];
-                    game.date = DateTime.Now;
-                    gameList.Add(game);
-                    gameList.SaveList();
-
-                    capture.ImageGrabbed += Capture_ImageGrabbed1;
+                    textBox1.AppendText(Global.name.FileName + Environment.NewLine);
                 }
             }
+            else
+            {
+                capture = new VideoCapture(0);
+                if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
+                textBox1.AppendText("Video filmuojamas kamera" + Environment.NewLine);
+            }
+
             if (capture != null)
-                capture.Start();
+            {
+                //save new game info
+                game = new Game();
+                game.id = gameList.NextId();
+                game.Team1 = names[0];
+                game.Team2 = names[1];
+                game.date = DateTime.Now;
+                gameList.Add(game);
+                gameList.SaveList();
+                capture.ImageGrabbed += Capture_ImageGrabbed1;
+            }
+            capture.Start();
         }
 
         private void Capture_ImageGrabbed1(object sender, EventArgs e)
@@ -157,14 +154,6 @@ namespace Vid
                 pictureBox1.Image = null;
             }
         }
-
-        private void PauseToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            if (capture != null)
-            {
-                capture.Stop();
-            }
-        }
                 
         private void historyToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -176,6 +165,29 @@ namespace Vid
         private void pictureBox1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (button1.Text == "Pause")
+                {
+                    button1.Text = "Start";
+
+                    capture.Stop();
+                }
+                else
+                {
+                    button1.Text = "Pause";
+                    capture.Start();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("First, you have to choose file!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                button1.Text = "Start";
+            }
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)

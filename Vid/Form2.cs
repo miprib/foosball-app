@@ -21,6 +21,7 @@ namespace Vid
             textBox4.Text = "70";
             textBox5.Text = "230";
             pictureBox1.BackColor = Color.FromArgb(trackBar3.Value, trackBar2.Value, trackBar1.Value);
+            Global.cancel = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -33,6 +34,11 @@ namespace Vid
             if (textBox2.Text.Length == 0)
             {
                 MessageBox.Show("Second player name is empty", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return;
+            }
+            if(textBox1.Text == textBox2.Text)
+            {
+                MessageBox.Show("Player names can't be same", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 return;
             }
             Global.text = textBox1.Text + "," + textBox2.Text;
@@ -53,6 +59,10 @@ namespace Vid
             if (opf.ShowDialog() == DialogResult.OK)
             {
                 Global.name = opf;
+            }
+            else
+            {
+                return;
             }
             Global.videoFromFile = true;
             Global.cancel = false;
