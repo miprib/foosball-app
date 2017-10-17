@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Vid
 {
-    class Game : IEquatable<Game>
+    public class Game : IEquatable<Game>
     {
         public Game() { }
 
