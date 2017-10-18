@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Vid
 {
-    class GameList : List<Game>
+    public class GameList : List<Game>
     {
-        private static String path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "All_games.txt");
+        public static String path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "All_games.txt");
 
         public GameList() { }
 
