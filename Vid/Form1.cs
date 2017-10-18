@@ -14,20 +14,21 @@ using Emgu.CV.Structure;
 using System.Threading;
 using Emgu.CV.Cvb;
 using Emgu.CV.Util;
+using Newtonsoft.Json;
 
 namespace Vid
 {
     public partial class Form1 : Form
-    {
+    { 
         VideoCapture capture;
-        MCvScalar sk = new MCvScalar();
-        Point po = new Point(-1, -1);
-        Size sz = new Size(3, 3);
-        Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1,-1));
+        Boolean n = true;
+
+        GameList gameList;
+        Game game;
+
         int ff = 0;
         int xlatest;
-        int bluet = 0, redt = 0;
-
+        int left = 0, right = 0;
 
         public Form1()
         {
@@ -36,92 +37,108 @@ namespace Vid
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            gameList = GameList.NewInstance();
 
         }
 
         private void StartToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (capture == null)
+            Vid.Form2 a = new Form2();
+            a.ShowDialog();
+            String[] names = Global.text.Split(',');
+
+            if (Global.cancel) return;
+
+            button1.Text = "Pause";
+
+            label1.Text = names[0];
+            label2.Text = names[1];
+
+
+            if (Global.videoFromFile)
             {
-                OpenFileDialog opf = new OpenFileDialog
+                if (Global.name != null)
                 {
-                    Filter = "Video files | *.avi; *.mp4; *.mov"
-                };
-                if (opf.ShowDialog() == DialogResult.OK)
-                {
-                    capture = new VideoCapture(opf.FileName);
-                }
-                if (capture != null)
-                {
-                    richTextBox1.Text = redt.ToString();
-                    richTextBox2.Text = bluet.ToString();
+                    capture = new VideoCapture(Global.name.FileName);
                     if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
-                    textBox1.AppendText(opf.FileName);
-                    capture.ImageGrabbed += Capture_ImageGrabbed1;
-                    capture.Start();
+                    textBox1.AppendText(Global.name.FileName + Environment.NewLine);
                 }
             }
+            else
+            {
+                capture = new VideoCapture(0);
+                if (textBox1.Text != "") textBox1.AppendText(Environment.NewLine);
+                textBox1.AppendText("Video filmuojamas kamera" + Environment.NewLine);
+            }
+
+            if (capture != null)
+            {
+                //save new game info
+                game = new Game();
+                game.id = gameList.NextId();
+                game.Team1 = names[0];
+                game.Team2 = names[1];
+                game.date = DateTime.Now;
+                gameList.Add(game);
+                gameList.SaveList();
+                capture.ImageGrabbed += Capture_ImageGrabbed1;
+            }
+            capture.Start();
         }
 
         private void Capture_ImageGrabbed1(object sender, EventArgs e)
         {
             try
-            {  
+            {
+                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // šitie du del dydžio lango dydžio, kad viskas matytuos
+
                 Mat m = new Mat();
                 capture.Retrieve(m);
-                Mat ball = new Mat();
-                //Mat gate = new Mat();
-                Mat hsv = new Mat();
+                pictureBox1.Image = m.Bitmap;
+                if (n)
+                {
+                    xlatest = m.Size.Width / 2;
+                    n = !n;
+                }
 
-                CvInvoke.CvtColor(m, hsv, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv, nes "geresnė spalvų paletė jo"... Nu arba dar nemoku su spalvu jidaus žaist normaliai
-                
-                CvInvoke.InRange(hsv, new ScalarArray(new MCvScalar(0,200,200)), new ScalarArray(new MCvScalar(10,250,250)), ball);  // išskiriam geltona, nes hsv filtras uzdetas
-/*
-                CvInvoke.InRange(hsv, new ScalarArray(new MCvScalar(0, 230, 0)), new ScalarArray(new MCvScalar(20, 255, 20)), gate);
+                Mat ball = new Mat(m.Size, Emgu.CV.CvEnum.DepthType.Cv8U, 3);
+                Detaling det = new Detaling();
+                ball = det.Ball_only(m);
 
-                CvInvoke.MedianBlur(gate, gate, 7);
-                CvInvoke.Dilate(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-                CvInvoke.Erode(gate, gate, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-*/
-                CvInvoke.MedianBlur(ball, ball, 5); // išryškinam paveikslėlį
-                CvInvoke.Dilate(ball, ball, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-                CvInvoke.Erode(ball, ball, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-
-
-                CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows/4, 60, 30, 15,40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
+                CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows / 4, 60, 30, 15, 40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
 
                 ff++;
+                Coordinates coo;
+                CooString str = new CooString();
                 foreach (CircleF circle in circles)
                 {
                     ff = 0;
-                    string text = "ball position: x " + circle.Center.X.ToString() + ", y " + circle.Center.Y.ToString() + Environment.NewLine; //dvi eilut4s tekstui
-                    textBox1.Invoke(new Action(() => textBox1.AppendText(text))); // reikia kreiptis taip, nes is kito threado negalima toliau test visko
+                    coo = new Coordinates((int)circle.Center.X, (int)circle.Center.Y);
+                    textBox1.Invoke(new Action(() => textBox1.AppendText(str.Coordinates_to_string(coo)))); // reikia kreiptis taip, nes is kito threado negalima toliau test 
                     xlatest = (int)circle.Center.X;
-
                 }
 
-                if (ff == 40)
+                if (ff == 15)
                 {
-                    if(m.Size.Width /2 < xlatest)
+                    if (m.Size.Width - m.Size.Width / 4 < xlatest)
                     {
-                        bluet++;
-                        richTextBox1.Invoke(new Action(() => richTextBox1.Text = bluet.ToString()));
+                        right++;
+                        label3.Invoke(new Action(() => label3.Text = right.ToString()));
+                        //save score for the last game started
+                        gameList.ElementAt(game.id).Team1Score = right;
+                        gameList.SaveList();
                     }
-                    else
+
+                    if (m.Size.Width - m.Size.Width / 4 * 3 > xlatest)
                     {
-                        redt++;
-                        richTextBox2.Invoke(new Action(() => richTextBox2.Text = bluet.ToString()));
+                        left++;
+                        label4.Invoke(new Action(() => label4.Text = left.ToString()));
+                        //save score for the last game started
+                        gameList.ElementAt(game.id).Team2Score = left;
+                        gameList.SaveList();
                     }
                 }
-
-
-                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // šitie du del dydžio lango dydžio, kad viskas matytuos
-                pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-
-                pictureBox1.Image = ball.Bitmap; 
-                pictureBox2.Image = hsv.Bitmap;
-                GC.Collect();
-                //Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
+                //Thread.Sleep(100 / (int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
             }
             catch (Exception)
             {
@@ -137,48 +154,45 @@ namespace Vid
                 pictureBox1.Image = null;
             }
         }
-
-        private void PauseToolStripMenuItem1_Click(object sender, EventArgs e)
+                
+        private void historyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (capture != null)
+            // Create new form for game history
+            Vid.HistoryForm history = new HistoryForm();
+            history.ShowDialog();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
             {
-                capture.Stop();
+                if (button1.Text == "Pause")
+                {
+                    button1.Text = "Start";
+
+                    capture.Stop();
+                }
+                else
+                {
+                    button1.Text = "Pause";
+                    capture.Start();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("First, you have to choose file!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                button1.Text = "Start";
             }
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void VideoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PictureBox1_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }
