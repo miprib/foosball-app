@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -26,22 +27,25 @@ namespace Vid
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text.Length == 0)
+            if ((textBox1.Text.Length == 0) || (textBox2.Text.Length == 0))
             {
-                MessageBox.Show("First player name is empty", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show("You must enter player or team name", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 return;
             }
-            if (textBox2.Text.Length == 0)
-            {
-                MessageBox.Show("Second player name is empty", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                return;
-            }
-            if(textBox1.Text == textBox2.Text)
+            if (textBox1.Text == textBox2.Text)
             {
                 MessageBox.Show("Player names can't be same", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 return;
             }
-            Global.text = textBox1.Text + "," + textBox2.Text;
+            String fnames = @"\^";
+            if (Regex.IsMatch(textBox1.Text, fnames) || Regex.IsMatch(textBox2.Text, fnames))
+            {
+                MessageBox.Show("Player names can't have symbol \"^\" !", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return;
+            }
+
+
+            Global.text = AddNames.Ret_names(textBox1.Text, textBox2.Text);
 
             Image<Bgr, byte> lll = new Image<Bgr, byte>(50, 50, new Bgr(trackBar1.Value, trackBar2.Value, trackBar3.Value));
 
@@ -144,7 +148,25 @@ namespace Vid
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            Global.text = textBox1.Text + "," + textBox2.Text;
+            if (textBox1.Text.Length == 0 && textBox2.Text.Length == 0)
+            {
+                MessageBox.Show("You must enter player or team name", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return;
+            }
+            if (textBox1.Text == textBox2.Text)
+            {
+                MessageBox.Show("Player names can't be same", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return;
+            }
+            String fnames = @"(\w)\^";
+            if (Regex.IsMatch(textBox1.Text, fnames) && Regex.IsMatch(textBox2.Text, fnames))
+            {
+                MessageBox.Show("Player names can't have symbol \"^\" !", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return;
+            }
+
+
+            Global.text = AddNames.Ret_names(textBox1.Text, textBox2.Text);
 
             Image<Bgr, byte> lll = new Image<Bgr, byte>(50, 50, new Bgr(trackBar1.Value, trackBar2.Value, trackBar3.Value));
 

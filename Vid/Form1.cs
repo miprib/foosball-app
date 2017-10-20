@@ -45,7 +45,7 @@ namespace Vid
         {
             Vid.Form2 a = new Form2();
             a.ShowDialog();
-            String[] names = Global.text.Split(',');
+            String[] names = Global.text.Split('^');
 
             if (Global.cancel) return;
 
@@ -53,6 +53,10 @@ namespace Vid
 
             label1.Text = names[0];
             label2.Text = names[1];
+            left = 0;
+            right = 0;
+            label3.Text = left.ToString();
+            label4.Text = right.ToString();
 
 
             if (Global.videoFromFile)
@@ -138,7 +142,7 @@ namespace Vid
                         gameList.SaveList();
                     }
                 }
-                //Thread.Sleep(100 / (int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
+                //Thread.Sleep(1000 / (int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
             }
             catch (Exception)
             {

@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddNames.cs" />
     <Compile Include="CooString.cs" />
     <Compile Include="Detaling.cs" />
     <Compile Include="Global.cs" />

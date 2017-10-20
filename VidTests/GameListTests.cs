@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace Vid.Tests
 {
@@ -24,6 +25,20 @@ namespace Vid.Tests
 
             // Assert
             Assert.IsTrue(Regex.IsMatch(actual, regexPattern));
+        }
+
+        [TestMethod]
+        public void JsonTest()
+        {
+            // Arrange
+            String regexPattern = @"(\[{.*}\])";
+
+            // Act
+            String path = GameList.path;
+            String json = File.ReadAllText(path);
+
+            // Assert
+            Assert.IsTrue(Regex.IsMatch(json, regexPattern));
         }
 
     }
