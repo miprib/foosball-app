@@ -20,7 +20,6 @@ namespace Vid.Tests
             String regexPattern = @"^([\w]\:)(\\[A-z_\-\s0-9\.]+)+\.(txt)$";
 
             // Act
-            GameList.NewInstance();
             String actual = GameList.path;
 
             // Assert
@@ -41,5 +40,27 @@ namespace Vid.Tests
             Assert.IsTrue(Regex.IsMatch(json, regexPattern));
         }
 
+        [TestMethod]
+        public void IdTest()
+        {
+            // Arrange
+            bool check = true;
+
+            GameList gameList = GameList.NewInstance();
+            int newIndex = gameList.NextId();
+
+            // Act
+            foreach(Game game in gameList)
+            {
+                if(newIndex == game.id)
+                {
+                    check = false;
+                    break;
+                }
+            }
+
+            // Assert
+            Assert.IsTrue(check);
+        }
     }
 }
