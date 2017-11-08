@@ -12,6 +12,7 @@ using Android.Graphics;
 using Android.Content.PM;
 using Camera = Android.Hardware.Camera;
 using Xamarin.Forms;
+using Android.Media;
 
 namespace xamarin_android
 {
@@ -23,7 +24,9 @@ namespace xamarin_android
         ImageView imageView;
 
         private Camera camera;
+        ISurfaceHolder surfaceHolder;
         TextureView textureView;
+        MediaPlayer mediaPlayer;
 
         MCvScalar sk = new MCvScalar();
         //Point po = new Point(-1, -1);
@@ -41,15 +44,12 @@ namespace xamarin_android
             textureView.SurfaceTextureListener = this;
             SetContentView(textureView);
 
-            /*imageView = FindViewById<ImageView> (Resource.Id.imageView);
-            Button button1 = FindViewById<Button>(Resource.Id.button);
-            button1.Click += (sender, e) => {
-                // Perform action on click
-                var imageIntent = new Intent();
-                imageIntent.SetType("video/*");
-                imageIntent.SetAction(Intent.ActionGetContent);
-                StartActivityForResult(Intent.CreateChooser(imageIntent, "Select photo"), 0);
-            };*/
+            SurfaceView surfaceView = (SurfaceView)FindViewById(Resource.Id.surfaceView);
+            //set to top layer
+            surfaceView.SetZOrderOnTop(true);
+            //set the background to transparent
+            surfaceView.Holder.SetFormat(Format.Transparent);
+            surfaceHolder = surfaceView.Holder;
         }
        
 
@@ -112,11 +112,27 @@ namespace xamarin_android
 
             }
         }
+
+
         /** method that opens camera when the activity is launched
          */
         public void OnSurfaceTextureAvailable(SurfaceTexture surface, int width, int height)
         {
-            camera = Camera.Open();
+            // VIDEO FROM PROJECT
+            Surface s = new Surface(surface);
+            mediaPlayer = new MediaPlayer();
+            Android.Net.Uri uri = Android.Net.Uri.Parse("android.resource://xamarin_android.xamarin_android//" + Resource.Raw.video);
+            if(uri != null)
+            {
+                mediaPlayer.SetDataSource(BaseContext, uri);
+                mediaPlayer.SetSurface(s);
+                mediaPlayer.Prepare();
+                mediaPlayer.Start();
+            }
+
+
+            // LIVE CAMERA FEED
+            /*camera = Camera.Open();
 
             try
             {
@@ -130,7 +146,7 @@ namespace xamarin_android
 
             Camera.Parameters parameters = camera.GetParameters();
             parameters.SetPreviewSize((int)metrics.WidthPixels, (int)metrics.HeightPixels);
-            parameters.FocusMode = Camera.Parameters.FocusModeContinuousPicture;
+            parameters.FocusMode = Camera.Parameters.FocusModeContinuousPicture;*/
         }
 
         public bool OnSurfaceTextureDestroyed(SurfaceTexture surface)
@@ -148,11 +164,18 @@ namespace xamarin_android
         {
         }
 
-        /** method that can gets called with every frame. retrieve frame with 
+        /** method that gets called with every frame. retrieve frame with 
          *  Bitmap frameBitmap = textureView.Bitmap;
          */
         public void OnSurfaceTextureUpdated(SurfaceTexture surface)
         {
+            //draw
+            Canvas canvas = surfaceHolder.LockCanvas();
+            //clear the paint of last time
+            canvas.DrawColor(Color.Transparent, PorterDuff.Mode.Clear);
+            //draw a new one, set your ball's position to the rect here
+            canvas.DrawCircle(x, y, radius, mpaint);
+            surfaceHolder.UnlockCanvasAndPost(canvas);
         }
     }
 }
