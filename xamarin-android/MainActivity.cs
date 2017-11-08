@@ -15,8 +15,7 @@ using Xamarin.Forms;
 
 namespace xamarin_android
 {
-    [Activity(Label = "xamarin_android", MainLauncher = true, ConfigurationChanges = ConfigChanges.Orientation,
-        ScreenOrientation = ScreenOrientation.Landscape)]
+    [Activity(Label = "xamarin_android", MainLauncher = true, ConfigurationChanges = ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : Activity , TextureView.ISurfaceTextureListener
     {
         VideoCapture capture;
@@ -26,9 +25,6 @@ namespace xamarin_android
         TextureView textureView;
 
         MCvScalar sk = new MCvScalar();
-        //Point po = new Point(-1, -1);
-        //Size sz = new Size(3, 3);
-       // Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -75,37 +71,19 @@ namespace xamarin_android
             {
                 Mat m = new Mat();
                 capture.Retrieve(m);
-                Mat g = new Mat();
-                Mat n = new Mat();
-                Mat k = new Mat();
-                Mat hsv = new Mat();
-                CvInvoke.CvtColor(m, g, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv); //Pakeičiu į hsv, nes "geresnė spalvų paletė jo"... Nu arba dar nemoku su spalvu jidaus žaist normaliai
 
-                CvInvoke.InRange(g, new ScalarArray(new MCvScalar(0, 100, 100)), new ScalarArray(new MCvScalar(10, 255, 255)), g);  // išskiriam raudona spalva per tas tris eilutes
+                Mat ball = Detailing.Detail(m);
 
-                //CvInvoke.Blur(g, g, sz, po); // išryškinam paveikslėlį
-                //CvInvoke.Dilate(g, g, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
-               // CvInvoke.Erode(g, g, s, po, 1, Emgu.CV.CvEnum.BorderType.Default, sk);
+                CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows / 4, 60, 30, 15, 40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
 
 
-                CircleF[] circles = CvInvoke.HoughCircles(g, Emgu.CV.CvEnum.HoughType.Gradient, 2, g.Rows / 4, 60, 30, 15, 40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
-
-
-                Image<Bgr, Byte> circleImage = m.ToImage<Bgr, byte>();
+                Image<Bgr, Byte> circleImage = ball.ToImage<Bgr, byte>();
                 foreach (CircleF circle in circles)
                 {
-                    string text = "ball position = x " + circle.Center.X.ToString() + ", y " + circle.Center.Y.ToString() + System.Environment.NewLine; //dvi eilut4s tekstui
-                    //textBox1.Invoke(new Action(() => textBox1.AppendText(text))); // reikia kreiptis taip, nes is kito threado negalima toliau test visko
-                    //circleImage.Draw(circle, new Bgr(Color.Red), 4); // apibrėžiam apvalius
+                    string text = "ball position = x " + circle.Center.X.ToString() + ", y " + circle.Center.Y.ToString() + System.Environment.NewLine;
                 }
-
-                //pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // šitie du del dydžio lango dydžio, kad viskas matytuos
-                //pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-
-                //pictureBox1.Image = g.ToImage<Bgr, byte>().Bitmap;
+                
                 imageView.SetImageBitmap(circleImage.Bitmap);
-                //imageView.Image = circleImage.Bitmap;
-                Thread.Sleep((int)capture.GetCaptureProperty(Emgu.CV.CvEnum.CapProp.Fps));
             }
             catch (Exception)
             {
@@ -148,11 +126,32 @@ namespace xamarin_android
         {
         }
 
-        /** method that can gets called with every frame. retrieve frame with 
+        /** method that gets called with every frame. retrieve frame with 
          *  Bitmap frameBitmap = textureView.Bitmap;
          */
         public void OnSurfaceTextureUpdated(SurfaceTexture surface)
         {
+            try
+            {
+                Bitmap frame = textureView.Bitmap;
+                Image<Bgr, byte> fr = new Image<Bgr, byte>(frame);
+                Mat m = fr.Mat;
+
+                Mat ball = Detailing.Detail(m);
+
+                CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows / 4, 60, 30, 15, 40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
+
+                foreach (CircleF circle in circles)
+                {
+                    string text = "ball position = x " + circle.Center.X.ToString() + ", y " + circle.Center.Y.ToString() + System.Environment.NewLine;
+                }
+
+                imageView.SetImageBitmap(ball.Bitmap);
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }
