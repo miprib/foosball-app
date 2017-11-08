@@ -69,17 +69,29 @@ namespace Foosball
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f050002
-			public const int HighscoreButton = 2131034114;
+			// aapt resource value: 0x7f050006
+			public const int HighscoreButton = 2131034118;
 			
-			// aapt resource value: 0x7f050000
-			public const int StartButton = 2131034112;
+			// aapt resource value: 0x7f050004
+			public const int StartButton = 2131034116;
+			
+			// aapt resource value: 0x7f050002
+			public const int getHelloWorldDataButton = 2131034114;
 			
 			// aapt resource value: 0x7f050003
-			public const int highscoreText = 2131034115;
+			public const int getHelloWorldDataTextView = 2131034115;
+			
+			// aapt resource value: 0x7f050007
+			public const int highscoreText = 2131034119;
+			
+			// aapt resource value: 0x7f050000
+			public const int sayHelloWorldButton = 2131034112;
 			
 			// aapt resource value: 0x7f050001
-			public const int startText = 2131034113;
+			public const int sayHelloWorldTextView = 2131034113;
+			
+			// aapt resource value: 0x7f050005
+			public const int startText = 2131034117;
 			
 			static Id()
 			{
@@ -95,7 +107,10 @@ namespace Foosball
 		{
 			
 			// aapt resource value: 0x7f030000
-			public const int Main = 2130903040;
+			public const int Highscores = 2130903040;
+			
+			// aapt resource value: 0x7f030001
+			public const int Main = 2130903041;
 			
 			static Layout()
 			{
@@ -113,8 +128,14 @@ namespace Foosball
 			// aapt resource value: 0x7f040000
 			public const int app_name = 2130968576;
 			
+			// aapt resource value: 0x7f040004
+			public const int get_hello_world_data = 2130968580;
+			
 			// aapt resource value: 0x7f040002
 			public const int highscoreButton = 2130968578;
+			
+			// aapt resource value: 0x7f040003
+			public const int say_hello_world = 2130968579;
 			
 			// aapt resource value: 0x7f040001
 			public const int startButton = 2130968577;
