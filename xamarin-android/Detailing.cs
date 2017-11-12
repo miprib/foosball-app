@@ -7,7 +7,7 @@ namespace xamarin_android
 {
     class Detailing
     {
-        public static Task<Mat> Detail(Mat frame)
+        public static Mat Detail(Mat frame)
         {
             Mat ball = new Mat();
             //Bandžiau padaryt, kad keitimas į hsv būtu atskiruose threduose, kad greičiau veiktų, bet nieko nepadėjo
