@@ -18,6 +18,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using RestSharp.Deserializers;
 using System.Collections.ObjectModel;
+using Android.Text.Method;
 
 namespace Foosball
 {
@@ -45,10 +46,9 @@ namespace Foosball
 
             getDataButton.Click += async (sender, e) =>
             {
-                //string url = "http://192.168.0.102:5000/api/matchdetailitems"; change to local IP
-                // http://10.3.7.168:5000/api/matchdetailitems - MIF
+                //string url = "http://192.168.0.101:5000/api/matchdetailitems"; change to current IP
 
-                var client = new RestClient("http://10.3.7.168:5000/api/matchdetailitems");
+                var client = new RestClient("http://192.168.0.101:5000/api/matchdetailitems");
                 var request = new RestRequest( Method.GET);
 
                 request.OnBeforeDeserialization = resp => { resp.ContentType = "application/json"; };
@@ -56,6 +56,7 @@ namespace Foosball
 
                 //ListView historyList = FindViewById<ListView>(Resource.Id.HistoryList);
                 TextView history = FindViewById<TextView>(Resource.Id.HistoryText);
+                history.MovementMethod = new ScrollingMovementMethod();
 
                 StringBuilder MyStringBuilder = new StringBuilder("");
 
