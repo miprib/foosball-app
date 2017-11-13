@@ -50,9 +50,20 @@ namespace Foosball
 
             Button doSomethingButton = FindViewById<Button>(Resource.Id.DoSomethingButton);
 
+            // Data for POST
+            Item i = new Item
+            {
+                id = 666,
+                date = DateTime.Now,
+                team1 = "PSI",
+                team2 = "Gyvenimas",
+                team1Score = 666,
+                team2Score = -100
+            };
+
             doSomethingButton.Click += async (sender, e) =>
             {
-
+                POST(url, i);
             };
         }
 
@@ -73,6 +84,15 @@ namespace Foosball
                                "\tDate: " + i.date + "\n" +
                                "\t" + i.team1 + "(" + i.team1Score + ") VS " + i.team2 + " (" + i.team2Score + ")\n\n");
             }
+        }
+
+        public void POST(string url, Item i)
+        {
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(i);
+            client.Execute(request);
         }
     }
 }
