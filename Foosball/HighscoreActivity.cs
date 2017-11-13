@@ -1,133 +1,85 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
-using Android.OS;
+using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using System.ServiceModel;
-using FoosballWcfHost;
-
-// For reference
-// https://developer.xamarin.com/guides/cross-platform/application_fundamentals/web_services/walkthrough_working_with_WCF/
+using Android.OS;
+using System.Threading.Tasks;
+using System.Json;
+using System.Net;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json;
+using RestSharp;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using RestSharp.Deserializers;
+using System.Collections.ObjectModel;
 
 namespace Foosball
 {
      [Activity(Label = "Highscores")]
      public class HighscoreActivity : Activity
      {
-        public static readonly EndpointAddress EndPoint = new EndpointAddress("http://192.168.0.103:9608/FoosballService.svc");
+        public class Item
+        {
+            public string id { get; set; }
+            public DateTime date { get; set; }
+            public string team1 { get; set; }
+            public string team2 { get; set; }
+            public int team1Score { get; set; }
+            public int team2Score { get; set; }
+        }
 
-        private FoosballServiceClient _client;
-        private Button _getHelloWorldDataButton;
-        private TextView _getHelloWorldDataTextView;
-        private Button _sayHelloWorldButton;
-        private TextView _sayHelloWorldTextView;
-
-        // Initializes the instance variables for our class and wires up some event handlers
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            SetContentView(Resource.Layout.Highscores);
+            // Set our view from the "main" layout resource
+            SetContentView(Resource.Layout.History);
 
-            InitializeFoosballServiceClient();
+            Button getDataButton = FindViewById<Button>(Resource.Id.GetDataButton);
 
-            // This button will invoke the GetHelloWorldData - the method that takes a C# object as a parameter.
-            _getHelloWorldDataButton = FindViewById<Button>(Resource.Id.getHelloWorldDataButton);
-            _getHelloWorldDataButton.Click += GetHelloWorldDataButtonOnClick;
-            _getHelloWorldDataTextView = FindViewById<TextView>(Resource.Id.getHelloWorldDataTextView);
-
-            // This button will invoke SayHelloWorld - this method takes a simple string as a parameter.
-            _sayHelloWorldButton = FindViewById<Button>(Resource.Id.sayHelloWorldButton);
-            _sayHelloWorldButton.Click += SayHelloWorldButtonOnClick;
-            _sayHelloWorldTextView = FindViewById<TextView>(Resource.Id.sayHelloWorldTextView);
-        }
-
-        // Instantiates and initializes a FoosballService object
-        private void InitializeFoosballServiceClient()
-        {
-            BasicHttpBinding binding = CreateBasicHttp();
-
-            _client = new FoosballServiceClient(binding, EndPoint);
-            _client.SayHelloToCompleted += ClientOnSayHelloToCompleted;
-            _client.GetHelloDataCompleted += ClientOnGetHelloDataCompleted;
-        }
-
-        private static BasicHttpBinding CreateBasicHttp()
-        {
-            BasicHttpBinding binding = new BasicHttpBinding
+            getDataButton.Click += async (sender, e) =>
             {
-                Name = "basicHttpBinding",
-                MaxBufferSize = 2147483647,
-                MaxReceivedMessageSize = 2147483647
+                //string url = "http://192.168.0.102:5000/api/matchdetailitems"; change to local IP
+                // http://10.3.7.168:5000/api/matchdetailitems - MIF
+
+                var client = new RestClient("http://10.3.7.168:5000/api/matchdetailitems");
+                var request = new RestRequest( Method.GET);
+
+                request.OnBeforeDeserialization = resp => { resp.ContentType = "application/json"; };
+                var response = client.Execute<List<Item>>(request);
+
+                //ListView historyList = FindViewById<ListView>(Resource.Id.HistoryList);
+                TextView history = FindViewById<TextView>(Resource.Id.HistoryText);
+
+                StringBuilder MyStringBuilder = new StringBuilder("");
+
+                foreach (Item i in response.Data)
+                {
+                    //history.Text = i.id + "\n" + i.date + "\n" + i.team1 + " " + i.team1Score + " VS " + i.team2 + " " + i.team2Score;
+                    MyStringBuilder.Append(i.id + "\n" + i.date + "\n" + i.team1 + " " + i.team1Score + " VS " + i.team2 + " " + i.team2Score + "\n\n");
+                }
+
+                history.Text = MyStringBuilder.ToString();
+
             };
-            TimeSpan timeout = new TimeSpan(0, 0, 30);
-            binding.SendTimeout = timeout;
-            binding.OpenTimeout = timeout;
-            binding.ReceiveTimeout = timeout;
-            return binding;
+
         }
 
-        // Event handlers for the two buttons in our activity
-        private void GetHelloWorldDataButtonOnClick(object sender, EventArgs eventArgs)
+        /*public void GET(string url)
         {
-            FoosballData data = new FoosballData { Name = "<(^O^)>", SayHello = true };
-            _getHelloWorldDataTextView.Text = "Waiting for WCF...";
-            _client.GetHelloDataAsync(data);
-        }
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.GET);
 
-        private void SayHelloWorldButtonOnClick(object sender, EventArgs eventArgs)
-        {
-            _sayHelloWorldTextView.Text = "Waiting for WCF...";
-            _client.SayHelloToAsync("(>^_^)>");
-        }
-
-        // Event handlers for the xxxCompleted events of the FoosballService proxy client
-        private void ClientOnGetHelloDataCompleted(object sender, GetHelloDataCompletedEventArgs getHelloDataCompletedEventArgs)
-        {
-            string msg = null;
-
-            if (getHelloDataCompletedEventArgs.Error != null)
-            {
-                msg = getHelloDataCompletedEventArgs.Error.Message;
-            }
-            else if (getHelloDataCompletedEventArgs.Cancelled)
-            {
-                msg = "Request was cancelled.";
-            }
-            else
-            {
-                msg = getHelloDataCompletedEventArgs.Result.Name;
-            }
-            RunOnUiThread(() => _getHelloWorldDataTextView.Text = msg);
-        }
-
-        private void ClientOnSayHelloToCompleted(object sender, SayHelloToCompletedEventArgs sayHelloToCompletedEventArgs)
-        {
-            string msg = null;
-
-            if (sayHelloToCompletedEventArgs.Error != null)
-            {
-                msg = sayHelloToCompletedEventArgs.Error.Message;
-            }
-            else if (sayHelloToCompletedEventArgs.Cancelled)
-            {
-                msg = "Request was cancelled.";
-            }
-            else
-            {
-                msg = sayHelloToCompletedEventArgs.Result;
-            }
-            RunOnUiThread(() => _sayHelloWorldTextView.Text = msg);
-        }
-
-
+            request.OnBeforeDeserialization = resp => { resp.ContentType = "application/json"; };
+            var response = client.Execute<List<Item>>(request);
+        }*/
     }
-     
 }
+     
     
