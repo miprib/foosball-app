@@ -1,46 +1,34 @@
 ﻿using Android.App;
-using Android.Widget;
 using Android.OS;
 using Android.Views;
 using Android.Content;
 using System;
 
-using System.Threading;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Android.Graphics;
 using Android.Content.PM;
-using Camera = Android.Hardware.Camera;
-using Xamarin.Forms;
-using Android.Media;
 using Android.Runtime;
 
 namespace xamarin_android
 {
-    [Activity(Label = "xamarin_android", MainLauncher = true, ConfigurationChanges = ConfigChanges.Orientation,
+    [Activity(Label = "xamarin_android", ConfigurationChanges = ConfigChanges.Orientation,
         ScreenOrientation = ScreenOrientation.Landscape)]
-    public class MainActivity : Activity , TextureView.ISurfaceTextureListener, ISurfaceHolderCallback
+    public class MainActivity : Activity, TextureView.ISurfaceTextureListener, ISurfaceHolderCallback
     {
-        VideoCapture capture;
-        ImageView imageView;
-
-        private Camera camera;
         ISurfaceHolder surfaceHolder;
         SurfaceView surfaceView;
         TextureView textureView;
-        MediaPlayer mediaPlayer;
-
-        MCvScalar sk = new MCvScalar();
-        //Point po = new Point(-1, -1);
-        //Size sz = new Size(3, 3);
-       // Mat s = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
+        Video video;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
+            RequestWindowFeature(WindowFeatures.NoTitle);
+
             // Set our view from the "main" layout resource
-            SetContentView (Resource.Layout.Main);
+            SetContentView(Resource.Layout.Main);
 
             textureView = (TextureView)FindViewById(Resource.Id.textureView1);
             textureView.SurfaceTextureListener = this;
@@ -52,52 +40,26 @@ namespace xamarin_android
             surfaceView.Holder.SetFormat(Format.Transparent);
             surfaceHolder = surfaceView.Holder;
             surfaceHolder.AddCallback(this);
-
         }
 
         /** method that opens camera when the activity is launched
          */
         public void OnSurfaceTextureAvailable(SurfaceTexture surface, int width, int height)
         {
-            // VIDEO FROM PROJECT
-            Surface s = new Surface(surface);
-            mediaPlayer = new MediaPlayer();
-            Android.Net.Uri uri = Android.Net.Uri.Parse("android.resource://xamarin_android.xamarin_android//" + Resource.Raw.video);
-            if(uri != null)
+            if (Intent.GetStringExtra("videoType") == "file")
             {
-                mediaPlayer.SetDataSource(BaseContext, uri);
-                mediaPlayer.SetSurface(s);
-                mediaPlayer.Prepare();
-                mediaPlayer.Start();
+                video = new VideoFile(Intent.GetStringExtra("path"));
             }
-
-
-            // LIVE CAMERA FEED
-            /*camera = Camera.Open();
-
-            try
+            else
             {
-                camera.SetPreviewTexture(surface);
-                camera.StartPreview();
+                video = new VideoCamera();
             }
-            catch (Exception t)
-            {}
-
-            var metrics = Resources.DisplayMetrics;
-
-            Camera.Parameters parameters = camera.GetParameters();
-            parameters.SetPreviewSize((int)metrics.WidthPixels, (int)metrics.HeightPixels);
-            parameters.FocusMode = Camera.Parameters.FocusModeContinuousPicture;*/
+            video.PlayVideo(BaseContext, surface);
         }
 
         public bool OnSurfaceTextureDestroyed(SurfaceTexture surface)
         {
-            if (camera != null)
-            {
-                camera.StopPreview();
-                camera.Release();
-                camera = null;
-            }
+            video.StopVideo();
             return false;
         }
 
@@ -108,63 +70,62 @@ namespace xamarin_android
         /** method that gets called with every frame. retrieve frame with 
          *  Bitmap frameBitmap = textureView.Bitmap;
          */
+        int i = 0;
         public void OnSurfaceTextureUpdated(SurfaceTexture surface)
         {
-            
-            
-                Bitmap frame = textureView.Bitmap;
-                Image<Bgr, byte> fr = new Image<Bgr, byte>(frame);
-                Mat m = fr.Mat;
+            Console.WriteLine(i);
+            i++;
+            Bitmap frame = textureView.Bitmap;
+            Image<Bgr, byte> fr = new Image<Bgr, byte>(frame);
+            Mat m = fr.Mat;
 
-                Mat ball = Detailing.Detail(m);
+            Mat ball = Detailing.Detail(m);
 
-                CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows / 4, 60, 30, 15, 40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
+            CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows / 4, 60, 30, 15, 40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
 
-                Paint paint = new Paint();
-                paint.Color = Android.Graphics.Color.Red;
-                paint.SetStyle(Paint.Style.Stroke);
-                paint.StrokeWidth = 5f;
+            Paint paint = new Paint();
+            paint.Color = Android.Graphics.Color.Red;
+            paint.SetStyle(Paint.Style.Stroke);
+            paint.StrokeWidth = 5f;
 
+            if (surfaceCreated)
+            {
+                Canvas canvas = surfaceHolder.LockCanvas();
+                //clear the paint of last time
+                canvas.DrawColor(Android.Graphics.Color.Transparent, PorterDuff.Mode.Clear);
+                //draw a new one, set your ball's position to the rect here
+
+                surfaceHolder.UnlockCanvasAndPost(canvas);
+            }
+
+            foreach (CircleF circle in circles)
+            {
+                string text = "ball position = x " + circle.Center.X.ToString() + ", y " + circle.Center.Y.ToString() + System.Environment.NewLine;
+                Console.Write(text);
+
+                //draw
+
+                Console.WriteLine(surfaceCreated);
                 if (surfaceCreated)
                 {
                     Canvas canvas = surfaceHolder.LockCanvas();
                     //clear the paint of last time
-                    canvas.DrawColor(Android.Graphics.Color.Transparent, PorterDuff.Mode.Clear);
+
                     //draw a new one, set your ball's position to the rect here
-                
+                    canvas.DrawCircle(circle.Center.X, circle.Center.Y, circle.Radius, paint);
                     surfaceHolder.UnlockCanvasAndPost(canvas);
                 }
-        
-                foreach (CircleF circle in circles)
-                {
-                    string text = "ball position = x " + circle.Center.X.ToString() + ", y " + circle.Center.Y.ToString() + System.Environment.NewLine;
-                    Console.Write(text);
-
-                    //draw
-
-                    Console.WriteLine(surfaceCreated);
-                    if (surfaceCreated)
-                    {
-                        Canvas canvas = surfaceHolder.LockCanvas();
-                        //clear the paint of last time
-                     
-                        //draw a new one, set your ball's position to the rect here
-                        canvas.DrawCircle(circle.Center.X, circle.Center.Y, circle.Radius, paint);
-                        surfaceHolder.UnlockCanvasAndPost(canvas);
-                    }
-                }
-            
-            
+            }
         }
 
         public void SurfaceChanged(ISurfaceHolder holder, [GeneratedEnum] Format format, int width, int height)
         {
         }
+
         bool surfaceCreated = false;
         public void SurfaceCreated(ISurfaceHolder holder)
         {
             surfaceCreated = true;
-            Console.WriteLine("called");
         }
 
         public void SurfaceDestroyed(ISurfaceHolder holder)
