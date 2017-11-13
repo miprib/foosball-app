@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace Foosball
+namespace Vid
 {
     public class Game : IEquatable<Game>
     {

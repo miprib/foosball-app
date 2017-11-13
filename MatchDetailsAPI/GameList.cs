@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Foosball
+namespace Vid
 {
     public class GameList : List<Game>
     {
@@ -22,7 +22,7 @@ namespace Foosball
             }
             String json = File.ReadAllText(path);
             GameList gameList = JsonConvert.DeserializeObject<GameList>(json);
-            if (gameList == null)
+            if(gameList == null)
             {
                 gameList = new GameList();
             }
