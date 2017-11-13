@@ -14,19 +14,19 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="15dp"
-        android:id="@+id/GetDataButton" />
+        android:id="@+id/DoSomethingButton" />
     <TextView
-        android:text="Get data"
+        android:text="Do something nice"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/getDataText"
+        android:id="@+id/doSomethingText"
         android:gravity="center"
         android:layout_gravity="center_horizontal" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines= "100"
+        android:maxLines="100"
         android:scrollbars="vertical"
         android:id="@+id/HistoryText" />
 </LinearLayout>

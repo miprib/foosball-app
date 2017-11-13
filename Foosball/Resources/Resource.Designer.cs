@@ -70,7 +70,7 @@ namespace Foosball
 		{
 			
 			// aapt resource value: 0x7f050000
-			public const int GetDataButton = 2131034112;
+			public const int DoSomethingButton = 2131034112;
 			
 			// aapt resource value: 0x7f050005
 			public const int HighscoreButton = 2131034117;
@@ -82,7 +82,7 @@ namespace Foosball
 			public const int StartButton = 2131034115;
 			
 			// aapt resource value: 0x7f050001
-			public const int getDataText = 2131034113;
+			public const int doSomethingText = 2131034113;
 			
 			// aapt resource value: 0x7f050006
 			public const int highscoreText = 2131034118;
