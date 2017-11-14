@@ -13,4 +13,9 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:id="@+id/bPlayCamera" />
+<Button
+      android:text="History"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/bHistory" />
 </LinearLayout>

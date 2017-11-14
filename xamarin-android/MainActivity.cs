@@ -28,7 +28,7 @@ namespace xamarin_android
             RequestWindowFeature(WindowFeatures.NoTitle);
 
             // Set our view from the "main" layout resource
-            SetContentView(Resource.Layout.Main);
+            SetContentView(Resource.Layout.a_main);
 
             textureView = (TextureView)FindViewById(Resource.Id.textureView1);
             textureView.SurfaceTextureListener = this;

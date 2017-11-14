@@ -13,6 +13,8 @@ namespace xamarin_android
     {
         Button bPlayFile;
         Button bPlayCamera;
+        Button bHistory;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -22,12 +24,10 @@ namespace xamarin_android
 
             bPlayCamera = (Button)FindViewById(Resource.Id.bPlayCamera);
             bPlayFile = (Button)FindViewById(Resource.Id.bPlayFile);
+            bHistory = (Button)FindViewById(Resource.Id.bHistory);
 
             bPlayCamera.Click += delegate {
-                var intent = new Intent(this, typeof(MainActivity));
-                intent.PutExtra("videoType", "live");
-                StartActivity(intent);
-                Finish();
+                InputTeamNames("live");
             };
             bPlayFile.Click += delegate {
                 var videoIntent = new Intent();
@@ -43,12 +43,35 @@ namespace xamarin_android
 
             if (resultCode == Result.Ok)
             {
+                InputTeamNames("file", data.DataString);
+            }
+        }
+
+        public void InputTeamNames(string type, string path = "")
+        {
+            //set alert for executing the task
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.SetTitle("Input team names");
+            var inputView = LayoutInflater.Inflate(Resource.Layout.d_team_names, null);
+            var etTeamName1 = (EditText)inputView.FindViewById(Resource.Id.etTeamName1);
+            var etTeamName2 = (EditText)inputView.FindViewById(Resource.Id.etTeamName2);
+            alert.SetView(inputView);
+            alert.SetPositiveButton("Submit", (senderAlert, args) => {
                 var intent = new Intent(this, typeof(MainActivity));
-                intent.PutExtra("videoType", "file");
-                intent.PutExtra("path", data.DataString);
+                intent.PutExtra("videoType", "type");
+                intent.PutExtra("path", path);
+                intent.PutExtra("teamName1", etTeamName1.Text);
+                intent.PutExtra("teamName2", etTeamName2.Text);
                 StartActivity(intent);
                 Finish();
-            }
+            });
+
+            alert.SetNegativeButton("Cancel", (senderAlert, args) => {
+                alert.Dispose();
+            });
+
+            Dialog dialog = alert.Create();
+            dialog.Show();
         }
     }
 }
