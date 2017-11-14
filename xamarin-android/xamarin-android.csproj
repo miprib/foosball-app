@@ -125,7 +125,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game.cs" />
     <Compile Include="HighscoreActivity.cs" />
+    <Compile Include="HistoryListAdapter.cs" />
     <Compile Include="IVideo.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Recognition.cs" />
@@ -152,6 +154,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\a_highscore.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\list_row.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

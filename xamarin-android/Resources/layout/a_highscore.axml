@@ -5,28 +5,10 @@
     android:layout_height="match_parent"
     android:minWidth="25px"
     android:minHeight="25px">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="@drawable/android_button"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="15dp"
-        android:id="@+id/DoSomethingButton" />
-    <TextView
-        android:text="Do something nice"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/doSomethingText"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="100"
-        android:scrollbars="vertical"
-        android:id="@+id/HistoryText" />
+  <ListView
+     android:minWidth="25px"
+     android:minHeight="25px"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:id="@+id/ListView" />
 </LinearLayout>

@@ -18,7 +18,7 @@ namespace xamarin_android
     public class HighscoreActivity : Activity
     {
         public static string url = "http://192.168.0.101:5000/api/matchdetailitems"; //change to current IP
-
+        ListView listView;
         public class Item
         {
             public int id { get; set; }
@@ -36,10 +36,12 @@ namespace xamarin_android
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.a_highscore);
 
+            //Initializing listview
+            listView = (ListView) FindViewById(Resource.Id.ListView);
+
             // Get data from our Web Service
             GET(url);
-
-            Button doSomethingButton = FindViewById<Button>(Resource.Id.DoSomethingButton);
+            
 
             // Data for POST
             Item i = new Item
@@ -51,11 +53,7 @@ namespace xamarin_android
                 team1Score = 666,
                 team2Score = -100
             };
-
-            doSomethingButton.Click += async (sender, e) =>
-            {
-                POST(url, i);
-            };
+            
         }
 
         public void GET(string url)
@@ -64,17 +62,10 @@ namespace xamarin_android
             var request = new RestRequest(Method.GET);
 
             request.OnBeforeDeserialization = resp => { resp.ContentType = "application/json"; };
-            var response = client.Execute<List<Item>>(request);
+            var response = client.Execute<List<Game>>(request);
 
-            TextView history = FindViewById<TextView>(Resource.Id.HistoryText);
-            history.MovementMethod = new ScrollingMovementMethod();
-
-            foreach (Item i in response.Data)
-            {
-                history.Append("\tGame: " + i.id + "\n" +
-                               "\tDate: " + i.date + "\n" +
-                               "\t" + i.team1 + "(" + i.team1Score + ") VS " + i.team2 + " (" + i.team2Score + ")\n\n");
-            }
+            listView.Adapter = new HistoryListAdapter(this, response.Data);
+            
         }
 
         public void POST(string url, Item i)
