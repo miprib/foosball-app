@@ -71,18 +71,30 @@ namespace xamarin_android
          *  Bitmap frameBitmap = textureView.Bitmap;
          */
         int i = 0;
+        Boolean n = true; // is it is first frame
+        int xlatest = 0; //Latest ball cordinates in x axis
+        int ff = 0; //frames counted since last recognition of ball
+        int left = 0; //left team result
+        int right = 0; //right team result
         public void OnSurfaceTextureUpdated(SurfaceTexture surface)
         {
             Console.WriteLine(i);
             i++;
             Bitmap frame = textureView.Bitmap;
-            Image<Bgr, byte> fr = new Image<Bgr, byte>(frame);
-            Mat m = fr.Mat;
+            Mat m = new Mat(frame);
 
-            Mat ball = Detailing.Detail(m);
+            if (n)
+            {
+                xlatest = m.Size.Width / 2;
+                n = !n;
+            }// if first frame it chooses middle of frame, in case it wont find ball
 
-            CircleF[] circles = CvInvoke.HoughCircles(ball, Emgu.CV.CvEnum.HoughType.Gradient, 2, ball.Rows / 4, 60, 30, 15, 40); // ieškom apvalių(kažkodėl ir ne tik) objektų jau toj išskirtoj raudonoj spalvoj
+            Mat ball = Recognition.findColor(m);
 
+            ball = Recognition.Detailing(ball);
+
+            CircleF[] circles = Recognition.FindCircle(ball);
+            /*
             Paint paint = new Paint();
             paint.Color = Android.Graphics.Color.Red;
             paint.SetStyle(Paint.Style.Stroke);
@@ -97,28 +109,44 @@ namespace xamarin_android
 
                 surfaceHolder.UnlockCanvasAndPost(canvas);
             }
-
+            */
+            ff++; // it counts how many frames since last recognition
             foreach (CircleF circle in circles)
             {
                 string text = "ball position = x " + circle.Center.X.ToString() + ", y " + circle.Center.Y.ToString() + System.Environment.NewLine;
-                Console.Write(text);
+                xlatest = (int)circle.Center.X; //if ball found it updates it's coordinates
+                ff = 0;// ball found, so it will be last recognition
+                /*
+                                //draw
 
-                //draw
+                                Console.WriteLine(surfaceCreated);
+                                if (surfaceCreated)
+                                {
+                                    Canvas canvas = surfaceHolder.LockCanvas();
+                                    //clear the paint of last time
 
-                Console.WriteLine(surfaceCreated);
-                if (surfaceCreated)
+                                    //draw a new one, set your ball's position to the rect here
+                                    canvas.DrawCircle(circle.Center.X, circle.Center.Y, circle.Radius, paint);
+                                    surfaceHolder.UnlockCanvasAndPost(canvas);
+                                }
+                            }
+                */
+            }
+            if (ff == 15) // 15 frames gone since last recognition, so we count goal if ball was near gates
+            {
+                if (m.Size.Width - m.Size.Width / 4 < xlatest)
                 {
-                    Canvas canvas = surfaceHolder.LockCanvas();
-                    //clear the paint of last time
+                    right++;
+                }
 
-                    //draw a new one, set your ball's position to the rect here
-                    canvas.DrawCircle(circle.Center.X, circle.Center.Y, circle.Radius, paint);
-                    surfaceHolder.UnlockCanvasAndPost(canvas);
+                if (m.Size.Width - m.Size.Width / 4 * 3 > xlatest)
+                {
+                    left++;
                 }
             }
         }
 
-        public void SurfaceChanged(ISurfaceHolder holder, [GeneratedEnum] Format format, int width, int height)
+            public void SurfaceChanged(ISurfaceHolder holder, [GeneratedEnum] Format format, int width, int height)
         {
         }
 
