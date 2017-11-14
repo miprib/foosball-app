@@ -25,15 +25,21 @@ namespace xamarin_android
             bPlayCamera = (Button)FindViewById(Resource.Id.bPlayCamera);
             bPlayFile = (Button)FindViewById(Resource.Id.bPlayFile);
             bHistory = (Button)FindViewById(Resource.Id.bHistory);
-
+                  
             bPlayCamera.Click += delegate {
                 InputTeamNames("live");
             };
+
             bPlayFile.Click += delegate {
                 var videoIntent = new Intent();
                 videoIntent.SetType("video/*");
                 videoIntent.SetAction(Intent.ActionGetContent);
                 StartActivityForResult(Intent.CreateChooser(videoIntent, "Select video"), 0);
+            };
+
+            bHistory.Click += delegate {
+                var intent = new Intent(this, typeof(HighscoreActivity));
+                StartActivity(intent);
             };
         }
 
