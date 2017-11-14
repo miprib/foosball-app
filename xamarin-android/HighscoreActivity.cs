@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using RestSharp;
 using Android.Text.Method;
+using System.Net;
 
 namespace xamarin_android
 {
@@ -54,6 +55,20 @@ namespace xamarin_android
                 team2Score = -100
             };
             
+        }
+
+        public static bool IsAddressAvailable()
+        {
+            try
+            {
+                System.Net.WebClient client = new WebClient();
+                client.DownloadData(url);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public void GET(string url)

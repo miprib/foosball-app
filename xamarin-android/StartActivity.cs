@@ -38,8 +38,12 @@ namespace xamarin_android
             };
 
             bHistory.Click += delegate {
-                var intent = new Intent(this, typeof(HighscoreActivity));
-                StartActivity(intent);
+                if (HighscoreActivity.IsAddressAvailable())
+                {
+                    var intent = new Intent(this, typeof(HighscoreActivity));
+                    StartActivity(intent);
+                }
+                else { Toast.MakeText(ApplicationContext, "No connection with service", ToastLength.Long).Show(); }
             };
         }
 
@@ -64,7 +68,7 @@ namespace xamarin_android
             alert.SetView(inputView);
             alert.SetPositiveButton("Submit", (senderAlert, args) => {
                 var intent = new Intent(this, typeof(MainActivity));
-                intent.PutExtra("videoType", "type");
+                intent.PutExtra("videoType", type);
                 intent.PutExtra("path", path);
                 intent.PutExtra("teamName1", etTeamName1.Text);
                 intent.PutExtra("teamName2", etTeamName2.Text);
