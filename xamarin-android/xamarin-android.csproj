@@ -122,9 +122,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Detailing.cs" />
     <Compile Include="IVideo.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Recognition.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartActivity.cs" />

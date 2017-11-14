@@ -119,6 +119,7 @@ namespace xamarin_android
                 /*
                                 //draw
 
+
                                 Console.WriteLine(surfaceCreated);
                                 if (surfaceCreated)
                                 {
