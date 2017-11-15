@@ -20,27 +20,49 @@ namespace xamarin_android
 
         static public GameList GetList()
         {
+            // Initiate Rest Client
+
             var client = new RestClient(url);
             var request = new RestRequest(Method.GET);
 
+            // Set Data format
             request.OnBeforeDeserialization = resp => { resp.ContentType = "application/json"; };
             var response = client.Execute<GameList>(request);
 
+            // Get Data
             return response.Data;
         }
 
         static public void PostGame(Game i)
         {
+            // Initiate Rest Client
             var client = new RestClient(url);
             var request = new RestRequest(Method.POST);
+
+            // Set Data format
             request.RequestFormat = DataFormat.Json;
+
+            // Set Data
             request.AddBody(i);
+
+            // Execute
             client.Execute(request);
         }
 
-        static public void PutGame()
+        static public void PutGame(Game i)
         {
-            // todo
+            // Initiate Rest Client
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.PUT);
+
+            // Set Data format
+            request.RequestFormat = DataFormat.Json;
+
+            // Set Data
+            request.AddBody(i);
+
+            // Execute
+            client.Execute(request);
         }
 
         public static bool IsAddressAvailable()
