@@ -150,11 +150,15 @@ namespace xamarin_android
                     if (ball.Size.Width - ball.Size.Width / 4 < xlatest)
                     {
                         right++;
+                        game.team2Score++;
+                        ServerConnection.PutGame(game);
                     }
 
                     if (ball.Size.Width - ball.Size.Width / 4 * 3 > xlatest)
                     {
                         left++;
+                        game.team1Score++;
+                        ServerConnection.PutGame(game);
                     }
                 }
             }
