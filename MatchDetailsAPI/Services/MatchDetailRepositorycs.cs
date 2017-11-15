@@ -44,7 +44,8 @@ namespace MatchDetailsAPI.Services
             var todoItem = this.Find(item.ID);
             var index = _matchList.IndexOf(todoItem);
             _matchList.RemoveAt(index);
-            _matchList.Insert(index, item);
+            //_matchList.Insert(index, item);
+            _matchList.Add(item);
         }
 
         public void Delete(string id)
