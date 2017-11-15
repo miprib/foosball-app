@@ -10,6 +10,7 @@ using Android.Graphics;
 using Android.Content.PM;
 using Android.Runtime;
 using System.ComponentModel;
+using RestSharp;
 
 namespace xamarin_android
 {
@@ -21,6 +22,7 @@ namespace xamarin_android
         SurfaceView surfaceView;
         TextureView textureView;
         Video video;
+        Game game;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -46,6 +48,19 @@ namespace xamarin_android
             surfaceView.Holder.SetFormat(Format.Transparent);
             surfaceHolder = surfaceView.Holder;
             surfaceHolder.AddCallback(this);
+            
+            game = new Game
+            {
+                // todo get unique id
+                id = MyProperties.getInstance().gameList.GetUniqueId(),
+                date = DateTime.Now,
+                team1 = Intent.GetStringExtra("teamName1"),
+                team2 = Intent.GetStringExtra("teamName2"),
+                team1Score = 0,
+                team2Score = 0
+            };
+            ServerConnection.PostGame(game);
+            // todo update game in server whenever goal happens
         }
 
         /** method that opens camera when the activity is launched

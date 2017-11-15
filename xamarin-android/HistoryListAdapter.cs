@@ -15,9 +15,9 @@ namespace xamarin_android
     public class HistoryListAdapter : BaseAdapter<Game>
     {
         Activity context;
-        List<Game> list;
+        GameList list;
 
-        public HistoryListAdapter(Activity _context, List<Game> _list)
+        public HistoryListAdapter(Activity _context, GameList _list)
             : base()
         {
             this.context = _context;

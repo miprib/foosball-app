@@ -18,7 +18,6 @@ namespace xamarin_android
     [Activity(Label = "Highscores")]
     public class HighscoreActivity : Activity
     {
-        public static string url = "http://192.168.0.101:5000/api/matchdetailitems"; //change to current IP
         ListView listView;
         public class Item
         {
@@ -41,55 +40,9 @@ namespace xamarin_android
             listView = (ListView) FindViewById(Resource.Id.ListView);
 
             // Get data from our Web Service
-            GET(url);
-            
-
-            // Data for POST
-            Item i = new Item
-            {
-                id = 666,
-                date = DateTime.Now,
-                team1 = "PSI",
-                team2 = "Gyvenimas",
-                team1Score = 666,
-                team2Score = -100
-            };
-            
-        }
-
-        public static bool IsAddressAvailable()
-        {
-            try
-            {
-                System.Net.WebClient client = new WebClient();
-                client.DownloadData(url);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public void GET(string url)
-        {
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.GET);
-
-            request.OnBeforeDeserialization = resp => { resp.ContentType = "application/json"; };
-            var response = client.Execute<List<Game>>(request);
-
-            listView.Adapter = new HistoryListAdapter(this, response.Data);
-            
-        }
-
-        public void POST(string url, Item i)
-        {
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.POST);
-            request.RequestFormat = DataFormat.Json;
-            request.AddBody(i);
-            client.Execute(request);
+            GameList gameList = ServerConnection.GetList();
+            MyProperties.getInstance().gameList = gameList;
+            listView.Adapter = new HistoryListAdapter(this, gameList);      
         }
     }
 }

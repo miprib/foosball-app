@@ -22,6 +22,8 @@ namespace xamarin_android
             // Create your application here
             SetContentView(Resource.Layout.a_start);
 
+            MyProperties properties = MyProperties.getInstance();
+
             bPlayCamera = (Button)FindViewById(Resource.Id.bPlayCamera);
             bPlayFile = (Button)FindViewById(Resource.Id.bPlayFile);
             bHistory = (Button)FindViewById(Resource.Id.bHistory);
@@ -38,13 +40,15 @@ namespace xamarin_android
             };
 
             bHistory.Click += delegate {
-                if (HighscoreActivity.IsAddressAvailable())
+                if (ServerConnection.IsAddressAvailable())
                 {
                     var intent = new Intent(this, typeof(HighscoreActivity));
                     StartActivity(intent);
                 }
                 else { Toast.MakeText(ApplicationContext, "No connection with service", ToastLength.Long).Show(); }
             };
+
+            properties.gameList = ServerConnection.GetList();
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
