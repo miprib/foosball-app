@@ -11,6 +11,8 @@ using Android.Content.PM;
 using Android.Runtime;
 using System.ComponentModel;
 using RestSharp;
+using Android.Widget;
+using System.Threading.Tasks;
 
 namespace xamarin_android
 {
@@ -30,8 +32,14 @@ namespace xamarin_android
 
             //Work on background
             worker = new BackgroundWorker();
-            worker.DoWork += bgwrk;
-            worker.RunWorkerCompleted += bgwrkcmp;
+            worker.DoWork += (send, e) =>
+            {
+                e.Result = recognize();
+            };
+            worker.RunWorkerCompleted += (send, e) =>
+            {
+                ball = (Mat)e.Result;
+            };
 
             RequestWindowFeature(WindowFeatures.NoTitle);
 
@@ -48,18 +56,24 @@ namespace xamarin_android
             surfaceView.Holder.SetFormat(Format.Transparent);
             surfaceHolder = surfaceView.Holder;
             surfaceHolder.AddCallback(this);
-            
-            game = new Game
+            try
             {
-                // todo get unique id
-                id = MyProperties.getInstance().gameList.GetUniqueId(),
-                date = DateTime.Now,
-                team1 = Intent.GetStringExtra("teamName1"),
-                team2 = Intent.GetStringExtra("teamName2"),
-                team1Score = 0,
-                team2Score = 0
-            };
-            ServerConnection.PostGame(game);
+                game = new Game
+                {
+                    // todo get unique id
+                    id = MyProperties.getInstance().gameList.GetUniqueId(),
+                    date = DateTime.Now,
+                    team1 = Intent.GetStringExtra("teamName1"),
+                    team2 = Intent.GetStringExtra("teamName2"),
+                    team1Score = 0,
+                    team2Score = 0
+                };
+                ServerConnection.PostGame(game);
+            }
+            catch
+            {
+                Toast.MakeText(ApplicationContext, "No connection with service", ToastLength.Long).Show();
+            }
             // todo update game in server whenever goal happens
         }
 
@@ -99,17 +113,6 @@ namespace xamarin_android
         int right = 0; //right team result 
         private BackgroundWorker worker;
 
-        private void bgwrk(object sender, DoWorkEventArgs e)
-        {
-            e.Result = recognize();
-        }
-
-        private void bgwrkcmp(object sender, RunWorkerCompletedEventArgs e)
-        {
-            ball = (Mat)e.Result;
-
-        }
-
         private Mat recognize()
         {
             Bitmap frame = textureView.Bitmap;
@@ -121,13 +124,15 @@ namespace xamarin_android
 
             return m;
         }
-        Mat ball = new Mat();
+        Mat ball;
         public void OnSurfaceTextureUpdated(SurfaceTexture surface)
         {
             try
             {
                 Console.WriteLine(i);
                 i++;
+
+                //await Task.Run(() => recognize());
 
                 worker.RunWorkerAsync();
 
@@ -151,18 +156,23 @@ namespace xamarin_android
                     {
                         right++;
                         game.team2Score++;
-                        ServerConnection.PutGame(game);
+                        //ServerConnection.PutGame(game);
                     }
 
                     if (ball.Size.Width - ball.Size.Width / 4 * 3 > xlatest)
                     {
                         left++;
                         game.team1Score++;
-                        ServerConnection.PutGame(game);
+                       // ServerConnection.PutGame(game);
                     }
                 }
+                Console.WriteLine("Frame {0} done. Result {1}-{2}", i, left, right);
+
             }
             catch{
+            }
+            if(i % 100 == 0) {
+                GC.Collect();
             }
         }
 

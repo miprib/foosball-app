@@ -45,6 +45,14 @@ namespace xamarin_android
             CvInvoke.Threshold(frame, frame, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
             CvInvoke.Blur(frame, frame, new Size(10, 10), poin, Emgu.CV.CvEnum.BorderType.Default);
             CvInvoke.Threshold(frame, frame, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+            CvInvoke.Blur(frame, frame, new Size(10, 10), poin, Emgu.CV.CvEnum.BorderType.Default);
+            CvInvoke.Threshold(frame, frame, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+            CvInvoke.Blur(frame, frame, new Size(10, 10), poin, Emgu.CV.CvEnum.BorderType.Default);
+            CvInvoke.Threshold(frame, frame, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+            CvInvoke.Blur(frame, frame, new Size(10, 10), poin, Emgu.CV.CvEnum.BorderType.Default);
+            CvInvoke.Threshold(frame, frame, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
+            CvInvoke.Blur(frame, frame, new Size(10, 10), poin, Emgu.CV.CvEnum.BorderType.Default);
+            CvInvoke.Threshold(frame, frame, 20, 255, Emgu.CV.CvEnum.ThresholdType.Binary);
             return frame;
         }
 
