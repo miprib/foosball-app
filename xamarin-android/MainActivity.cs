@@ -69,12 +69,12 @@ namespace xamarin_android
                     team2Score = 0
                 };
                 ServerConnection.PostGame(game);
+                // todo update game in server whenever goal happens
             }
             catch
             {
                 Toast.MakeText(ApplicationContext, "No connection with service", ToastLength.Long).Show();
             }
-            // todo update game in server whenever goal happens
         }
 
         /** method that opens camera when the activity is launched

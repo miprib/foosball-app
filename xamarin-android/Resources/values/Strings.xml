@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">xamarin-android</string>
+  <string name="app_name">FoosPal</string>
+  <string name="file">Play from file</string>
+  <string name="camera">Play live</string>
+  <string name="history">History</string>
+  <string name="tournament">Tournament</string>
+  <string name="no_connection">No connection with service</string>
 </resources>

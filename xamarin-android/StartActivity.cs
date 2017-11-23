@@ -7,13 +7,14 @@ using Newtonsoft.Json;
 
 namespace xamarin_android
 {
-    [Activity(Label = "StartActivity", MainLauncher = true, ConfigurationChanges = ConfigChanges.Orientation,
-        ScreenOrientation = ScreenOrientation.Landscape)]
+    [Activity(Theme = "@android:style/Theme.NoTitleBar", MainLauncher = true, ConfigurationChanges = ConfigChanges.Orientation,
+        ScreenOrientation = ScreenOrientation.Portrait)]
     public class StartActivity : Activity
     {
         Button bPlayFile;
         Button bPlayCamera;
         Button bHistory;
+        Button bTournament;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -27,6 +28,7 @@ namespace xamarin_android
             bPlayCamera = (Button)FindViewById(Resource.Id.bPlayCamera);
             bPlayFile = (Button)FindViewById(Resource.Id.bPlayFile);
             bHistory = (Button)FindViewById(Resource.Id.bHistory);
+            bTournament = (Button)FindViewById(Resource.Id.bTournament);
                   
             bPlayCamera.Click += delegate {
                 InputTeamNames("live");
@@ -45,7 +47,13 @@ namespace xamarin_android
                     var intent = new Intent(this, typeof(HighscoreActivity));
                     StartActivity(intent);
                 }
-                else { Toast.MakeText(ApplicationContext, "No connection with service", ToastLength.Long).Show(); }
+                else { Toast.MakeText(ApplicationContext, Resource.String.no_connection, ToastLength.Long).Show(); }
+            };
+
+            bTournament.Click += delegate
+            {
+                var intent = new Intent(this, typeof(TournamentActivity));
+                StartActivity(intent);
             };
 
             properties.gameList = ServerConnection.GetList();
