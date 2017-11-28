@@ -34,14 +34,15 @@ namespace xamarin_android
 
             bNew.Click += delegate
             {
-                Intent create = new Intent(this, typeof(TournamentActivity));
+                Intent create = new Intent(this, typeof(NewTournamentActivity));
+                StartActivity(create);
             };
         }
 
         private void InputCode()
         {
             AlertDialog.Builder Code = new AlertDialog.Builder(this);
-            Code.SetTitle(Resource.String.code);
+            Code.SetTitle(Resource.String.t_code);
             View input = LayoutInflater.Inflate(Resource.Layout.d_PIN, null);
             EditText pin = (EditText)input.FindViewById(Resource.Id.PIN);
             Code.SetView(input);

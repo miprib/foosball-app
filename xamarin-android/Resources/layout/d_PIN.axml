@@ -7,5 +7,5 @@
         android:id="@+id/PIN"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tournament PIN" />
+        android:hint="@string/t_pin" />
 </LinearLayout>

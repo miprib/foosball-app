@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
-  <string name="existing">Existing tournament</string>
-  <string name="new_cup">Create new tournament</string>
-  <string name="code">Enter tournament PIN</string>
+  <string name="t_existing">Existing tournament</string>
+  <string name="t_new_cup">Create new tournament</string>
+  <string name="t_pin">Tournament PIN</string>
+  <string name="t_code">Enter tournament PIN</string>
+  <string name="t_add">Add</string>
+  <string name="t_ptname">Team/Player name</string>
+  <string name="t_go">Continue</string>
 </resources>
