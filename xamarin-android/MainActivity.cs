@@ -12,6 +12,7 @@ using Android.Runtime;
 using System.ComponentModel;
 using RestSharp;
 using Android.Widget;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace xamarin_android
@@ -29,17 +30,6 @@ namespace xamarin_android
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
-            //Work on background
-            worker = new BackgroundWorker();
-            worker.DoWork += (send, e) =>
-            {
-                e.Result = recognize();
-            };
-            worker.RunWorkerCompleted += (send, e) =>
-            {
-                ball = (Mat)e.Result;
-            };
 
             RequestWindowFeature(WindowFeatures.NoTitle);
 
@@ -105,75 +95,21 @@ namespace xamarin_android
         /** method that gets called with every frame. retrieve frame with 
          *  Bitmap frameBitmap = textureView.Bitmap;
          */
-        int i = 0;
-        Boolean n = true; // is it is first frame
-        int xlatest = 0; //Latest ball cordinates in x axis
-        int ff = 0; //frames counted since last recognition of ball
-        int left = 0; //left team result
-        int right = 0; //right team result 
-        private BackgroundWorker worker;
-
-        private Mat recognize()
+        public void OnSurfaceTextureUpdated(SurfaceTexture surface)///////////////
         {
-            Bitmap frame = textureView.Bitmap;
-            Mat m = new Mat(frame);
+            Bitmap f = textureView.GetBitmap(640, 360);
 
-            m = Recognition.findColor(m);
+            Mat frame = new Mat(f);
 
-            m = Recognition.Detailing(m);
+            f.Dispose();
 
-            return m;
-        }
-        Mat ball;
-        public void OnSurfaceTextureUpdated(SurfaceTexture surface)
-        {
-            try
-            {
-                Console.WriteLine(i);
-                i++;
+            frame = Recognition.ToHSV(frame);
+            
+            game = Recognition.BallRecognition(frame, game);
 
-                //await Task.Run(() => recognize());
-
-                worker.RunWorkerAsync();
-
-                if (n)
-                {
-                    xlatest = ball.Size.Width / 2;
-                    n = !n;
-                }// if first frame it chooses middle of frame, in case it wont find ball
-
-                CircleF[] circles = Recognition.FindCircle(ball);
-                ff++; // it counts how many frames since last recognition
-                foreach (CircleF circle in circles)
-                {
-                    string text = "ball position = x " + circle.Center.X.ToString() + ", y " + circle.Center.Y.ToString() + System.Environment.NewLine;
-                    xlatest = (int)circle.Center.X; //if ball found it updates it's coordinates
-                    ff = 0;// ball found, so it will be last recognition
-                }
-                if (ff == 5) // 15 frames gone since last recognition, so we count goal if ball was near gates
-                {
-                    if (ball.Size.Width - ball.Size.Width / 4 < xlatest)
-                    {
-                        right++;
-                        game.team2Score++;
-                        //ServerConnection.PutGame(game);
-                    }
-
-                    if (ball.Size.Width - ball.Size.Width / 4 * 3 > xlatest)
-                    {
-                        left++;
-                        game.team1Score++;
-                       // ServerConnection.PutGame(game);
-                    }
-                }
-                Console.WriteLine("Frame {0} done. Result {1}-{2}", i, left, right);
-
-            }
-            catch{
-            }
-            if(i % 100 == 0) {
-                GC.Collect();
-            }
+            frame.Dispose();
+            
+            if (Recognition.IsScored()) { ServerConnection.PostGame(game); }
         }
 
         public void SurfaceChanged(ISurfaceHolder holder, [GeneratedEnum] Format format, int width, int height)

@@ -16,7 +16,7 @@ namespace xamarin_android
 {
     static public class ServerConnection
     {
-        public static string url = "http://192.168.0.101:5000/api/matchdetailitems"; //change to current IP
+        public static string url = "http://172.24.4.72:5000/api/matchdetailitems"; //change to current IP
 
         static public GameList GetList()
         {
