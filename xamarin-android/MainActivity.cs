@@ -15,6 +15,8 @@ using Android.Widget;
 using System.Threading;
 using System.Threading.Tasks;
 
+using xamarin_android.Recognition;
+
 namespace xamarin_android
 {
     [Activity(Label = "xamarin_android", ConfigurationChanges = ConfigChanges.Orientation,
@@ -27,9 +29,14 @@ namespace xamarin_android
         Video video;
         Game game;
 
+        ColorRange color;
+        
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            color = new ColorRange(240, 84, 43);
 
             RequestWindowFeature(WindowFeatures.NoTitle);
 
@@ -95,21 +102,24 @@ namespace xamarin_android
         /** method that gets called with every frame. retrieve frame with 
          *  Bitmap frameBitmap = textureView.Bitmap;
          */
-        public void OnSurfaceTextureUpdated(SurfaceTexture surface)///////////////
+
+        public void OnSurfaceTextureUpdated(SurfaceTexture surface)
         {
             Bitmap f = textureView.GetBitmap(640, 360);
 
-            Mat frame = new Mat(f);
+            f = Processing.ToHSV(f);
+
+            f = Processing.Color(f, color);
+
+            Coordinates a = Processing.FindBall(f);
 
             f.Dispose();
 
-            frame = Recognition.ToHSV(frame);
-            
-            game = Recognition.BallRecognition(frame, game);
+            /*game = Recognition.BallRecognition(frame, game);
 
             frame.Dispose();
             
-            if (Recognition.IsScored()) { ServerConnection.PostGame(game); }
+            if (Recognition.IsScored()) { ServerConnection.PostGame(game); }*/
         }
 
         public void SurfaceChanged(ISurfaceHolder holder, [GeneratedEnum] Format format, int width, int height)
