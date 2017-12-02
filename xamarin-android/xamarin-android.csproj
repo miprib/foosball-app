@@ -151,6 +151,8 @@
   <ItemGroup>
     <Compile Include="NewTournamentActivity.cs" />
     <Compile Include="PlayersListAdapter.cs" />
+    <Compile Include="Recognition\ColorRange.cs" />
+    <Compile Include="Recognition\Coordinates.cs" />
     <Compile Include="Tournament.cs" />
     <Compile Include="TPlayer.cs" />
     <Compile Include="Game.cs" />
@@ -160,7 +162,7 @@
     <Compile Include="IVideo.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MyProperties.cs" />
-    <Compile Include="Recognition.cs" />
+    <Compile Include="Recognition\Processing.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerConnection.cs" />

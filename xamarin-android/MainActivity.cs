@@ -115,10 +115,7 @@ namespace xamarin_android
 
             f.Dispose();
 
-            /*game = Recognition.BallRecognition(frame, game);
-
-            frame.Dispose();
-            
+            /*            
             if (Recognition.IsScored()) { ServerConnection.PostGame(game); }*/
         }
 

@@ -1,8 +1,9 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
 using System;
-using Emgu.CV.Features2D;
+using Emgu.CV.Cvb;
 using Android.Graphics;
+using Emgu.CV.Features2D;
 
 namespace xamarin_android.Recognition
 {
@@ -27,7 +28,7 @@ namespace xamarin_android.Recognition
             frame.Dispose();
 
             CvInvoke.InRange(mat, colorRange.LowBound(), colorRange.HighBound(), mat);
-            CvInvoke.BitwiseNot(mat, mat);
+            //CvInvoke.BitwiseNot(mat, mat);
 
             frame = mat.Bitmap;
             mat.Dispose();
@@ -37,20 +38,27 @@ namespace xamarin_android.Recognition
 
         public static Coordinates FindBall(Bitmap frame)
         {
-            Image<Bgr, byte> image = new Image<Bgr, byte>(frame);
+            Image<Gray,byte> image = new Image<Gray, byte>(frame);
             frame.Dispose();
-            Mat mat = image.Mat;
-            image.Dispose();
 
-            SimpleBlobDetector blobDetector = new SimpleBlobDetector();
-            MKeyPoint[] blobs = blobDetector.Detect(mat);
-            mat.Dispose();
+           // CvBlobDetector blobDetector = new CvBlobDetector();
+            SimpleBlobDetector detector = new SimpleBlobDetector();
+            MKeyPoint[] points =  detector.Detect(image);
+           // CvBlobs blobs = new CvBlobs();
+            //uint a = blobDetector.Detect(image, blobs);
+            image.Dispose();
 
             Coordinates coordinates = new Coordinates();
 
-            foreach(MKeyPoint blob in blobs)
+            /*foreach(var blob in blobs)
             {
-                coordinates = new Coordinates(blob.Point);
+                coordinates = new Coordinates(blob.Value.Centroid);
+                Console.WriteLine(coordinates.ToString());
+            }*/
+
+            foreach(MKeyPoint point in points)
+            {
+                coordinates = new Coordinates(point.Point);
                 Console.WriteLine(coordinates.ToString());
             }
             return coordinates;
