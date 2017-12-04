@@ -5,7 +5,6 @@ using Android.Content;
 using System;
 
 using Emgu.CV;
-using Emgu.CV.Structure;
 using Android.Graphics;
 using Android.Content.PM;
 using Android.Runtime;
@@ -16,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using xamarin_android.Recognition;
+using Emgu.CV.Structure;
 
 namespace xamarin_android
 {
@@ -36,7 +36,7 @@ namespace xamarin_android
         {
             base.OnCreate(savedInstanceState);
 
-            color = new ColorRange(240, 84, 43);
+            color = new ColorRange(43, 84, 240);
 
             RequestWindowFeature(WindowFeatures.NoTitle);
 
@@ -102,21 +102,41 @@ namespace xamarin_android
         /** method that gets called with every frame. retrieve frame with 
          *  Bitmap frameBitmap = textureView.Bitmap;
          */
-
+        int i=0;
+        int xlatest = 350;
         public void OnSurfaceTextureUpdated(SurfaceTexture surface)
         {
             Bitmap f = textureView.GetBitmap(640, 360);
 
-            f = Processing.ToHSV(f);
-
-            f = Processing.Color(f, color);
-
-            Coordinates a = Processing.FindBall(f);
-
+            Mat frame = Processing.ToHSV(f, color);
             f.Dispose();
 
-            /*            
-            if (Recognition.IsScored()) { ServerConnection.PostGame(game); }*/
+            Coordinates a = Processing.FindBall(frame);
+            
+            if (a.Found())
+            {
+                i = 0;
+                xlatest = a.x;
+            }
+            else
+            {
+                i++;
+                if (i == 3)
+                {
+                    if (495 < xlatest)
+                    {
+                        game.team1Score++;
+                        ServerConnection.PostGame(game);
+                    }
+
+                    if (165 > xlatest)
+                    {
+                        game.team2Score++;
+                        ServerConnection.PostGame(game);
+                    }
+                    Console.WriteLine("Result: {0} - {1}", game.team1Score, game.team2Score);
+                }
+            }
         }
 
         public void SurfaceChanged(ISurfaceHolder holder, [GeneratedEnum] Format format, int width, int height)

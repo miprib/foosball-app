@@ -9,8 +9,8 @@ namespace xamarin_android.Recognition
 
         public Coordinates()
         {
-            this.x = 0;
-            this.y = 0;
+            this.x = -1;
+            this.y = -1;
         }
         public Coordinates(float xaxis, float yaxis)
         {
@@ -28,6 +28,11 @@ namespace xamarin_android.Recognition
         {
             string coo = "Coordinates: x " + this.x + "    y " + this.y;
             return coo;
+        }
+
+        public bool Found()
+        {
+            return this.x > 0 && this.y > 0;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace xamarin_android.Recognition
         public double G2;
         public double B2;
 
-       public ColorRange(int R, int G, int B)
+       public ColorRange(int B, int G, int R)
        {
             Bgr bgr = new Bgr(B, G, R);
             Image<Bgr, byte> image = new Image<Bgr, byte>(1, 1, bgr);
@@ -21,13 +21,63 @@ namespace xamarin_android.Recognition
             B = (int)image[0, 0].Blue;
             G = (int)image[0, 0].Green;
             R = (int)image[0, 0].Red;
-            R1 = R - 10;
-            R2 = R + 10;
-            G1 = G - 10;
-            G2 = G + 10;
-            B1 = B - 10;
-            B2 = B + 10;
-       }
+            if(R > 230)
+            {
+                R1 = 205;
+                R2 = 255;
+            }
+            else
+            {
+                if (R < 25)
+                {
+                    R1 = 0;
+                    R2 = 50;
+                }
+                else
+                {
+                    R1 = R - 25;
+                    R2 = R + 25;
+                }
+
+            }
+            if (G > 230)
+            {
+                G1 = 205;
+                G2 = 255;
+            }
+            else
+            {
+                if (G < 25)
+                {
+                    G1 = 0;
+                    G2 = 50;
+                }
+                else
+                {
+                    G1 = G - 25;
+                    G2 = G + 25;
+                }
+
+            }
+            if (B > 230)
+            {
+                B1 = 205;
+                B2 = 255;
+            }
+            else
+            {
+                if (B < 25)
+                {
+                    B1 = 0;
+                    B2 = 50;
+                }
+                else
+                {
+                    B1 = B - 25;
+                    B2 = B + 25;
+                }
+            }
+        }
 
         public ScalarArray LowBound()
         {
