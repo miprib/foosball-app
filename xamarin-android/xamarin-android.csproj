@@ -207,6 +207,9 @@
     <AndroidResource Include="Resources\layout\list_tournament.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable\tvBackground.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\a_main.axml">

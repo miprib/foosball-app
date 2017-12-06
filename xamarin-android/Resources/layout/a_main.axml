@@ -15,4 +15,38 @@
         android:id="@+id/surfaceView"
         android:layout_height="match_parent"
         android:layout_width="match_parent" />
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        <TextView
+            android:id="@+id/team1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:padding="7dp"
+            android:text="test"
+            android:background="@drawable/tvbackground"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true" />
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:padding="7dp"
+            android:text="tes2t"
+            android:background="@drawable/tvbackground"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+        <TextView
+            android:id="@+id/team2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:padding="7dp"
+            android:text="test"
+            android:background="@drawable/tvbackground"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
 </FrameLayout>
