@@ -26,7 +26,7 @@ namespace xamarin_android
         ISurfaceHolder surfaceHolder;
         SurfaceView surfaceView;
         TextureView textureView;
-        Video video;
+        IVideo video;
         Game game;
 
         TextView team1;

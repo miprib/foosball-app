@@ -14,7 +14,7 @@ using Android.Media;
 
 namespace xamarin_android
 {
-    class VideoFile : Video
+    class VideoFile : IVideo
     {
         String path;
         MediaPlayer mediaPlayer;

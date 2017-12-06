@@ -5,7 +5,7 @@ using Camera = Android.Hardware.Camera;
 
 namespace xamarin_android
 {
-    class VideoCamera : Video
+    class VideoCamera : IVideo
     {
         Camera camera;
 
