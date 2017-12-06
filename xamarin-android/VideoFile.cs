@@ -24,7 +24,7 @@ namespace xamarin_android
             this.path = path;
         }
 
-        public override void PlayVideo(Context context, SurfaceTexture surfaceTexture)
+        public void PlayVideo(Context context, SurfaceTexture surfaceTexture)
         {
             Surface s = new Surface(surfaceTexture);
             mediaPlayer = new MediaPlayer();
@@ -39,7 +39,7 @@ namespace xamarin_android
             }
         }
 
-        public override void StopVideo()
+        public void StopVideo()
         {
             if (mediaPlayer != null)
             {

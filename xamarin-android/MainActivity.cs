@@ -123,7 +123,7 @@ namespace xamarin_android
             f.Dispose();
 
             Coordinates a = Processing.FindBall(frame);
-            
+            Console.WriteLine(a.ToString());
             if (a.Found())
             {
                 i = 0;
@@ -132,20 +132,21 @@ namespace xamarin_android
             else
             {
                 i++;
-                if (i == 3)
+                if (i == 6)
                 {
-                    if (495 < xlatest)
+                    if (440 < xlatest)
                     {
                         game.team1Score++;
                         ServerConnection.PostGame(game);
+                        updateScore(game.team1Score, game.team2Score);
                     }
 
-                    if (165 > xlatest)
+                    if (200 > xlatest)
                     {
                         game.team2Score++;
                         ServerConnection.PostGame(game);
+                        updateScore(game.team1Score, game.team2Score);
                     }
-                    Console.WriteLine("Result: {0} - {1}", game.team1Score, game.team2Score);
                 }
             }
         }

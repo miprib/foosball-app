@@ -9,7 +9,7 @@ namespace xamarin_android
     {
         Camera camera;
 
-        public override void PlayVideo(Context context, SurfaceTexture surfaceTexture)
+        public void PlayVideo(Context context, SurfaceTexture surfaceTexture)
         {
             camera = Camera.Open();
 
@@ -28,7 +28,7 @@ namespace xamarin_android
             parameters.FocusMode = Camera.Parameters.FocusModeContinuousPicture;
         }
 
-        public override void StopVideo()
+        public void StopVideo()
         {
             if (camera != null)
             {
