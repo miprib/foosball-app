@@ -26,8 +26,12 @@ namespace xamarin_android
         ISurfaceHolder surfaceHolder;
         SurfaceView surfaceView;
         TextureView textureView;
-        Video video;
+        IVideo video;
         Game game;
+
+        TextView team1;
+        TextView team2;
+        TextView score;
 
         ColorRange color;
         
@@ -53,6 +57,10 @@ namespace xamarin_android
             surfaceView.Holder.SetFormat(Format.Transparent);
             surfaceHolder = surfaceView.Holder;
             surfaceHolder.AddCallback(this);
+
+            team1 = (TextView)FindViewById(Resource.Id.team1);
+            team2 = (TextView)FindViewById(Resource.Id.team2);
+            score = (TextView)FindViewById(Resource.Id.score);
             try
             {
                 game = new Game
@@ -72,6 +80,9 @@ namespace xamarin_android
             {
                 Toast.MakeText(ApplicationContext, "No connection with service", ToastLength.Long).Show();
             }
+            team1.Text = game.team1;
+            team2.Text = game.team2;
+            updateScore(0, 0);
         }
 
         /** method that opens camera when the activity is launched
@@ -151,6 +162,11 @@ namespace xamarin_android
 
         public void SurfaceDestroyed(ISurfaceHolder holder)
         {
+        }
+
+        private void updateScore(int team1, int team2)
+        {
+            score.Text = team1.ToString() + " - " + team2.ToString();
         }
     }
 }

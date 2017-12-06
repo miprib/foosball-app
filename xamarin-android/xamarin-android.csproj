@@ -168,7 +168,6 @@
     <Compile Include="ServerConnection.cs" />
     <Compile Include="StartActivity.cs" />
     <Compile Include="TournamentActivity.cs" />
-    <Compile Include="Video.cs" />
     <Compile Include="VideoCamera.cs" />
     <Compile Include="VideoFile.cs" />
   </ItemGroup>
@@ -205,6 +204,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\list_tournament.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\tvBackground.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
