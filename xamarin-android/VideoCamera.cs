@@ -37,5 +37,21 @@ namespace xamarin_android
                 camera = null;
             }
         }
+
+        public void PauseVideo()
+        {
+            if (camera != null)
+            {
+                camera.StopPreview();
+            }
+        }
+
+        public void ResumeVideo()
+        {
+            if (camera != null)
+            {
+                camera.StartPreview();
+            }
+        }
     }
 }

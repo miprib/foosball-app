@@ -46,5 +46,21 @@ namespace xamarin_android
                 mediaPlayer.Stop();
             }
         }
+
+        public void PauseVideo()
+        {
+            if (mediaPlayer != null)
+            {
+                mediaPlayer.Pause();
+            }
+        }
+
+        public void ResumeVideo()
+        {
+            if (mediaPlayer != null)
+            {
+                mediaPlayer.Start();
+            }
+        }
     }
 }

@@ -7,5 +7,7 @@ namespace xamarin_android
     {
         void PlayVideo(Context context, SurfaceTexture surfaceTexture);
         void StopVideo();
+        void ResumeVideo();
+        void PauseVideo();
     }
 }
