@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="false">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
+        android:alpha="0.4"
+        android:src="@drawable/Ball" />
+    <EditText
+        android:hint="UserID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/UpdateID"
+        android:layout_marginTop="25px" />
+    <EditText
+        android:hint="Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/UpdateName"
+        android:layout_marginTop="100px" />
+    <Button
+        android:text="UPDATE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/UpdateButton"
+        android:layout_marginTop="175px" />
+</RelativeLayout>

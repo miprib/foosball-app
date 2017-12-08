@@ -19,6 +19,7 @@ namespace Foosball
             // Get the UI controls from the loaded layout:
             Button startButton = FindViewById<Button>(Resource.Id.StartButton);
             Button highscoreButton = FindViewById<Button>(Resource.Id.HighscoreButton);
+            Button tournamentButton = FindViewById<Button>(Resource.Id.TournamentButton);
 
             startButton.Click += (object sender, EventArgs e) =>
             {
@@ -29,6 +30,12 @@ namespace Foosball
             highscoreButton.Click += (object sender, EventArgs e) =>
             {
                 var intent = new Intent(this, typeof(HighscoreActivity));
+                StartActivity(intent);
+            };
+
+            tournamentButton.Click += (object sender, EventArgs e) =>
+            {
+                var intent = new Intent(this, typeof(TournamentActivity));
                 StartActivity(intent);
             };
 

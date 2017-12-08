@@ -22,7 +22,7 @@ using Android.Text.Method;
 
 namespace Foosball
 {
-     [Activity(Label = "Highscores")]
+     [Activity(Label = "Highscore")]
      public class HighscoreActivity : Activity
      {
         public static string url = "http://192.168.0.101:5000/api/matchdetailitems"; //change to current IP

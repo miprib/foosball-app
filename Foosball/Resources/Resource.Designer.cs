@@ -54,7 +54,10 @@ namespace Foosball
 			public const int android_pressed = 2130837506;
 			
 			// aapt resource value: 0x7f020003
-			public const int foosball_launcher = 2130837507;
+			public const int Ball = 2130837507;
+			
+			// aapt resource value: 0x7f020004
+			public const int foosball_launcher = 2130837508;
 			
 			static Drawable()
 			{
@@ -81,6 +84,18 @@ namespace Foosball
 			// aapt resource value: 0x7f050003
 			public const int StartButton = 2131034115;
 			
+			// aapt resource value: 0x7f050007
+			public const int TournamentButton = 2131034119;
+			
+			// aapt resource value: 0x7f05000b
+			public const int UpdateButton = 2131034123;
+			
+			// aapt resource value: 0x7f050009
+			public const int UpdateID = 2131034121;
+			
+			// aapt resource value: 0x7f05000a
+			public const int UpdateName = 2131034122;
+			
 			// aapt resource value: 0x7f050001
 			public const int doSomethingText = 2131034113;
 			
@@ -89,6 +104,9 @@ namespace Foosball
 			
 			// aapt resource value: 0x7f050004
 			public const int startText = 2131034116;
+			
+			// aapt resource value: 0x7f050008
+			public const int tournamentText = 2131034120;
 			
 			static Id()
 			{
@@ -108,6 +126,9 @@ namespace Foosball
 			
 			// aapt resource value: 0x7f030001
 			public const int Main = 2130903041;
+			
+			// aapt resource value: 0x7f030002
+			public const int Tournament = 2130903042;
 			
 			static Layout()
 			{
