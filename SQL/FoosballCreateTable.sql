@@ -16,9 +16,9 @@ CREATE TABLE tabTournament
 (
     TournamentID    int					not null
         PRIMARY KEY,
-    Winner      nvarchar(50),	-- Galima null, nes reikia tournament sukurti pirmiau uz zaidimus. Veliau bus paupdatinas table :)
-    UserID      int	-- Same shit
-        REFERENCES tabUser (UserID)
+    UserID      int					    not null	--CreatorID
+        REFERENCES tabUser (UserID),
+	Winner      nvarchar(50)			-- Galima null, nes reikia tournament sukurti pirmiau uz zaidimus. Veliau bus paupdatinas table :)
 );
 
 CREATE TABLE tabRightTournamentPlayer 
@@ -48,9 +48,7 @@ CREATE TABLE tabTournamentGame
         PRIMARY KEY,
     Date            datetime            not null,
     TournamentID    int					not null
-        REFERENCES tabTournament (TournamentID),
-    LeftPlayerID    int					not null,
-    RightPlayerID   int					not null,
+        REFERENCES tabTournament (TournamentID)
 );
 
 --INSERTS
@@ -65,21 +63,21 @@ INSERT INTO tabUser (UserID, Name)
 	(7, 'Miegas'),
 	(8, 'Mokslai');
 
-INSERT INTO tabTournament (TournamentID, Winner, UserID)
+INSERT INTO tabTournament (TournamentID, UserID, Winner)
 	VALUES
-	(1, 'PSI', 3);
+	(1, 2, 'PSI');
 
-INSERT INTO tabTournamentGame (GameID, Date, TournamentID, LeftPlayerID, RightPlayerID)
+INSERT INTO tabTournamentGame (GameID, Date, TournamentID)
 	VALUES
-	(1, '2017-12-08', 1, 1, 2),
-	(2, '2017-12-08', 1, 3, 4),
-	(3, '2017-12-08', 1, 5, 6),
-	(4, '2017-12-08', 1, 7, 8),
+	(1, '2017-12-08', 1),
+	(2, '2017-12-08', 1),
+	(3, '2017-12-08', 1),
+	(4, '2017-12-08', 1),
 
-	(5, '2017-12-08', 1, 1, 3),
-	(6, '2017-12-08', 1, 5, 8),
+	(5, '2017-12-08', 1),
+	(6, '2017-12-08', 1),
 
-	(7, '2017-12-08', 1, 3, 5);
+	(7, '2017-12-08', 1);
 
 INSERT INTO tabRightTournamentPlayer (GameID, RightPlayerID, Score, TournamentID)
 	VALUES
