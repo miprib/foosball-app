@@ -16,7 +16,7 @@ CREATE TABLE tabTournament
 (
     TournamentID    int					not null
         PRIMARY KEY,
-    UserID      int					    not null	--CreatorID
+    UserID			int					not null
         REFERENCES tabUser (UserID),
 	Winner      nvarchar(50)			-- Galima null, nes reikia tournament sukurti pirmiau uz zaidimus. Veliau bus paupdatinas table :)
 );
@@ -26,7 +26,7 @@ CREATE TABLE tabRightTournamentPlayer
 	GameID			int					not null
 		PRIMARY KEY,	
     RightPlayerID   int					not null,
-    Score           int                 not null,
+    Score           int,
     TournamentID    int					not null
         REFERENCES tabTournament (TournamentID)
 );
@@ -36,7 +36,7 @@ CREATE TABLE tabLeftTournamentPlayer
 	GameID			int					not null
 		PRIMARY KEY,	
     LeftPlayerID    int					not null,
-    Score           int                 not null,
+    Score           int,
     TournamentID    int					not null
         REFERENCES tabTournament (TournamentID)
         
