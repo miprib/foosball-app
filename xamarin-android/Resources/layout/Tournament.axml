@@ -10,22 +10,63 @@
         android:scaleType="centerCrop"
         android:alpha="0.4"
         android:src="@drawable/Ball" />
+<!-- Enter players -->
     <EditText
-        android:hint="UserID"
+        android:hint="New player"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/InsertName"
+        android:layout_marginTop="25px" />
+    <Button
+        android:text="INSERT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/InsertButton"
+        android:layout_marginTop="100px" />
+<!-- Update players -->
+    <EditText
+        android:hint="Player ID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/UpdateID"
-        android:layout_marginTop="25px" />
+        android:layout_marginTop="200px" />
     <EditText
-        android:hint="Name"
+        android:hint="Existing player"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/UpdateName"
-        android:layout_marginTop="100px" />
+        android:layout_marginTop="275px" />
     <Button
         android:text="UPDATE"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/UpdateButton"
-        android:layout_marginTop="175px" />
+        android:layout_marginTop="350px" />
+<!-- Delete tournament -->
+    <EditText
+        android:hint="Tournament ID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/DeleteID"
+        android:layout_marginTop="450px" />
+    <Button
+        android:text="DELETE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/DeleteTournament"
+        android:layout_marginTop="525px" />
+<!-- Show tournaments -->
+    <Button
+        android:text="Show Tournaments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ShowTournaments"
+        android:layout_marginTop="625px" />
+<!-- Show results -->
+    <Button
+        android:text="Show Results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ShowResults"
+        android:layout_marginTop="725px" />
 </RelativeLayout>

@@ -96,20 +96,38 @@ namespace xamarin_android
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f05001e
+			public const int DeleteID = 2131034142;
+			
+			// aapt resource value: 0x7f05001f
+			public const int DeleteTournament = 2131034143;
+			
+			// aapt resource value: 0x7f05001a
+			public const int InsertButton = 2131034138;
+			
+			// aapt resource value: 0x7f050019
+			public const int InsertName = 2131034137;
+			
 			// aapt resource value: 0x7f050000
 			public const int ListView = 2131034112;
 			
 			// aapt resource value: 0x7f050010
 			public const int PIN = 2131034128;
 			
+			// aapt resource value: 0x7f050021
+			public const int ShowResults = 2131034145;
+			
+			// aapt resource value: 0x7f050020
+			public const int ShowTournaments = 2131034144;
+			
+			// aapt resource value: 0x7f05001d
+			public const int UpdateButton = 2131034141;
+			
 			// aapt resource value: 0x7f05001b
-			public const int UpdateButton = 2131034139;
+			public const int UpdateID = 2131034139;
 			
-			// aapt resource value: 0x7f050019
-			public const int UpdateID = 2131034137;
-			
-			// aapt resource value: 0x7f05001a
-			public const int UpdateName = 2131034138;
+			// aapt resource value: 0x7f05001c
+			public const int UpdateName = 2131034140;
 			
 			// aapt resource value: 0x7f050007
 			public const int add = 2131034119;
@@ -222,6 +240,12 @@ namespace xamarin_android
 			
 			// aapt resource value: 0x7f030009
 			public const int Tournament = 2130903049;
+			
+			// aapt resource value: 0x7f03000a
+			public const int TournamentResults = 2130903050;
+			
+			// aapt resource value: 0x7f03000b
+			public const int TournamentsAll = 2130903051;
 			
 			static Layout()
 			{

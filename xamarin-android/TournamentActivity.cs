@@ -31,12 +31,28 @@ namespace xamarin_android
             base.OnCreate(savedInstanceState);
             // Create your application here
 
-            // Set our view from the "main" layout resource
+            // Set our view to Tournamet
             SetContentView(Resource.Layout.Tournament);
 
+            // Update existing player
             Button updateButton = FindViewById<Button>(Resource.Id.UpdateButton);
             EditText updateID = FindViewById<EditText>(Resource.Id.UpdateID);
             EditText updateName = FindViewById<EditText>(Resource.Id.UpdateName);
+
+            // Show all tournaments
+            Button showTournaments = FindViewById<Button>(Resource.Id.ShowTournaments);
+
+            // Show results
+            Button showResults = FindViewById<Button>(Resource.Id.ShowResults);
+
+            // Add new player
+            EditText insertName = FindViewById<EditText>(Resource.Id.InsertName);
+            Button insertButton = FindViewById<Button>(Resource.Id.InsertButton);
+
+            // Delete tournament
+            EditText deleteID = FindViewById<EditText>(Resource.Id.DeleteID);
+            Button insertButton = FindViewById<Button>(Resource.Id.InsertButton);
+
 
             int id;
 
@@ -51,21 +67,20 @@ namespace xamarin_android
                 else Toast.MakeText(this, string.Format("Invalid ID: {0}", updateID.Text), ToastLength.Long).Show();
             };
 
-            /*SetContentView(Resource.Layout.a_tournament);
-
-            bExisting = (Button)FindViewById(Resource.Id.bExisting);
-            bNew = (Button)FindViewById(Resource.Id.bNew);
-
-            bExisting.Click += delegate
+            // Show all tournaments button
+            showTournaments.Click += (object sender, EventArgs e) =>
             {
-                InputCode();
+                // Set our view to TournamentsAll
+                SetContentView(Resource.Layout.TournamentsAll);
             };
 
-            bNew.Click += delegate
+            // Show results button
+            showTournaments.Click += (object sender, EventArgs e) =>
             {
-                Intent create = new Intent(this, typeof(NewTournamentActivity));
-                StartActivity(create);
-            };*/
+                // Set our view to TournamentResults
+                SetContentView(Resource.Layout.TournamentResults);
+            };
+
         }
 
         public void Update(int id, string name)
@@ -101,28 +116,5 @@ namespace xamarin_android
             }
         }
 
-        private void InputCode()
-        {
-            AlertDialog.Builder Code = new AlertDialog.Builder(this);
-            Code.SetTitle(Resource.String.t_code);
-            View input = LayoutInflater.Inflate(Resource.Layout.d_PIN, null);
-            EditText pin = (EditText)input.FindViewById(Resource.Id.PIN);
-            Code.SetView(input);
-            Code.SetPositiveButton("Enter", (senderAlert, args) =>
-            {
-                var intent = new Intent(this, typeof(TournamentActivity));
-                intent.PutExtra("pin", pin.Text);
-                StartActivity(intent);
-                Finish();
-            });
-
-            Code.SetNegativeButton("Cancel", (senderAlert, args) =>
-            {
-                Code.Dispose();
-            });
-
-            Dialog dialog = Code.Create();
-            dialog.Show();
-        }
     }
 }
