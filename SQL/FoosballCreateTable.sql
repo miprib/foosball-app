@@ -28,7 +28,7 @@ CREATE TABLE tabRightTournamentPlayer
     RightPlayerID   int					not null,
     Score           int,
     TournamentID    int					not null
-        REFERENCES tabTournament (TournamentID)
+        REFERENCES tabTournament (TournamentID) ON DELETE CASCADE
 );
 
 CREATE TABLE tabLeftTournamentPlayer
@@ -38,7 +38,7 @@ CREATE TABLE tabLeftTournamentPlayer
     LeftPlayerID    int					not null,
     Score           int,
     TournamentID    int					not null
-        REFERENCES tabTournament (TournamentID)
+        REFERENCES tabTournament (TournamentID) ON DELETE CASCADE
         
 );
 
@@ -48,7 +48,7 @@ CREATE TABLE tabTournamentGame
         PRIMARY KEY,
     Date            datetime            not null,
     TournamentID    int					not null
-        REFERENCES tabTournament (TournamentID)
+        REFERENCES tabTournament (TournamentID) ON DELETE CASCADE
 );
 
 --INSERTS
