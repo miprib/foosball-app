@@ -79,24 +79,30 @@ namespace Foosball
                 {
                     try
                     {
+                        // LEFT
                         if (Int32.TryParse(leftID.Text, out idLeft))
                         {
                             try
                             {
-                                if (Int32.TryParse(rightID.Text, out idRight))
-                                {
-                                    try
-                                    {
-                                        AddPlayerToTournament(idTournament, idLeft, idRight);
-                                        Toast.MakeText(this, string.Format("Inserted successfully at id {0}", rightID.Text), ToastLength.Long).Show();
-                                    }
-                                    catch (Exception) { Toast.MakeText(this, string.Format("Error inserting at id {0}", rightID.Text), ToastLength.Long).Show(); }
-                                }
-                                else Toast.MakeText(this, string.Format("Invalid ID: {0}", rightID.Text), ToastLength.Long).Show();
+                                AddLeftPlayerToTournament(idTournament, idLeft);
+                                Toast.MakeText(this, string.Format("Inserted successfully at id {0}", leftID.Text), ToastLength.Long).Show(); 
                             }
                             catch (Exception) { Toast.MakeText(this, string.Format("Error inserting at id {0}", leftID.Text), ToastLength.Long).Show(); }
+                            
                         }
                         else Toast.MakeText(this, string.Format("Invalid ID: {0}", leftID.Text), ToastLength.Long).Show();
+
+                        // RIGHT
+                        if (Int32.TryParse(rightID.Text, out idRight))
+                        {
+                            try
+                            {
+                                AddRightPlayerToTournament(idTournament, idRight);
+                                Toast.MakeText(this, string.Format("Inserted successfully at id {0}", rightID.Text), ToastLength.Long).Show();
+                            }
+                            catch (Exception) { Toast.MakeText(this, string.Format("Error inserting at id {0}", rightID.Text), ToastLength.Long).Show(); }
+                        }
+                        else Toast.MakeText(this, string.Format("Invalid ID: {0}", rightID.Text), ToastLength.Long).Show();
                     }
                     catch (Exception) { Toast.MakeText(this, string.Format("Error inserting at id {0}", tournamentFightID.Text), ToastLength.Long).Show(); }
                 }
@@ -200,9 +206,76 @@ namespace Foosball
             };
         }
 
-        public void AddPlayerToTournament(int idTournament, int idLeft, int idRight)
+        public void AddRightPlayerToTournament(int idTournament, int idRight)
         {
+            using (SqlConnection cn = new SqlConnection())
+            using (SqlDataAdapter da = new SqlDataAdapter("SELECT RightPlayerID, TournamentID FROM tabRightTournamentPlayer", cn))
+            {
+                // Establish connection string
+                cn.ConnectionString = myCon;
 
+                //Establish SQL insert command
+                SqlCommand insert = new SqlCommand();
+                insert.Connection = cn;
+                insert.CommandType = CommandType.Text;
+                insert.CommandText = "INSERT INTO tabRightTournamentPlayer (RightPlayerID, TournamentID) VALUES (@RID, @TID)";
+
+                //Establish existing (those used in SELECT)
+                insert.Parameters.Add(new SqlParameter("@RID", SqlDbType.Int, 50, "RightPlayerID"));
+                insert.Parameters.Add(new SqlParameter("@TID", SqlDbType.Int, 50, "TournamentID"));
+
+                //Data adapter (using statement)
+                da.InsertCommand = insert;
+
+                //Establish table to be updated
+                DataSet ds = new DataSet();
+                da.Fill(ds, "tabRightTournamentPlayer");
+
+                //Establish the new data for the row to be inserted
+                DataRow newRow = ds.Tables[0].NewRow();
+                newRow["RightPlayerID"] = idRight;
+                newRow["TournamentID"] = idTournament;
+                ds.Tables[0].Rows.Add(newRow);
+
+                //Insert done
+                da.Update(ds.Tables[0]);
+            }     
+        }
+
+        public void AddLeftPlayerToTournament(int idTournament, int idLeft)
+        {
+            using (SqlConnection cn = new SqlConnection())
+            using (SqlDataAdapter da = new SqlDataAdapter("SELECT LeftPlayerID, TournamentID FROM tabLeftTournamentPlayer", cn))
+            {
+                // Establish connection string
+                cn.ConnectionString = myCon;
+
+                //Establish SQL insert command
+                SqlCommand insert = new SqlCommand();
+                insert.Connection = cn;
+                insert.CommandType = CommandType.Text;
+                insert.CommandText = "INSERT INTO tabLeftTournamentPlayer (LeftPlayerID, TournamentID) VALUES (@LID, @TID)";
+
+                //Establish existing (those used in SELECT)
+                insert.Parameters.Add(new SqlParameter("@LID", SqlDbType.Int, 50, "LeftPlayerID"));
+                insert.Parameters.Add(new SqlParameter("@TID", SqlDbType.Int, 50, "TournamentID"));
+
+                //Data adapter (using statement)
+                da.InsertCommand = insert;
+
+                //Establish table to be updated
+                DataSet ds = new DataSet();
+                da.Fill(ds, "tabLeftTournamentPlayer");
+
+                //Establish the new data for the row to be inserted
+                DataRow newRow = ds.Tables[0].NewRow();
+                newRow["LeftPlayerID"] = idLeft;
+                newRow["TournamentID"] = idTournament;
+                ds.Tables[0].Rows.Add(newRow);
+
+                //Insert done
+                da.Update(ds.Tables[0]);
+            }
         }
 
         public void AddNewTournament(int idTournament, int idCreator)
