@@ -60,7 +60,7 @@ namespace xamarin_android
                 if (Int32.TryParse(updateID.Text, out id))
                 {
                     string name = updateName.Text.ToString();
-                    Update(id, name);
+                    UpdateExisting(id, name);
                 }
                 else Toast.MakeText(this, string.Format("Invalid ID: {0}", updateID.Text), ToastLength.Long).Show();
             };
@@ -80,8 +80,54 @@ namespace xamarin_android
                 // Set our view to TournamentResults
                 SetContentView(Resource.Layout.TournamentResults);
 
-
+                ResultsSelect();
             };
+        }
+
+        public void ResultsSelect()
+        {
+            using (SqlConnection cn = new SqlConnection())
+            using (SqlDataAdapter da = new SqlDataAdapter())
+            {
+                // Establish connection string
+                cn.ConnectionString = myCon;
+
+                //Establish SQL select command
+                SqlCommand select = new SqlCommand("SELECT TournamentID, GameID, LeftScore, RightScore FROM viewResults", cn);
+
+                da.SelectCommand = select;
+
+                //Establish table to be updated
+                DataSet ds = new DataSet();
+                da.Fill(ds, "viewResults");
+
+                TextView tournamentResults = FindViewById<TextView>(Resource.Id.TournamentResultsText);
+                tournamentResults.MovementMethod = new ScrollingMovementMethod();
+
+                tournamentResults.Append("Tournament" + string.Empty.PadLeft(2, '\t'));
+                tournamentResults.Append("Game" + string.Empty.PadLeft(2, '\t'));
+                tournamentResults.Append("Left Score" + string.Empty.PadLeft(2, '\t'));
+                tournamentResults.Append("Right Score" + "\n");
+
+                //  TO-DO: change 20 to something more meaningful
+                for (int i = 0; i < 20; i++)
+                {
+                    try
+                    {
+                        string collumn1 = (ds.Tables[0].Rows[i]["TournamentID"]).ToString();
+                        string collumn2 = (ds.Tables[0].Rows[i]["GameID"]).ToString();
+                        string collumn3 = (ds.Tables[0].Rows[i]["LeftScore"]).ToString();
+                        string collumn4 = (ds.Tables[0].Rows[i]["RightScore"]).ToString();
+
+                        tournamentResults.Append(collumn1 + string.Empty.PadLeft(9, '\t'));
+                        tournamentResults.Append(collumn2 + string.Empty.PadLeft(5, '\t'));
+                        tournamentResults.Append(collumn3 + string.Empty.PadLeft(8, '\t'));
+                        tournamentResults.Append(collumn4 + "\n");
+                    }
+
+                    catch (Exception) { tournamentResults.Append("\nROWS: " + i + "\n"); break; }
+                }
+            }
         }
 
         public void TournamentSelect()
@@ -104,8 +150,11 @@ namespace xamarin_android
                 TextView tournamentResults = FindViewById<TextView>(Resource.Id.TournamentResultsText);
                 tournamentResults.MovementMethod = new ScrollingMovementMethod();
 
-                //  TO-DO: change 10 to something more meaningful
-                tournamentResults.Append("---------------------------------------\n");
+                tournamentResults.Append("Tournament" + string.Empty.PadLeft(2, '\t'));
+                tournamentResults.Append("User" + string.Empty.PadLeft(2, '\t'));
+                tournamentResults.Append("Winner" + "\n");
+
+                //  TO-DO: change 10 to something more meaningful                
                 for (int i = 0; i < 10; i++)
                 {
                     try
@@ -114,18 +163,17 @@ namespace xamarin_android
                         string collumn2 = (ds.Tables[0].Rows[i]["UserID"]).ToString();
                         string collumn3 = (ds.Tables[0].Rows[i]["Winner"]).ToString();
 
-                        tournamentResults.Append(collumn1 + "\t\t");
-                        tournamentResults.Append(collumn2 + "\t\t");
+                        tournamentResults.Append(collumn1 + string.Empty.PadLeft(9, '\t'));
+                        tournamentResults.Append(collumn2 + string.Empty.PadLeft(4, '\t'));
                         tournamentResults.Append(collumn3 + "\n");
                     }
-                    // TO-DO: something happens when theres no row at position i}
-                    catch (Exception) { }
+
+                    catch (Exception) { tournamentResults.Append("\nROWS: " + i + "\n"); break; }
                 }
-                tournamentResults.Append("---------------------------------------\n");
             }
         }
 
-        public void Update(int id, string name)
+        public void UpdateExisting(int id, string name)
         {
             using (SqlConnection cn = new SqlConnection())
             using (SqlDataAdapter da = new SqlDataAdapter("SELECT UserID, Name FROM tabUser", cn))
