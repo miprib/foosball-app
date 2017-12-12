@@ -51,7 +51,7 @@ namespace xamarin_android
 
             // Delete tournament
             EditText deleteID = FindViewById<EditText>(Resource.Id.DeleteID);
-            Button insertButton = FindViewById<Button>(Resource.Id.InsertButton);
+            Button deleteButton = FindViewById<Button>(Resource.Id.DeleteTournament);
 
 
             int id;

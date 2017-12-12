@@ -34,13 +34,17 @@ namespace xamarin_android
         TextView score;
 
         ColorRange color;
-        
+
+        bool IsConnection = false;
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             color = new ColorRange(43, 84, 240);
+
+            AssignBackgroundWorker();
 
             RequestWindowFeature(WindowFeatures.NoTitle);
 
@@ -74,10 +78,22 @@ namespace xamarin_android
                     team2Score = 0
                 };
                 ServerConnection.PostGame(game);
+                IsConnection = true;
                 // todo update game in server whenever goal happens
             }
             catch
             {
+                game = new Game
+                {
+                    // todo get unique id
+                    id = 0,
+                    date = DateTime.Now,
+                    team1 = Intent.GetStringExtra("teamName1"),
+                    team2 = Intent.GetStringExtra("teamName2"),
+                    team1Score = 0,
+                    team2Score = 0
+                };
+                IsConnection = false;
                 Toast.MakeText(ApplicationContext, "No connection with service", ToastLength.Long).Show();
             }
             team1.Text = game.team1;
@@ -113,41 +129,45 @@ namespace xamarin_android
         /** method that gets called with every frame. retrieve frame with 
          *  Bitmap frameBitmap = textureView.Bitmap;
          */
-        int i=0;
+        int i = 0;
         int xlatest = 350;
         public void OnSurfaceTextureUpdated(SurfaceTexture surface)
         {
-            Bitmap f = textureView.GetBitmap(640, 360);
+            /*await Task.Run(() => {
+                Bitmap f = textureView.GetBitmap(640, 360);
 
-            Mat frame = Processing.ToHSV(f, color);
-            f.Dispose();
+                Mat frame = Processing.ToHSV(f, color);
+                f.Dispose();
 
-            Coordinates a = Processing.FindBall(frame);
-            Console.WriteLine(a.ToString());
-            if (a.Found())
-            {
-                i = 0;
-                xlatest = a.x;
-            }
-            else
-            {
-                i++;
-                if (i == 6)
+                Coordinates coordinates = Processing.FindBall(frame);
+
+                if (coordinates.Found())
                 {
-                    if (440 < xlatest)
+                    i = 0;
+                    xlatest = coordinates.x;
+                }
+                else
+                {
+                    i++;
+                    if (i == 6)
                     {
-                        game.team1Score++;
-                        ServerConnection.PostGame(game);
-                        updateScore(game.team1Score, game.team2Score);
-                    }
+                        if (440 < xlatest)
+                        {
+                            game.team1Score++;
+                            updateScore(game.team1Score, game.team2Score);
+                        }
 
-                    if (200 > xlatest)
-                    {
-                        game.team2Score++;
-                        ServerConnection.PostGame(game);
-                        updateScore(game.team1Score, game.team2Score);
+                        if (200 > xlatest)
+                        {
+                            game.team2Score++;
+                            updateScore(game.team1Score, game.team2Score);
+                        }
                     }
                 }
+            });*/
+            if (!worker.IsBusy)
+            {
+                worker.RunWorkerAsync();
             }
         }
 
@@ -168,6 +188,51 @@ namespace xamarin_android
         private void updateScore(int team1, int team2)
         {
             score.Text = team1.ToString() + " - " + team2.ToString();
+            if (IsConnection)
+            {
+                ServerConnection.PostGame(game);
+            }
+        }
+
+        private BackgroundWorker worker;
+
+        private void AssignBackgroundWorker()
+        {
+            worker = new BackgroundWorker();
+            worker.DoWork += Worker_DoWork;
+        }
+
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Bitmap f = textureView.GetBitmap(640, 360);
+
+            Mat frame = Processing.ToHSV(f, color);
+
+            Coordinates coordinates = Processing.FindBall(frame);
+
+            if (coordinates.Found())
+            {
+                i = 0;
+                xlatest = coordinates.x;
+            }
+            else
+            {
+                i++;
+                if (i == 6)
+                {
+                    if (440 < xlatest)
+                    {
+                        game.team1Score++;
+                        updateScore(game.team1Score, game.team2Score);
+                    }
+
+                    if (200 > xlatest)
+                    {
+                        game.team2Score++;
+                        updateScore(game.team1Score, game.team2Score);
+                    }
+                }
+            }
         }
     }
 }
