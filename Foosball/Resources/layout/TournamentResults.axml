@@ -10,5 +10,10 @@
         android:scaleType="centerCrop"
         android:alpha="0.4"
         android:src="@drawable/Ball" />
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="100"
+        android:scrollbars="vertical"
+        android:id="@+id/TournamentResultsText" />
 </RelativeLayout>

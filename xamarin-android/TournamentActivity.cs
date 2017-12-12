@@ -11,15 +11,13 @@ using Android.Views;
 using Android.Widget;
 using System.Data.SqlClient;
 using System.Data;
+using Android.Text.Method;
 
 namespace xamarin_android
 {
     [Activity(Label = "TournamentActivity")]
     public class TournamentActivity : Activity
     {
-        //Button bExisting;
-        //Button bNew;
-
         string myCon = "Server=tcp:myserver-20171207.database.windows.net,1433;" +
                "Initial Catalog=foosballDatabase;" +
                "User ID=ServerAdmin963;" +
@@ -71,7 +69,9 @@ namespace xamarin_android
             showTournaments.Click += (object sender, EventArgs e) =>
             {
                 // Set our view to TournamentsAll
-                SetContentView(Resource.Layout.TournamentsAll);
+                SetContentView(Resource.Layout.TournamentResults);
+
+                TournamentSelect();
             };
 
             // Show results button
@@ -79,8 +79,50 @@ namespace xamarin_android
             {
                 // Set our view to TournamentResults
                 SetContentView(Resource.Layout.TournamentResults);
-            };
 
+
+            };
+        }
+
+        public void TournamentSelect()
+        {
+            using (SqlConnection cn = new SqlConnection())
+            using (SqlDataAdapter da = new SqlDataAdapter())
+            {
+                // Establish connection string
+                cn.ConnectionString = myCon;
+
+                //Establish SQL select command
+                SqlCommand select = new SqlCommand("SELECT TournamentID, UserID, Winner FROM tabTournament", cn);
+
+                da.SelectCommand = select;
+
+                //Establish table to be updated
+                DataSet ds = new DataSet();
+                da.Fill(ds, "tabTournament");
+
+                TextView tournamentResults = FindViewById<TextView>(Resource.Id.TournamentResultsText);
+                tournamentResults.MovementMethod = new ScrollingMovementMethod();
+
+                //  TO-DO: change 10 to something more meaningful
+                tournamentResults.Append("---------------------------------------\n");
+                for (int i = 0; i < 10; i++)
+                {
+                    try
+                    {
+                        string collumn1 = (ds.Tables[0].Rows[i]["TournamentID"]).ToString();
+                        string collumn2 = (ds.Tables[0].Rows[i]["UserID"]).ToString();
+                        string collumn3 = (ds.Tables[0].Rows[i]["Winner"]).ToString();
+
+                        tournamentResults.Append(collumn1 + "\t\t");
+                        tournamentResults.Append(collumn2 + "\t\t");
+                        tournamentResults.Append(collumn3 + "\n");
+                    }
+                    // TO-DO: something happens when theres no row at position i}
+                    catch (Exception) { }
+                }
+                tournamentResults.Append("---------------------------------------\n");
+            }
         }
 
         public void Update(int id, string name)

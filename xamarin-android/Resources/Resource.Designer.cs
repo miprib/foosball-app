@@ -120,6 +120,9 @@ namespace xamarin_android
 			// aapt resource value: 0x7f050020
 			public const int ShowTournaments = 2131034144;
 			
+			// aapt resource value: 0x7f050022
+			public const int TournamentResultsText = 2131034146;
+			
 			// aapt resource value: 0x7f05001d
 			public const int UpdateButton = 2131034141;
 			
@@ -243,9 +246,6 @@ namespace xamarin_android
 			
 			// aapt resource value: 0x7f03000a
 			public const int TournamentResults = 2130903050;
-			
-			// aapt resource value: 0x7f03000b
-			public const int TournamentsAll = 2130903051;
 			
 			static Layout()
 			{
