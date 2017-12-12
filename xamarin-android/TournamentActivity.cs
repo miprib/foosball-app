@@ -34,8 +34,8 @@ namespace xamarin_android
 
             // Update existing player
             Button updateButton = FindViewById<Button>(Resource.Id.UpdateButton);
-            EditText updateID = FindViewById<EditText>(Resource.Id.UpdateID);
-            EditText updateName = FindViewById<EditText>(Resource.Id.UpdateName);
+            EditText ID = FindViewById<EditText>(Resource.Id.ID);
+            EditText Name = FindViewById<EditText>(Resource.Id.Name);
 
             // Show all tournaments
             Button showTournaments = FindViewById<Button>(Resource.Id.ShowTournaments);
@@ -44,51 +44,93 @@ namespace xamarin_android
             Button showResults = FindViewById<Button>(Resource.Id.ShowResults);
 
             // Add new player
-            EditText insertID = FindViewById<EditText>(Resource.Id.InsertID);
-            EditText insertName = FindViewById<EditText>(Resource.Id.InsertName);
             Button insertButton = FindViewById<Button>(Resource.Id.InsertButton);
+
+            //Add player to tournament
+            Button fight = FindViewById<Button>(Resource.Id.FightButton);
+            EditText tournamentFightID = FindViewById<EditText>(Resource.Id.TournamentFightID);
+            EditText leftID = FindViewById<EditText>(Resource.Id.LeftID);
+            EditText rightID = FindViewById<EditText>(Resource.Id.RightID);
 
             // Show players
             Button showPlayers = FindViewById<Button>(Resource.Id.ShowPlayersButton);
 
             // Delete tournament
-            EditText deleteID = FindViewById<EditText>(Resource.Id.DeleteID);
-            Button deleteButton = FindViewById<Button>(Resource.Id.DeleteTournament);
+            EditText tournamentID = FindViewById<EditText>(Resource.Id.TournamentID);
+            Button deleteTournament = FindViewById<Button>(Resource.Id.DeleteTournament);
 
+            // Create a new tournament
+            Button insertTournament = FindViewById<Button>(Resource.Id.InsertTournament);
+            EditText creatorsID = FindViewById<EditText>(Resource.Id.CreatorsID);
 
             int id;
+            int idTournament;
+            int idCreator;
+            int idLeft;
+            int idRight;
+
+            // Add player to tournament
+            fight.Click += (object sender, EventArgs e) =>
+            {
+                if (Int32.TryParse(tournamentFightID.Text, out idTournament))
+                {
+                    try
+                    {
+                        if (Int32.TryParse(leftID.Text, out idLeft))
+                        {
+                            try
+                            {
+                                if (Int32.TryParse(rightID.Text, out idRight))
+                                {
+                                    try
+                                    {
+                                        AddPlayerToTournament(idTournament, idLeft, idRight);
+                                        Toast.MakeText(this, string.Format("Inserted successfully at id {0}", rightID.Text), ToastLength.Long).Show();
+                                    }
+                                    catch (Exception) { Toast.MakeText(this, string.Format("Error inserting at id {0}", rightID.Text), ToastLength.Long).Show(); }
+                                }
+                                else Toast.MakeText(this, string.Format("Invalid ID: {0}", rightID.Text), ToastLength.Long).Show();
+                            }
+                            catch (Exception) { Toast.MakeText(this, string.Format("Error inserting at id {0}", leftID.Text), ToastLength.Long).Show(); }
+                        }
+                        else Toast.MakeText(this, string.Format("Invalid ID: {0}", leftID.Text), ToastLength.Long).Show();
+                    }
+                    catch (Exception) { Toast.MakeText(this, string.Format("Error inserting at id {0}", tournamentFightID.Text), ToastLength.Long).Show(); }
+                }
+                else Toast.MakeText(this, string.Format("Invalid ID: {0}", tournamentFightID.Text), ToastLength.Long).Show();
+            };
 
             // Update existing player
             updateButton.Click += (object sender, EventArgs e) =>
             {
-                if (Int32.TryParse(updateID.Text, out id))
+                if (Int32.TryParse(ID.Text, out id))
                 {
                     try
                     {
-                        string name = updateName.Text.ToString();
+                        string name = Name.Text.ToString();
                         UpdateExisting(id, name);
-                        Toast.MakeText(this, string.Format("Updated successfully at id {0}", updateID.Text), ToastLength.Long).Show();
+                        Toast.MakeText(this, string.Format("Updated successfully at id {0}", ID.Text), ToastLength.Long).Show();
                     }
-                    catch (Exception) { Toast.MakeText(this, string.Format("Error updating at id {0}", updateID.Text), ToastLength.Long).Show(); }
+                    catch (Exception) { Toast.MakeText(this, string.Format("Error updating at id {0}", ID.Text), ToastLength.Long).Show(); }
 
                 }
-                else Toast.MakeText(this, string.Format("Invalid ID: {0}", updateID.Text), ToastLength.Long).Show();
+                else Toast.MakeText(this, string.Format("Invalid ID: {0}", ID.Text), ToastLength.Long).Show();
             };
 
             // Add new player
             insertButton.Click += (object sender, EventArgs e) =>
             {
-                if (Int32.TryParse(insertID.Text, out id))
+                if (Int32.TryParse(ID.Text, out id))
                 {
                     try
                     {
-                        string name = insertName.Text.ToString();
+                        string name = Name.Text.ToString();
                         AddNew(id, name);
-                        Toast.MakeText(this, string.Format("Inserted successfully at id {0}", insertID.Text), ToastLength.Long).Show();
+                        Toast.MakeText(this, string.Format("Inserted successfully at id {0}", ID.Text), ToastLength.Long).Show();
                     }
-                    catch (Exception) { Toast.MakeText(this, string.Format("Error inserting at id {0}", insertID.Text), ToastLength.Long).Show(); }
+                    catch (Exception) { Toast.MakeText(this, string.Format("Error inserting at id {0}", ID.Text), ToastLength.Long).Show(); }
                 }
-                else Toast.MakeText(this, string.Format("Invalid ID: {0}", insertID.Text), ToastLength.Long).Show();
+                else Toast.MakeText(this, string.Format("Invalid ID: {0}", ID.Text), ToastLength.Long).Show();
             };
 
             // Show players
@@ -100,23 +142,47 @@ namespace xamarin_android
             };
 
             // Delete tournament
-            deleteButton.Click += (object sender, EventArgs e) =>
+            deleteTournament.Click += (object sender, EventArgs e) =>
             {
-                if (Int32.TryParse(deleteID.Text, out id))
+                if (Int32.TryParse(tournamentID.Text, out id))
                 {
                     try
                     {
                         DeleteTournament(id);
-                        Toast.MakeText(this, string.Format("Deleted successfully at id {0}", deleteID.Text), ToastLength.Long).Show();
+                        Toast.MakeText(this, string.Format("Deleted successfully at id {0}", tournamentID.Text), ToastLength.Long).Show();
                     }
-                    catch (Exception) { Toast.MakeText(this, string.Format("Error deleting at id {0}", deleteID.Text), ToastLength.Long).Show(); }
+                    catch (Exception) { Toast.MakeText(this, string.Format("Error deleting at id {0}", tournamentID.Text), ToastLength.Long).Show(); }
                 }
-                else Toast.MakeText(this, string.Format("Invalid ID: {0}", deleteID.Text), ToastLength.Long).Show();
+                else Toast.MakeText(this, string.Format("Invalid ID: {0}", tournamentID.Text), ToastLength.Long).Show();
+            };
+
+            // Add new tournament
+            insertTournament.Click += (object sender, EventArgs e) =>
+            {
+                if (Int32.TryParse(tournamentID.Text, out idTournament))
+                {
+                    try
+                    {
+                        if (Int32.TryParse(creatorsID.Text, out idCreator))
+                        {
+                            try
+                            {
+                                AddNewTournament(idTournament, idCreator);
+                                Toast.MakeText(this, string.Format("Inserted successfully at id {0}", creatorsID.Text), ToastLength.Long).Show();
+                            }
+                            catch (Exception) { Toast.MakeText(this, string.Format("Error inserting at id {0}", creatorsID.Text), ToastLength.Long).Show(); }
+                        }
+                        else Toast.MakeText(this, string.Format("Invalid ID: {0}", creatorsID.Text), ToastLength.Long).Show();
+                    }
+                    catch (Exception) { Toast.MakeText(this, string.Format("Error inserting at id {0}", tournamentID.Text), ToastLength.Long).Show(); }
+                }
+                else Toast.MakeText(this, string.Format("Invalid ID: {0}", tournamentID.Text), ToastLength.Long).Show();
             };
 
             // Show all tournaments button
             showTournaments.Click += (object sender, EventArgs e) =>
             {
+                // Set our view to TournamentsAll
                 SetContentView(Resource.Layout.TournamentResults);
 
                 TournamentSelect();
@@ -129,6 +195,47 @@ namespace xamarin_android
 
                 ResultsSelect();
             };
+        }
+
+        public void AddPlayerToTournament(int idTournament, int idLeft, int idRight)
+        {
+
+        }
+
+        public void AddNewTournament(int idTournament, int idCreator)
+        {
+            using (SqlConnection cn = new SqlConnection())
+            using (SqlDataAdapter da = new SqlDataAdapter("SELECT TournamentID, UserID FROM tabTournament", cn))
+            {
+                // Establish connection string
+                cn.ConnectionString = myCon;
+
+                //Establish SQL insert command
+                SqlCommand insert = new SqlCommand();
+                insert.Connection = cn;
+                insert.CommandType = CommandType.Text;
+                insert.CommandText = "INSERT INTO tabTournament (TournamentID, UserID) VALUES (@TID, @UID)";
+
+                //Establish existing (those used in SELECT)
+                insert.Parameters.Add(new SqlParameter("@TID", SqlDbType.Int, 50, "TournamentID"));
+                insert.Parameters.Add(new SqlParameter("@UID", SqlDbType.Int, 10, "UserID"));
+
+                //Data adapter (using statement)
+                da.InsertCommand = insert;
+
+                //Establish table to be updated
+                DataSet ds = new DataSet();
+                da.Fill(ds, "tabTournament");
+
+                //Establish the new data for the row to be inserted
+                DataRow newRow = ds.Tables[0].NewRow();
+                newRow["TournamentID"] = idTournament;
+                newRow["UserID"] = idCreator;
+                ds.Tables[0].Rows.Add(newRow);
+
+                //Insert done
+                da.Update(ds.Tables[0]);
+            }
         }
 
         public void PlayersSelect()
@@ -230,6 +337,7 @@ namespace xamarin_android
 
                 ds.Tables[0].Rows[id - 1].Delete();
 
+                //Delete done
                 da.Update(ds.Tables[0]);
             }
         }
@@ -355,6 +463,5 @@ namespace xamarin_android
                 da.Update(ds.Tables[0]);
             }
         }
-
     }
 }

@@ -96,26 +96,38 @@ namespace xamarin_android
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f050020
-			public const int DeleteID = 2131034144;
+			// aapt resource value: 0x7f05001f
+			public const int CreatorsID = 2131034143;
 			
 			// aapt resource value: 0x7f050021
 			public const int DeleteTournament = 2131034145;
 			
+			// aapt resource value: 0x7f050027
+			public const int FightButton = 2131034151;
+			
+			// aapt resource value: 0x7f050019
+			public const int ID = 2131034137;
+			
 			// aapt resource value: 0x7f05001b
 			public const int InsertButton = 2131034139;
 			
-			// aapt resource value: 0x7f050019
-			public const int InsertID = 2131034137;
+			// aapt resource value: 0x7f050020
+			public const int InsertTournament = 2131034144;
 			
-			// aapt resource value: 0x7f05001a
-			public const int InsertName = 2131034138;
+			// aapt resource value: 0x7f050025
+			public const int LeftID = 2131034149;
 			
 			// aapt resource value: 0x7f050000
 			public const int ListView = 2131034112;
 			
+			// aapt resource value: 0x7f05001a
+			public const int Name = 2131034138;
+			
 			// aapt resource value: 0x7f050010
 			public const int PIN = 2131034128;
+			
+			// aapt resource value: 0x7f050026
+			public const int RightID = 2131034150;
 			
 			// aapt resource value: 0x7f05001c
 			public const int ShowPlayersButton = 2131034140;
@@ -127,19 +139,16 @@ namespace xamarin_android
 			public const int ShowTournaments = 2131034146;
 			
 			// aapt resource value: 0x7f050024
-			public const int StartTournament = 2131034148;
-			
-			// aapt resource value: 0x7f050025
-			public const int TournamentResultsText = 2131034149;
-			
-			// aapt resource value: 0x7f05001f
-			public const int UpdateButton = 2131034143;
-			
-			// aapt resource value: 0x7f05001d
-			public const int UpdateID = 2131034141;
+			public const int TournamentFightID = 2131034148;
 			
 			// aapt resource value: 0x7f05001e
-			public const int UpdateName = 2131034142;
+			public const int TournamentID = 2131034142;
+			
+			// aapt resource value: 0x7f050028
+			public const int TournamentResultsText = 2131034152;
+			
+			// aapt resource value: 0x7f05001d
+			public const int UpdateButton = 2131034141;
 			
 			// aapt resource value: 0x7f050007
 			public const int add = 2131034119;
