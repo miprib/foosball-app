@@ -96,11 +96,11 @@ namespace xamarin_android
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f05001f
-			public const int DeleteID = 2131034143;
-			
 			// aapt resource value: 0x7f050020
-			public const int DeleteTournament = 2131034144;
+			public const int DeleteID = 2131034144;
+			
+			// aapt resource value: 0x7f050021
+			public const int DeleteTournament = 2131034145;
 			
 			// aapt resource value: 0x7f05001b
 			public const int InsertButton = 2131034139;
@@ -117,23 +117,29 @@ namespace xamarin_android
 			// aapt resource value: 0x7f050010
 			public const int PIN = 2131034128;
 			
-			// aapt resource value: 0x7f050022
-			public const int ShowResults = 2131034146;
-			
-			// aapt resource value: 0x7f050021
-			public const int ShowTournaments = 2131034145;
+			// aapt resource value: 0x7f05001c
+			public const int ShowPlayersButton = 2131034140;
 			
 			// aapt resource value: 0x7f050023
-			public const int TournamentResultsText = 2131034147;
+			public const int ShowResults = 2131034147;
 			
-			// aapt resource value: 0x7f05001e
-			public const int UpdateButton = 2131034142;
+			// aapt resource value: 0x7f050022
+			public const int ShowTournaments = 2131034146;
 			
-			// aapt resource value: 0x7f05001c
-			public const int UpdateID = 2131034140;
+			// aapt resource value: 0x7f050024
+			public const int StartTournament = 2131034148;
+			
+			// aapt resource value: 0x7f050025
+			public const int TournamentResultsText = 2131034149;
+			
+			// aapt resource value: 0x7f05001f
+			public const int UpdateButton = 2131034143;
 			
 			// aapt resource value: 0x7f05001d
-			public const int UpdateName = 2131034141;
+			public const int UpdateID = 2131034141;
+			
+			// aapt resource value: 0x7f05001e
+			public const int UpdateName = 2131034142;
 			
 			// aapt resource value: 0x7f050007
 			public const int add = 2131034119;

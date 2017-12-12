@@ -51,6 +51,9 @@ namespace Foosball
             EditText insertID = FindViewById<EditText>(Resource.Id.InsertID);
             Button insertButton = FindViewById<Button>(Resource.Id.InsertButton);
 
+            // Show players
+            Button showPlayers = FindViewById<Button>(Resource.Id.ShowPlayersButton);   
+
             // Delete tournament
             EditText deleteID = FindViewById<EditText>(Resource.Id.DeleteID);
             Button deleteTournament = FindViewById<Button>(Resource.Id.DeleteTournament);
@@ -91,6 +94,14 @@ namespace Foosball
                 else Toast.MakeText(this, string.Format("Invalid ID: {0}", insertID.Text), ToastLength.Long).Show();
             };
 
+            // Show players
+            showPlayers.Click += (object sender, EventArgs e) =>
+            {
+                SetContentView(Resource.Layout.TournamentResults);
+
+                PlayersSelect();
+            };
+
             // Delete tournament
             deleteTournament.Click += (object sender, EventArgs e) =>
             {
@@ -122,6 +133,46 @@ namespace Foosball
 
                 ResultsSelect();
             };
+        }
+
+        public void PlayersSelect()
+        {
+            using (SqlConnection cn = new SqlConnection())
+            using (SqlDataAdapter da = new SqlDataAdapter())
+            {
+                // Establish connection string
+                cn.ConnectionString = myCon;
+
+                //Establish SQL select command
+                SqlCommand select = new SqlCommand("SELECT UserID, Name FROM tabUser", cn);
+
+                da.SelectCommand = select;
+
+                //Establish table to be updated
+                DataSet ds = new DataSet();
+                da.Fill(ds, "tabUser");
+
+                TextView tournamentResults = FindViewById<TextView>(Resource.Id.TournamentResultsText);
+                tournamentResults.MovementMethod = new ScrollingMovementMethod();
+
+                tournamentResults.Append("UserID" + string.Empty.PadLeft(2, '\t'));
+                tournamentResults.Append("Name" + "\n");
+
+                //  TO-DO: change 20 to something more meaningful
+                for (int i = 0; i < 20; i++)
+                {
+                    try
+                    {
+                        string collumn1 = (ds.Tables[0].Rows[i]["UserID"]).ToString();
+                        string collumn2 = (ds.Tables[0].Rows[i]["Name"]).ToString();
+
+                        tournamentResults.Append(collumn1 + string.Empty.PadLeft(6, '\t'));
+                        tournamentResults.Append(collumn2 + "\n");
+                    }
+
+                    catch (Exception) { tournamentResults.Append("\nROWS: " + i + "\n"); break; }
+                }
+            }
         }
 
         public void AddNew(int id, string name)

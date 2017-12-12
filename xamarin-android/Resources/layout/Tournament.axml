@@ -16,63 +16,101 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/InsertID"
-        android:layout_marginTop="25px" />
+        android:layout_marginTop="25px"
+        android:layout_marginLeft="200px"
+        android:layout_marginRight="200px" />
     <EditText
-        android:hint="New player "
+        android:hint="New player"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/InsertName"
-        android:layout_marginTop="100px" />
+        android:layout_marginTop="100px"
+        android:layout_marginLeft="200px"
+        android:layout_marginRight="200px" />
     <Button
         android:text="INSERT"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/InsertButton"
-        android:layout_marginTop="175px" />
+        android:layout_marginTop="175px"
+        android:layout_marginLeft="100px"
+        android:layout_marginRight="400px" />
+<!-- Show players -->
+    <Button
+        android:text="SHOW"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ShowPlayersButton"
+        android:layout_marginTop="175px"
+        android:layout_marginLeft="400px"
+        android:layout_marginRight="100px" />
 <!-- Update players -->
     <EditText
         android:hint="Player ID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/UpdateID"
-        android:layout_marginTop="275px" />
+        android:layout_marginTop="275px"
+        android:layout_marginLeft="200px"
+        android:layout_marginRight="200px" />
     <EditText
         android:hint="Existing player"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/UpdateName"
-        android:layout_marginTop="350px" />
+        android:layout_marginTop="350px"
+        android:layout_marginLeft="200px"
+        android:layout_marginRight="200px" />
     <Button
         android:text="UPDATE"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/UpdateButton"
-        android:layout_marginTop="425px" />
+        android:layout_marginTop="425px"
+        android:layout_marginLeft="100px"
+        android:layout_marginRight="100px" />
 <!-- Delete tournament -->
     <EditText
         android:hint="Tournament ID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/DeleteID"
-        android:layout_marginTop="525px" />
+        android:layout_marginTop="525px"
+        android:layout_marginRight="200px"
+        android:layout_marginLeft="200px" />
     <Button
         android:text="DELETE"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/DeleteTournament"
-        android:layout_marginTop="600px" />
+        android:layout_marginTop="600px"
+        android:layout_marginLeft="100px"
+        android:layout_marginRight="400px" />
 <!-- Show tournaments -->
     <Button
-        android:text="Show Tournaments"
-        android:layout_width="wrap_content"
+        android:text="SHOW"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ShowTournaments"
-        android:layout_marginTop="700px" />
+        android:layout_marginTop="600px"
+        android:layout_marginLeft="400px"
+        android:layout_marginRight="100px" />
 <!-- Show results -->
     <Button
         android:text="Show Results"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ShowResults"
-        android:layout_marginTop="800px" />
+        android:layout_marginTop="750px"
+        android:layout_marginLeft="100px"
+        android:layout_marginRight="100px" />
+<!-- Start tournament -->
+    <Button
+        android:text="Start Tournament"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/StartTournament"
+        android:layout_marginTop="850px"
+        android:layout_marginLeft="100px"
+        android:layout_marginRight="100px" />
 </RelativeLayout>
