@@ -23,7 +23,7 @@ CREATE TABLE tabTournament
 
 CREATE TABLE tabRightTournamentPlayer 
 (
-	GameID			int					not null
+	GameID			int					not null	IDENTITY (1,1)
 		PRIMARY KEY,	
     RightPlayerID   int					not null,
     Score           int,
@@ -33,7 +33,7 @@ CREATE TABLE tabRightTournamentPlayer
 
 CREATE TABLE tabLeftTournamentPlayer
 (
-	GameID			int					not null
+	GameID			int					not null	IDENTITY (1,1)
 		PRIMARY KEY,	
     LeftPlayerID    int					not null,
     Score           int,
@@ -44,7 +44,7 @@ CREATE TABLE tabLeftTournamentPlayer
 
 CREATE TABLE tabTournamentGame
 (
-    GameID          int					not null
+    GameID          int					not null	IDENTITY (1,1)
         PRIMARY KEY,
     Date            datetime            not null,
     TournamentID    int					not null
@@ -67,38 +67,38 @@ INSERT INTO tabTournament (TournamentID, UserID, Winner)
 	VALUES
 	(1, 2, 'PSI');
 
-INSERT INTO tabTournamentGame (GameID, Date, TournamentID)
+INSERT INTO tabTournamentGame (Date, TournamentID)
 	VALUES
-	(1, '2017-12-08', 1),
-	(2, '2017-12-08', 1),
-	(3, '2017-12-08', 1),
-	(4, '2017-12-08', 1),
+	('2017-12-08', 1),
+	('2017-12-08', 1),
+	('2017-12-08', 1),
+	('2017-12-08', 1),
 
-	(5, '2017-12-08', 1),
-	(6, '2017-12-08', 1),
+	('2017-12-08', 1),
+	('2017-12-08', 1),
 
-	(7, '2017-12-08', 1);
+	('2017-12-08', 1);
 
-INSERT INTO tabRightTournamentPlayer (GameID, RightPlayerID, Score, TournamentID)
+INSERT INTO tabRightTournamentPlayer (RightPlayerID, Score, TournamentID)
 	VALUES
-	(1, 1, 3, 1),
-	(2, 3, 3, 1),
-	(3, 5, 3, 1),
-	(4, 7, 2, 1),
+	(1, 3, 1),
+	(3, 3, 1),
+	(5, 3, 1),
+	(7, 2, 1),
 
-	(5, 1, 1, 1),
-	(6, 5, 3, 1),
+	(1, 1, 1),
+	(5, 3, 1),
 
-	(7, 3, 3, 1);
+	(3, 3, 1);
 
-INSERT INTO tabLeftTournamentPlayer (GameID, LeftPlayerID, Score, TournamentID)
+INSERT INTO tabLeftTournamentPlayer (LeftPlayerID, Score, TournamentID)
 	VALUES
-	(1, 2, 0, 1),
-	(2, 4, 0, 1),
-	(3, 6, 0, 1),
-	(4, 8, 3, 1),
+	(2, 0, 1),
+	(4, 0, 1),
+	(6, 0, 1),
+	(8, 3, 1),
 
-	(5, 3, 3, 1),
-	(6, 8, 1, 1),
+	(3, 3, 1),
+	(8, 1, 1),
 
-	(7, 5, 2, 1);
+	(5, 2, 1);
