@@ -54,15 +54,42 @@ namespace xamarin_android
 
             int id;
 
-            // Update button
+            // Update existing player
             updateButton.Click += (object sender, EventArgs e) =>
             {
                 if (Int32.TryParse(updateID.Text, out id))
                 {
-                    string name = updateName.Text.ToString();
-                    UpdateExisting(id, name);
+                    try
+                    {
+                        string name = updateName.Text.ToString();
+                        UpdateExisting(id, name);
+                        Toast.MakeText(this, string.Format("Updated successfully at id {0}", updateID.Text), ToastLength.Long).Show();
+                    }
+                    catch (Exception) { Toast.MakeText(this, string.Format("Error updating at id {0}", updateID.Text), ToastLength.Long).Show(); }
+
                 }
                 else Toast.MakeText(this, string.Format("Invalid ID: {0}", updateID.Text), ToastLength.Long).Show();
+            };
+
+            // Add new player
+            insertButton.Click += (object sender, EventArgs e) =>
+            {
+
+            };
+
+            // Delete tournament
+            deleteButton.Click += (object sender, EventArgs e) =>
+            {
+                if (Int32.TryParse(deleteID.Text, out id))
+                {
+                    try
+                    {
+                        DeleteTournament(id);
+                        Toast.MakeText(this, string.Format("Deleted successfully at id {0}", deleteID.Text), ToastLength.Long).Show();
+                    }
+                    catch (Exception) { Toast.MakeText(this, string.Format("Error deleting at id {0}", deleteID.Text), ToastLength.Long).Show(); }
+                }
+                else Toast.MakeText(this, string.Format("Invalid ID: {0}", deleteID.Text), ToastLength.Long).Show();
             };
 
             // Show all tournaments button
@@ -75,13 +102,39 @@ namespace xamarin_android
             };
 
             // Show results button
-            showTournaments.Click += (object sender, EventArgs e) =>
+            showResults.Click += (object sender, EventArgs e) =>
             {
-                // Set our view to TournamentResults
                 SetContentView(Resource.Layout.TournamentResults);
 
                 ResultsSelect();
             };
+        }
+
+        public void DeleteTournament(int id)
+        {
+            using (SqlConnection cn = new SqlConnection())
+            using (SqlDataAdapter da = new SqlDataAdapter("SELECT TournamentID, UserID, Winner FROM tabTournament", cn))
+            {
+                // Establish connection string
+                cn.ConnectionString = myCon;
+
+                //Establish SQL select command
+                SqlCommand delete = new SqlCommand();
+                delete.Connection = cn;
+                delete.CommandType = CommandType.Text;
+                delete.CommandText = "DELETE FROM tabTournament WHERE TournamentID = @ID";
+
+                delete.Parameters.Add(new SqlParameter("@ID", SqlDbType.Int, 50, "TournamentId"));
+                da.DeleteCommand = delete;
+
+                //Establish table to be updated
+                DataSet ds = new DataSet();
+                da.Fill(ds, "tabTournament");
+
+                ds.Tables[0].Rows[id - 1].Delete();
+
+                da.Update(ds.Tables[0]);
+            }
         }
 
         public void ResultsSelect()
