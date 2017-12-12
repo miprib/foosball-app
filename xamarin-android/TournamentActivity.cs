@@ -44,6 +44,7 @@ namespace xamarin_android
             Button showResults = FindViewById<Button>(Resource.Id.ShowResults);
 
             // Add new player
+            EditText insertID = FindViewById<EditText>(Resource.Id.InsertID);
             EditText insertName = FindViewById<EditText>(Resource.Id.InsertName);
             Button insertButton = FindViewById<Button>(Resource.Id.InsertButton);
 
@@ -74,7 +75,17 @@ namespace xamarin_android
             // Add new player
             insertButton.Click += (object sender, EventArgs e) =>
             {
-
+                if (Int32.TryParse(insertID.Text, out id))
+                {
+                    try
+                    {
+                        string name = insertName.Text.ToString();
+                        AddNew(id, name);
+                        Toast.MakeText(this, string.Format("Inserted successfully at id {0}", insertID.Text), ToastLength.Long).Show();
+                    }
+                    catch (Exception) { Toast.MakeText(this, string.Format("Error inserting at id {0}", insertID.Text), ToastLength.Long).Show(); }
+                }
+                else Toast.MakeText(this, string.Format("Invalid ID: {0}", insertID.Text), ToastLength.Long).Show();
             };
 
             // Delete tournament
@@ -95,7 +106,6 @@ namespace xamarin_android
             // Show all tournaments button
             showTournaments.Click += (object sender, EventArgs e) =>
             {
-                // Set our view to TournamentsAll
                 SetContentView(Resource.Layout.TournamentResults);
 
                 TournamentSelect();
@@ -108,6 +118,42 @@ namespace xamarin_android
 
                 ResultsSelect();
             };
+        }
+
+        public void AddNew(int id, string name)
+        {
+            using (SqlConnection cn = new SqlConnection())
+            using (SqlDataAdapter da = new SqlDataAdapter("SELECT UserID, Name FROM tabUser", cn))
+            {
+                // Establish connection string
+                cn.ConnectionString = myCon;
+
+                //Establish SQL insert command
+                SqlCommand insert = new SqlCommand();
+                insert.Connection = cn;
+                insert.CommandType = CommandType.Text;
+                insert.CommandText = "INSERT INTO tabUser (UserID, Name) VALUES (@ID, @N)";
+
+                //Establish existing (those used in SELECT)
+                insert.Parameters.Add(new SqlParameter("@N", SqlDbType.NVarChar, 50, "Name"));
+                insert.Parameters.Add(new SqlParameter("@ID", SqlDbType.Int, 10, "UserID"));
+
+                //Data adapter (using statement)
+                da.InsertCommand = insert;
+
+                //Establish table to be updated
+                DataSet ds = new DataSet();
+                da.Fill(ds, "tabUser");
+
+                //Establish the new data for the row to be inserted
+                DataRow newRow = ds.Tables[0].NewRow();
+                newRow["UserID"] = id;
+                newRow["Name"] = name;
+                ds.Tables[0].Rows.Add(newRow);
+
+                //Insert done
+                da.Update(ds.Tables[0]);
+            }
         }
 
         public void DeleteTournament(int id)

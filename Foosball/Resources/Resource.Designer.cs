@@ -72,11 +72,11 @@ namespace Foosball
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f05000e
-			public const int DeleteID = 2131034126;
-			
 			// aapt resource value: 0x7f05000f
-			public const int DeleteTournament = 2131034127;
+			public const int DeleteID = 2131034127;
+			
+			// aapt resource value: 0x7f050010
+			public const int DeleteTournament = 2131034128;
 			
 			// aapt resource value: 0x7f050000
 			public const int DoSomethingButton = 2131034112;
@@ -87,17 +87,20 @@ namespace Foosball
 			// aapt resource value: 0x7f050002
 			public const int HistoryText = 2131034114;
 			
-			// aapt resource value: 0x7f05000a
-			public const int InsertButton = 2131034122;
+			// aapt resource value: 0x7f05000b
+			public const int InsertButton = 2131034123;
 			
 			// aapt resource value: 0x7f050009
-			public const int InsertName = 2131034121;
+			public const int InsertID = 2131034121;
+			
+			// aapt resource value: 0x7f05000a
+			public const int InsertName = 2131034122;
+			
+			// aapt resource value: 0x7f050012
+			public const int ShowResults = 2131034130;
 			
 			// aapt resource value: 0x7f050011
-			public const int ShowResults = 2131034129;
-			
-			// aapt resource value: 0x7f050010
-			public const int ShowTournaments = 2131034128;
+			public const int ShowTournaments = 2131034129;
 			
 			// aapt resource value: 0x7f050003
 			public const int StartButton = 2131034115;
@@ -105,17 +108,17 @@ namespace Foosball
 			// aapt resource value: 0x7f050007
 			public const int TournamentButton = 2131034119;
 			
-			// aapt resource value: 0x7f050012
-			public const int TournamentResultsText = 2131034130;
+			// aapt resource value: 0x7f050013
+			public const int TournamentResultsText = 2131034131;
 			
-			// aapt resource value: 0x7f05000d
-			public const int UpdateButton = 2131034125;
-			
-			// aapt resource value: 0x7f05000b
-			public const int UpdateID = 2131034123;
+			// aapt resource value: 0x7f05000e
+			public const int UpdateButton = 2131034126;
 			
 			// aapt resource value: 0x7f05000c
-			public const int UpdateName = 2131034124;
+			public const int UpdateID = 2131034124;
+			
+			// aapt resource value: 0x7f05000d
+			public const int UpdateName = 2131034125;
 			
 			// aapt resource value: 0x7f050001
 			public const int doSomethingText = 2131034113;

@@ -211,10 +211,10 @@
     <AndroidResource Include="Resources\drawable\tvBackground.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\Tournament.axml">
+    <AndroidResource Include="Resources\layout\TournamentResults.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\TournamentResults.axml">
+    <AndroidResource Include="Resources\layout\Tournament.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
