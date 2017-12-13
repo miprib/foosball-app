@@ -86,13 +86,9 @@ namespace Foosball
             startTournament.Click += (object sender, EventArgs e) =>
             {
                 // TO-DO: tourmanet start
-                try
-                {
-                    UpdateWinner(idT, nameT);
-                    Toast.MakeText(this, string.Format("Success updating score at id {0}", idT), ToastLength.Long).Show();
-                }
-                catch (Exception) { Toast.MakeText(this, string.Format("Error updating score at id {0}", idT), ToastLength.Long).Show(); }
-                
+                SetContentView(Resource.Layout.TournamentResults);
+
+                GameSelect();
             };
 
             // Add player to tournament
@@ -227,6 +223,43 @@ namespace Foosball
 
                 ResultsSelect();
             };
+        }
+
+        public void GameSelect()
+        {
+            using (SqlConnection cn = new SqlConnection())
+            using (SqlDataAdapter da = new SqlDataAdapter())
+            {
+                // Establish connection string
+                cn.ConnectionString = myCon;
+
+                //Establish SQL select command
+                SqlCommand select = new SqlCommand("SELECT GameID FROM tabRightTournamentPlayer", cn);
+
+                da.SelectCommand = select;
+
+                //Establish table to be updated
+                DataSet ds = new DataSet();
+                da.Fill(ds, "tabRightTournamentPlayer");
+
+                TextView tournamentResults = FindViewById<TextView>(Resource.Id.TournamentResultsText);
+                tournamentResults.MovementMethod = new ScrollingMovementMethod();
+
+                tournamentResults.Append("GameID" + "\n");
+
+                //  TO-DO: change 20 to something more meaningful
+                for (int i = 0; i < 20; i++)
+                {
+                    try
+                    {
+                        string collumn1 = (ds.Tables[0].Rows[i]["GameID"]).ToString();
+
+                        tournamentResults.Append(collumn1 + "\n");
+                    }
+
+                    catch (Exception) { tournamentResults.Append("\nROWS: " + i + "\n"); break; }
+                }
+            }
         }
 
         public void UpdateWinner(int idT, string nameT)
