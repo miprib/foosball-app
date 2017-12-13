@@ -74,8 +74,12 @@ namespace Foosball
             int idCreator;
             int idLeft;
             int idRight;
+
+            // Test data
             int score = 69;
             int idGame = 8;
+            int idT = 2;
+            string nameT = "TestWinner";
 
             // Start tournament
             startTournament.Click += (object sender, EventArgs e) =>
@@ -83,10 +87,10 @@ namespace Foosball
                 // TO-DO: tourmanet start
                 try
                 {
-                    UpdateLeftScore(idGame, score);
-                    Toast.MakeText(this, string.Format("Success updating score at id {0}", idGame), ToastLength.Long).Show();
+                    UpdateWinner(idT, nameT);
+                    Toast.MakeText(this, string.Format("Success updating score at id {0}", idT), ToastLength.Long).Show();
                 }
-                catch (Exception) { Toast.MakeText(this, string.Format("Error updating score at id {0}", idGame), ToastLength.Long).Show(); }
+                catch (Exception) { Toast.MakeText(this, string.Format("Error updating score at id {0}", idT), ToastLength.Long).Show(); }
                 
             };
 
@@ -222,6 +226,39 @@ namespace Foosball
 
                 ResultsSelect();
             };
+        }
+
+        public void UpdateWinner(int idT, string nameT)
+        {
+            using (SqlConnection cn = new SqlConnection())
+            using (SqlDataAdapter da = new SqlDataAdapter("SELECT TournamentID, Winner FROM tabTournament", cn))
+            {
+                // Establish connection string
+                cn.ConnectionString = myCon;
+
+                //Establish SQL update command
+                SqlCommand update = new SqlCommand();
+                update.Connection = cn;
+                update.CommandType = CommandType.Text;
+                update.CommandText = "UPDATE tabTournament SET Winner = @W WHERE TournamentID = @TID";
+
+                //Establish existing (those used in SELECT)
+                update.Parameters.Add(new SqlParameter("@TID", SqlDbType.Int, 50, "TournamentID"));
+                update.Parameters.Add(new SqlParameter("@W", SqlDbType.NVarChar, 50, "Winner"));
+
+                //Data adapter (using statement)
+                da.UpdateCommand = update;
+
+                //Establish table to be updated
+                DataSet ds = new DataSet();
+                da.Fill(ds, "tabTournament");
+
+                //Establish the name and new data for the column to be updated
+                ds.Tables[0].Rows[idT - 1]["Winner"] = nameT;
+
+                //Update done
+                da.Update(ds.Tables[0]);
+            }
         }
 
         public void UpdateLeftScore(int idGame, int score)
