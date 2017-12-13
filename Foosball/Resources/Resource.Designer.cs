@@ -120,6 +120,9 @@ namespace Foosball
 			// aapt resource value: 0x7f050003
 			public const int StartButton = 2131034115;
 			
+			// aapt resource value: 0x7f050018
+			public const int StartTournament = 2131034136;
+			
 			// aapt resource value: 0x7f050007
 			public const int TournamentButton = 2131034119;
 			
@@ -129,8 +132,8 @@ namespace Foosball
 			// aapt resource value: 0x7f05000e
 			public const int TournamentID = 2131034126;
 			
-			// aapt resource value: 0x7f050018
-			public const int TournamentResultsText = 2131034136;
+			// aapt resource value: 0x7f050019
+			public const int TournamentResultsText = 2131034137;
 			
 			// aapt resource value: 0x7f05000d
 			public const int UpdateButton = 2131034125;

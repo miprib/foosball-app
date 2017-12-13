@@ -137,5 +137,13 @@
         android:id="@+id/FightButton"
         android:layout_marginTop="825px"
         android:layout_marginLeft="75px"
+        android:layout_marginRight="400px" />
+    <Button
+        android:text="Start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/StartTournament"
+        android:layout_marginTop="825px"
+        android:layout_marginLeft="400px"
         android:layout_marginRight="75px" />
 </RelativeLayout>

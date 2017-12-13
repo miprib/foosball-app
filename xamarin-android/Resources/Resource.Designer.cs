@@ -138,14 +138,17 @@ namespace xamarin_android
 			// aapt resource value: 0x7f050022
 			public const int ShowTournaments = 2131034146;
 			
+			// aapt resource value: 0x7f050028
+			public const int StartTournament = 2131034152;
+			
 			// aapt resource value: 0x7f050024
 			public const int TournamentFightID = 2131034148;
 			
 			// aapt resource value: 0x7f05001e
 			public const int TournamentID = 2131034142;
 			
-			// aapt resource value: 0x7f050028
-			public const int TournamentResultsText = 2131034152;
+			// aapt resource value: 0x7f050029
+			public const int TournamentResultsText = 2131034153;
 			
 			// aapt resource value: 0x7f05001d
 			public const int UpdateButton = 2131034141;

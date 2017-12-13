@@ -63,11 +63,23 @@ namespace xamarin_android
             Button insertTournament = FindViewById<Button>(Resource.Id.InsertTournament);
             EditText creatorsID = FindViewById<EditText>(Resource.Id.CreatorsID);
 
+            // Start tournament
+            Button startTournament = FindViewById<Button>(Resource.Id.StartTournament);
+
             int id;
             int idTournament;
             int idCreator;
             int idLeft;
             int idRight;
+            int score = 69;
+            int idGame = 8;
+
+            // Start tournament
+            startTournament.Click += (object sender, EventArgs e) =>
+            {
+                // TO-DO: tourmanet start
+               
+            };
 
             // Add player to tournament
             fight.Click += (object sender, EventArgs e) =>
@@ -201,6 +213,72 @@ namespace xamarin_android
 
                 ResultsSelect();
             };
+        }
+
+        public void UpdateLeftScore(int idGame, int score)
+        {
+            using (SqlConnection cn = new SqlConnection())
+            using (SqlDataAdapter da = new SqlDataAdapter("SELECT GameID, Score FROM tabLeftTournamentPlayer", cn))
+            {
+                // Establish connection string
+                cn.ConnectionString = myCon;
+
+                //Establish SQL update command
+                SqlCommand update = new SqlCommand();
+                update.Connection = cn;
+                update.CommandType = CommandType.Text;
+                update.CommandText = "UPDATE tabLeftTournamentPlayer SET Score = @S WHERE GameID = @GID";
+
+                //Establish existing (those used in SELECT)
+                update.Parameters.Add(new SqlParameter("@GID", SqlDbType.Int, 50, "GameID"));
+                update.Parameters.Add(new SqlParameter("@S", SqlDbType.Int, 50, "Score"));
+
+                //Data adapter (using statement)
+                da.UpdateCommand = update;
+
+                //Establish table to be updated
+                DataSet ds = new DataSet();
+                da.Fill(ds, "tabLeftTournamentPlayer");
+
+                //Establish the name and new data for the column to be updated
+                ds.Tables[0].Rows[idGame - 1]["Score"] = score;
+
+                //Update done
+                da.Update(ds.Tables[0]);
+            }
+        }
+
+        public void UpdateRightScore(int idGame, int score)
+        {
+            using (SqlConnection cn = new SqlConnection())
+            using (SqlDataAdapter da = new SqlDataAdapter("SELECT GameID, Score FROM tabRightTournamentPlayer", cn))
+            {
+                // Establish connection string
+                cn.ConnectionString = myCon;
+
+                //Establish SQL update command
+                SqlCommand update = new SqlCommand();
+                update.Connection = cn;
+                update.CommandType = CommandType.Text;
+                update.CommandText = "UPDATE tabRightTournamentPlayer SET Score = @S WHERE GameID = @GID";
+
+                //Establish existing (those used in SELECT)
+                update.Parameters.Add(new SqlParameter("@GID", SqlDbType.Int, 50, "GameID"));
+                update.Parameters.Add(new SqlParameter("@S", SqlDbType.Int, 50, "Score"));
+
+                //Data adapter (using statement)
+                da.UpdateCommand = update;
+
+                //Establish table to be updated
+                DataSet ds = new DataSet();
+                da.Fill(ds, "tabRightTournamentPlayer");
+
+                //Establish the name and new data for the column to be updated
+                ds.Tables[0].Rows[idGame - 1]["Score"] = score;
+
+                //Update done
+                da.Update(ds.Tables[0]);
+            }
         }
 
         public void AddRightPlayerToTournament(int idTournament, int idRight)
