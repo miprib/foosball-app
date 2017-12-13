@@ -18,7 +18,7 @@ namespace xamarin_android
     [Activity(Label = "TournamentActivity")]
     public class TournamentActivity : Activity
     {
-        string myCon = "Server=tcp:myserver-20171207.database.windows.net,1433;" +
+        public static string myCon = "Server=tcp:myserver-20171207.database.windows.net,1433;" +
                "Initial Catalog=foosballDatabase;" +
                "User ID=ServerAdmin963;" +
                "Password=Slapt4z0d1s;" +

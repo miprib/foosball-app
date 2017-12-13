@@ -21,11 +21,12 @@ namespace Foosball
     [Activity(Label = "TournamentActivity")]
     public class TournamentActivity : Activity
     {
-        string myCon = "Server=tcp:myserver-20171207.database.windows.net,1433;" +
+        /*public static string myCon = "Server=tcp:myserver-20171207.database.windows.net,1433;" +
                "Initial Catalog=foosballDatabase;" +
                "User ID=ServerAdmin963;" +
                "Password=Slapt4z0d1s;" +
-               "MultipleActiveResultSets=False;";
+               "MultipleActiveResultSets=False;";*/
+        string myCon = Strings.myCon;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -231,7 +232,7 @@ namespace Foosball
         public void UpdateWinner(int idT, string nameT)
         {
             using (SqlConnection cn = new SqlConnection())
-            using (SqlDataAdapter da = new SqlDataAdapter("SELECT TournamentID, Winner FROM tabTournament", cn))
+            using (SqlDataAdapter da = new SqlDataAdapter(Strings.selectForUpdateWinner, cn))
             {
                 // Establish connection string
                 cn.ConnectionString = myCon;
@@ -240,7 +241,7 @@ namespace Foosball
                 SqlCommand update = new SqlCommand();
                 update.Connection = cn;
                 update.CommandType = CommandType.Text;
-                update.CommandText = "UPDATE tabTournament SET Winner = @W WHERE TournamentID = @TID";
+                update.CommandText = Strings.updateForUpdateWinner;
 
                 //Establish existing (those used in SELECT)
                 update.Parameters.Add(new SqlParameter("@TID", SqlDbType.Int, 50, "TournamentID"));
@@ -264,7 +265,7 @@ namespace Foosball
         public void UpdateLeftScore(int idGame, int score)
         {
             using (SqlConnection cn = new SqlConnection())
-            using (SqlDataAdapter da = new SqlDataAdapter("SELECT GameID, Score FROM tabLeftTournamentPlayer", cn))
+            using (SqlDataAdapter da = new SqlDataAdapter(Strings.selectForUpdateLeftScore, cn))
             {
                 // Establish connection string
                 cn.ConnectionString = myCon;
@@ -273,7 +274,7 @@ namespace Foosball
                 SqlCommand update = new SqlCommand();
                 update.Connection = cn;
                 update.CommandType = CommandType.Text;
-                update.CommandText = "UPDATE tabLeftTournamentPlayer SET Score = @S WHERE GameID = @GID";
+                update.CommandText = Strings.updateForUpdateLeftScore;
 
                 //Establish existing (those used in SELECT)
                 update.Parameters.Add(new SqlParameter("@GID", SqlDbType.Int, 50, "GameID"));
