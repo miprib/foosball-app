@@ -28,6 +28,10 @@ namespace Foosball
                "MultipleActiveResultSets=False;";*/
         string myCon = Strings.myCon;
 
+        List<string> nameList = new List<string>();
+        List<string> idList = new List<string>();
+
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -234,7 +238,7 @@ namespace Foosball
                 cn.ConnectionString = myCon;
 
                 //Establish SQL select command
-                SqlCommand select = new SqlCommand("SELECT GameID FROM tabRightTournamentPlayer", cn);
+                SqlCommand select = new SqlCommand(Strings.selectForGameSelect, cn);
 
                 da.SelectCommand = select;
 
@@ -500,12 +504,31 @@ namespace Foosball
                         string collumn1 = (ds.Tables[0].Rows[i]["UserID"]).ToString();
                         string collumn2 = (ds.Tables[0].Rows[i]["Name"]).ToString();
 
+                        idList.Add((ds.Tables[0].Rows[i]["UserID"]).ToString());
+                        nameList.Add((ds.Tables[0].Rows[i]["Name"]).ToString());
+
                         tournamentResults.Append(collumn1 + string.Empty.PadLeft(6, '\t'));
                         tournamentResults.Append(collumn2 + "\n");
                     }
 
-                    catch (Exception) { tournamentResults.Append("\nROWS: " + i + "\n"); break; }
+                    catch (Exception) { tournamentResults.Append("\nROWS: " + i + "\n\n"); break; }
                 }
+
+                // Aggregate
+                string idAggregate = idList.Aggregate("ID:\t", (a, b) => a + "\t" + b);
+                tournamentResults.Append(idAggregate + "\n");
+
+                string nameAggregate = nameList.Aggregate("Name:\t", (a, b) => a + "\t" + b);
+                tournamentResults.Append(nameAggregate + "\n\n");
+
+                // Skip
+                string idSkip = idList.Skip(5).Aggregate("ID:\t", (a, b) => a + "\t" + b); ;
+                tournamentResults.Append(idSkip + "\n");
+
+                // Take
+                string nameTake = nameList.Take(3).Aggregate("Name:\t", (a, b) => a + "\t" + b); ;
+                tournamentResults.Append(nameTake.ToString() + "\n\n");
+
             }
         }
 

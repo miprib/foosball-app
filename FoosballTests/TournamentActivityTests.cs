@@ -248,7 +248,7 @@ namespace Foosball.Tests
 
         [TestMethod()]
         public void ResultsSelectTest()
-        {        
+        {
             // Arrange
             String regexPattern = @"^(SELECT TournamentID, GameID, LeftScore, RightScore FROM viewResults)$";
 
@@ -297,5 +297,19 @@ namespace Foosball.Tests
             // Assert
             Assert.IsTrue(Regex.IsMatch(update, regexPattern));
         }
+
+        [TestMethod()]
+        public void GameSelect()
+        {
+            // Arrange
+            String regexPattern = @"^(SELECT GameID FROM tabRightTournamentPlayer)$";
+
+            // Act
+            String select = Strings.selectForGameSelect;
+
+            // Assert
+            Assert.IsTrue(Regex.IsMatch(select, regexPattern));
+        }
+
     }
 }
