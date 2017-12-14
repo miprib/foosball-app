@@ -12,10 +12,12 @@ using Android.Widget;
 using System.Data.SqlClient;
 using System.Data;
 using Android.Text.Method;
+using Android.Content.PM;
 
 namespace xamarin_android
 {
-    [Activity(Label = "TournamentActivity")]
+    [Activity(Label = "TournamentActivity", ConfigurationChanges = ConfigChanges.Orientation,
+        ScreenOrientation = ScreenOrientation.Portrait)]
     public class TournamentActivity : Activity
     {
         public static string myCon = "Server=tcp:myserver-20171207.database.windows.net,1433;" +
@@ -82,7 +84,10 @@ namespace xamarin_android
             startTournament.Click += (object sender, EventArgs e) =>
             {
                 // TO-DO: tourmanet start
-                
+                var videoIntent = new Intent();
+                videoIntent.SetType("video/*");
+                videoIntent.SetAction(Intent.ActionGetContent);
+                StartActivityForResult(Intent.CreateChooser(videoIntent, "Select video"), 22);
             };
 
             // Add player to tournament
@@ -686,6 +691,35 @@ namespace xamarin_android
 
                 //Update done
                 da.Update(ds.Tables[0]);
+            }
+        }
+        int i = 8;
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (resultCode == Result.Ok)
+            {
+                if (requestCode == 22)
+                {
+                    var intent = new Intent(this, typeof(MainActivity)).SetFlags(ActivityFlags.ReorderToFront);
+                    intent.PutExtra("videoType", "file");
+                    intent.PutExtra("path", data.DataString);
+                    intent.PutExtra("teamName1", "hey");
+                    intent.PutExtra("teamName2", "hou");
+                    StartActivityForResult(intent, 55);
+                }
+                if (requestCode == 55)
+                {
+                    if (i == 8)
+                    {
+                        int r = Int32.Parse(data.GetStringExtra("score2"));
+                        UpdateRightScore(i, r);
+                        r = Int32.Parse(data.GetStringExtra("score1"));
+                        UpdateLeftScore(i, r);
+                        i++;
+                    }
+                }
             }
         }
     }
