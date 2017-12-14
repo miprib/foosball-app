@@ -86,6 +86,42 @@ namespace Foosball
             int idT = 2;
             string nameT = "TestWinner";
 
+//****************************************************************************************************************
+            /*var dbFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            var fileName = "tournament.db";
+            var dbFullPath = System.IO.Path.Combine(dbFolder, fileName);
+            try
+            {
+                using (var db = new userContext(dbFullPath))
+                {
+                    await db.Database.MigrateAsync(); //We need to ensure the latest Migration was added. This is different than EnsureDatabaseCreated.
+
+                    tabUser user1 = new tabUser() { UserID = 1, Name = "Gary" };
+                    tabUser user2 = new tabUser() { UserID = 2, Name = "John" };
+                    tabUser user3 = new tabUser() { UserID = 3, Name = "Patric" };
+
+                    List<tabUser> catsInTheHat = new List<tabUser>() { user1, user2, user3 };
+
+                    if (await db.users.CountAsync() < 3)
+                    {
+                        await db.users.AddRangeAsync(catsInTheHat);
+                        await db.SaveChangesAsync();
+                    }
+
+                    var users = await db.users.ToListAsync();
+
+                    foreach (var user in users)
+                    {
+                        Console.WriteLine(user.Name);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+            }*/
+
             // Start tournament
             startTournament.Click += (object sender, EventArgs e) =>
             {

@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xamarin-androidTests", "xam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoosballTests", "FoosballTests\FoosballTests.csproj", "{BD1FF718-42D3-4C77-9848-DAB6565E2545}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "foosballDB", "foosballDB\foosballDB.csproj", "{656C3F5D-D94C-4536-8D2C-D947D790DA4A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "migrationsFoosApp", "migrationsFoosApp\migrationsFoosApp.csproj", "{361B83A5-7BC9-476D-900E-E3450BC108AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,14 @@ Global
 		{BD1FF718-42D3-4C77-9848-DAB6565E2545}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD1FF718-42D3-4C77-9848-DAB6565E2545}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD1FF718-42D3-4C77-9848-DAB6565E2545}.Release|Any CPU.Build.0 = Release|Any CPU
+		{656C3F5D-D94C-4536-8D2C-D947D790DA4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{656C3F5D-D94C-4536-8D2C-D947D790DA4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{656C3F5D-D94C-4536-8D2C-D947D790DA4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{656C3F5D-D94C-4536-8D2C-D947D790DA4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{361B83A5-7BC9-476D-900E-E3450BC108AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{361B83A5-7BC9-476D-900E-E3450BC108AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{361B83A5-7BC9-476D-900E-E3450BC108AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{361B83A5-7BC9-476D-900E-E3450BC108AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
