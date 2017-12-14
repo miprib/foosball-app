@@ -49,5 +49,7 @@ namespace Foosball
         public static string selectForUpdateExisting = "SELECT UserID, Name FROM tabUser";
         public static string updateForUpdateExisting = "UPDATE tabUser SET Name = @N WHERE UserID = @ID";
 
+        public static string selectForGameSelect = "SELECT GameID FROM tabRightTournamentPlayer";
+
     }
 }
