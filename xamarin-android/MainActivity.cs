@@ -107,7 +107,7 @@ namespace xamarin_android
         {
             if (Intent.GetStringExtra("videoType") == "file")
             {
-                video = new VideoFile(Intent.GetStringExtra("path"));
+                video = new VideoFile(this, Intent.GetStringExtra("path"));
             }
             else
             {
@@ -171,14 +171,23 @@ namespace xamarin_android
             }
         }
 
+        public void VideoEnd(object sender, EventArgs e)
+        {
+            Intent intent = new Intent(this, typeof(StartActivity));
+            intent.PutExtra("team1", game.team1);
+            intent.PutExtra("team2", game.team2);
+            intent.PutExtra("score1", game.team1Score.ToString());
+            intent.PutExtra("score2", game.team2Score.ToString());
+            SetResult(Result.Ok, intent);
+            Finish();
+        }
+
         public void SurfaceChanged(ISurfaceHolder holder, [GeneratedEnum] Format format, int width, int height)
         {
         }
-
-        bool surfaceCreated = false;
+        
         public void SurfaceCreated(ISurfaceHolder holder)
         {
-            surfaceCreated = true;
         }
 
         public void SurfaceDestroyed(ISurfaceHolder holder)

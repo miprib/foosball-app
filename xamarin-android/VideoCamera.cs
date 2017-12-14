@@ -53,5 +53,10 @@ namespace xamarin_android
                 camera.StartPreview();
             }
         }
+
+        public bool IsPlaying()
+        {
+            return true;
+        }
     }
 }

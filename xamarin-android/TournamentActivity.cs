@@ -82,7 +82,7 @@ namespace xamarin_android
             startTournament.Click += (object sender, EventArgs e) =>
             {
                 // TO-DO: tourmanet start
-               
+                
             };
 
             // Add player to tournament

@@ -5,5 +5,6 @@
   <string name="camera">Play live</string>
   <string name="history">History</string>
   <string name="tournament">Tournament</string>
+  <string name="details">Match details</string>
   <string name="no_connection">No connection with service</string>
 </resources>

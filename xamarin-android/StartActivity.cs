@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
 
@@ -22,6 +23,7 @@ namespace xamarin_android
 
             // Create your application here
             SetContentView(Resource.Layout.a_start);
+
 
             MyProperties properties = MyProperties.getInstance();
 
@@ -65,7 +67,14 @@ namespace xamarin_android
 
             if (resultCode == Result.Ok)
             {
-                InputTeamNames("file", data.DataString);
+                if (requestCode == 0)
+                {
+                    InputTeamNames("file", data.DataString);
+                }
+                if(requestCode == 1)
+                {
+                    DisplayMatch(data);
+                }
             }
         }
 
@@ -79,13 +88,12 @@ namespace xamarin_android
             var etTeamName2 = (EditText)inputView.FindViewById(Resource.Id.etTeamName2);
             alert.SetView(inputView);
             alert.SetPositiveButton("Submit", (senderAlert, args) => {
-                var intent = new Intent(this, typeof(MainActivity));
+                var intent = new Intent(this, typeof(MainActivity)).SetFlags(ActivityFlags.ReorderToFront);
                 intent.PutExtra("videoType", type);
                 intent.PutExtra("path", path);
                 intent.PutExtra("teamName1", etTeamName1.Text);
                 intent.PutExtra("teamName2", etTeamName2.Text);
-                StartActivity(intent);
-                Finish();
+                StartActivityForResult(intent, 1);
             });
 
             alert.SetNegativeButton("Cancel", (senderAlert, args) => {
@@ -94,6 +102,15 @@ namespace xamarin_android
 
             Dialog dialog = alert.Create();
             dialog.Show();
+        }
+
+        public void DisplayMatch(Intent intent)
+        {
+            AlertDialog alert = new AlertDialog.Builder(this).Create();
+            alert.SetTitle(Resource.String.details);
+            alert.SetMessage(intent.GetStringExtra("team1") + " " + intent.GetStringExtra("score1") + "-" + intent.GetStringExtra("score2") + " " + intent.GetStringExtra("team2"));
+            alert.SetCanceledOnTouchOutside(true);
+            alert.Show();
         }
     }
 }

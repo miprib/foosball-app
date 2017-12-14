@@ -18,7 +18,7 @@
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
@@ -151,12 +151,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NewTournamentActivity.cs" />
-    <Compile Include="PlayersListAdapter.cs" />
     <Compile Include="Recognition\ColorRange.cs" />
     <Compile Include="Recognition\Coordinates.cs" />
-    <Compile Include="Tournament.cs" />
-    <Compile Include="TPlayer.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameList.cs" />
     <Compile Include="HighscoreActivity.cs" />

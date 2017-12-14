@@ -18,10 +18,17 @@ namespace xamarin_android
     {
         String path;
         MediaPlayer mediaPlayer;
+        MainActivity mainActivity;
 
-        public VideoFile(String path)
+        public VideoFile(MainActivity mainActivity, String path)
         {
+            this.mainActivity = mainActivity;
             this.path = path;
+        }
+
+        public bool IsPlaying()
+        {
+            return mediaPlayer.IsPlaying;
         }
 
         public void PlayVideo(Context context, SurfaceTexture surfaceTexture)
@@ -37,6 +44,7 @@ namespace xamarin_android
                 mediaPlayer.Prepare();
                 mediaPlayer.Start();
             }
+            mediaPlayer.Completion += mainActivity.VideoEnd;
         }
 
         public void StopVideo()

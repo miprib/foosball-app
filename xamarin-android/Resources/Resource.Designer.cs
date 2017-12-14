@@ -3192,6 +3192,9 @@ namespace xamarin_android
 			// aapt resource value: 0x7f080025
 			public const int character_counter_pattern = 2131230757;
 			
+			// aapt resource value: 0x7f08002b
+			public const int details = 2131230763;
+			
 			// aapt resource value: 0x7f080027
 			public const int file = 2131230759;
 			
@@ -3243,32 +3246,32 @@ namespace xamarin_android
 			// aapt resource value: 0x7f08000e
 			public const int mr_user_route_category_name = 2131230734;
 			
-			// aapt resource value: 0x7f08002b
-			public const int no_connection = 2131230763;
+			// aapt resource value: 0x7f08002c
+			public const int no_connection = 2131230764;
 			
 			// aapt resource value: 0x7f080022
 			public const int status_bar_notification_info_overflow = 2131230754;
 			
+			// aapt resource value: 0x7f080031
+			public const int t_add = 2131230769;
+			
 			// aapt resource value: 0x7f080030
-			public const int t_add = 2131230768;
-			
-			// aapt resource value: 0x7f08002f
-			public const int t_code = 2131230767;
-			
-			// aapt resource value: 0x7f08002c
-			public const int t_existing = 2131230764;
-			
-			// aapt resource value: 0x7f080032
-			public const int t_go = 2131230770;
+			public const int t_code = 2131230768;
 			
 			// aapt resource value: 0x7f08002d
-			public const int t_new_cup = 2131230765;
+			public const int t_existing = 2131230765;
+			
+			// aapt resource value: 0x7f080033
+			public const int t_go = 2131230771;
 			
 			// aapt resource value: 0x7f08002e
-			public const int t_pin = 2131230766;
+			public const int t_new_cup = 2131230766;
 			
-			// aapt resource value: 0x7f080031
-			public const int t_ptname = 2131230769;
+			// aapt resource value: 0x7f08002f
+			public const int t_pin = 2131230767;
+			
+			// aapt resource value: 0x7f080032
+			public const int t_ptname = 2131230770;
 			
 			// aapt resource value: 0x7f08002a
 			public const int tournament = 2131230762;
